@@ -24,7 +24,7 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 <meta name="twitter:title" content="Understanding CocoaPods">
 <meta name="twitter:description" content="Hi, in this post, I ‘ll share things I learn about Cocoapods
 What goes into your .gitignore if you’re using CocoapodsThis question raises debate on SO, but I would recommend only track the Podfile and">
-<meta name="twitter:creator" content="@https://twitter.com/onmyway133">
+<meta name="twitter:creator" content="@onmyway133">
 
     
     <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
@@ -52,7 +52,7 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
 				<h2 class="blog-motto">Simple apps that make sense</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -68,7 +68,7 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:www.fantageek.com">
 					</form>
 					
@@ -91,14 +91,14 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
 		
   <p class="article-time">
-    <time datetime="2014-10-08T14:19:05.000Z" itemprop="datePublished"> 发表于 2014-10-08</time>
+    <time datetime="2014-10-08T14:19:05.000Z" itemprop="datePublished"> Published 2014-10-08</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-goes-into-your-gitignore-if-you’re-using-Cocoapods"><span class="toc-number">1.</span> <span class="toc-text">What goes into your .gitignore if you’re using Cocoapods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pod-install-vs-pod-update"><span class="toc-number">2.</span> <span class="toc-text">pod install vs pod update</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-edit-the-source-of-the-Pod"><span class="toc-number">3.</span> <span class="toc-text">You can edit the source of the Pod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Your-xcodeproj-remains-unchanged"><span class="toc-number">4.</span> <span class="toc-text">Your .xcodeproj remains unchanged</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-sandbox-is-not-in-sync-with-the-Podfile-lock"><span class="toc-number">5.</span> <span class="toc-text">The sandbox is not in sync with the Podfile.lock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Where-are-the-Specs-stored-locally"><span class="toc-number">6.</span> <span class="toc-text">Where are the Specs stored locally</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">7.</span> <span class="toc-text">References</span></a></li></ol>
 		
@@ -201,23 +201,23 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-goes-into-your-gitignore-if-you’re-using-Cocoapods"><span class="toc-number">1.</span> <span class="toc-text">What goes into your .gitignore if you’re using Cocoapods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pod-install-vs-pod-update"><span class="toc-number">2.</span> <span class="toc-text">pod install vs pod update</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-edit-the-source-of-the-Pod"><span class="toc-number">3.</span> <span class="toc-text">You can edit the source of the Pod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Your-xcodeproj-remains-unchanged"><span class="toc-number">4.</span> <span class="toc-text">Your .xcodeproj remains unchanged</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-sandbox-is-not-in-sync-with-the-Podfile-lock"><span class="toc-number">5.</span> <span class="toc-text">The sandbox is not in sync with the Podfile.lock</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Where-are-the-Specs-stored-locally"><span class="toc-number">6.</span> <span class="toc-text">Where are the Specs stored locally</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">7.</span> <span class="toc-text">References</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github 名片</p>
-<div class="github-card" data-github="https://github.com/onmyway133" data-width="220" data-height="119" data-theme="medium">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
   </div>
@@ -226,7 +226,7 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -287,7 +287,7 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -335,15 +335,15 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 			
 		
 			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			
@@ -375,24 +375,15 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
-
-  <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
 
 </aside>
 </div>
@@ -413,13 +404,13 @@ What goes into your .gitignore if you’re using CocoapodsThis question raises d
 	<div class="social-font" class="clearfix">
 		
 		
-		<a href="https://github.com/https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
 		
 		
-		<a href="http://stackoverflow.com/users/http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
 		
 		
-		<a href="https://twitter.com/https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
 		
 		
 		
@@ -641,7 +632,7 @@ ga('send', 'pageview');
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

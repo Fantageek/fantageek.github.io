@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AVFoundation vs MediaPlayer">
 <meta name="twitter:description" content="No offsense, but I think most developer are just library users now. Some genius have made great libraries for us to use. It ‘s just the usage difficulty that matters. So if we don’t know how to use it">
-<meta name="twitter:creator" content="@https://twitter.com/onmyway133">
+<meta name="twitter:creator" content="@onmyway133">
 
     
     <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
@@ -49,7 +49,7 @@
 				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
 				<h2 class="blog-motto">Simple apps that make sense</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -65,7 +65,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:www.fantageek.com">
 					</form>
 					
@@ -88,14 +88,14 @@
 		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
 		
   <p class="article-time">
-    <time datetime="2014-09-07T02:33:40.000Z" itemprop="datePublished"> 发表于 2014-09-07</time>
+    <time datetime="2014-09-07T02:33:40.000Z" itemprop="datePublished"> Published 2014-09-07</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPMoviePlayerController-vs-AVPlayer"><span class="toc-number">1.</span> <span class="toc-text">MPMoviePlayerController vs AVPlayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-controls"><span class="toc-number">2.</span> <span class="toc-text">Custom controls</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController"><span class="toc-number">2.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer"><span class="toc-number">2.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">3.</span> <span class="toc-text">Notification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-1"><span class="toc-number">3.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-1"><span class="toc-number">3.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seek"><span class="toc-number">4.</span> <span class="toc-text">Seek</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-2"><span class="toc-number">4.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-2"><span class="toc-number">4.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Subtitle"><span class="toc-number">5.</span> <span class="toc-text">Subtitle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-3"><span class="toc-number">5.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-3"><span class="toc-number">5.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Time-scale"><span class="toc-number">6.</span> <span class="toc-text">Time scale</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Volume"><span class="toc-number">7.</span> <span class="toc-text">Volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Playable-duration"><span class="toc-number">8.</span> <span class="toc-text">Playable duration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-4"><span class="toc-number">8.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-4"><span class="toc-number">8.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-screen"><span class="toc-number">9.</span> <span class="toc-text">Full screen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Movie-Source-Type"><span class="toc-number">10.</span> <span class="toc-text">Movie Source Type</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-5"><span class="toc-number">10.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-5"><span class="toc-number">10.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVAsset"><span class="toc-number">11.</span> <span class="toc-text">AVAsset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Allow-a-range-within-a-video-to-be-playable"><span class="toc-number">12.</span> <span class="toc-text">Allow a range within a video to be playable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time"><span class="toc-number">13.</span> <span class="toc-text">You can have many instances of AVPlayer playing at the same time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">14.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
@@ -205,23 +205,23 @@
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPMoviePlayerController-vs-AVPlayer"><span class="toc-number">1.</span> <span class="toc-text">MPMoviePlayerController vs AVPlayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-controls"><span class="toc-number">2.</span> <span class="toc-text">Custom controls</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController"><span class="toc-number">2.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer"><span class="toc-number">2.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">3.</span> <span class="toc-text">Notification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-1"><span class="toc-number">3.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-1"><span class="toc-number">3.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seek"><span class="toc-number">4.</span> <span class="toc-text">Seek</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-2"><span class="toc-number">4.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-2"><span class="toc-number">4.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Subtitle"><span class="toc-number">5.</span> <span class="toc-text">Subtitle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-3"><span class="toc-number">5.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-3"><span class="toc-number">5.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Time-scale"><span class="toc-number">6.</span> <span class="toc-text">Time scale</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Volume"><span class="toc-number">7.</span> <span class="toc-text">Volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Playable-duration"><span class="toc-number">8.</span> <span class="toc-text">Playable duration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-4"><span class="toc-number">8.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-4"><span class="toc-number">8.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-screen"><span class="toc-number">9.</span> <span class="toc-text">Full screen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Movie-Source-Type"><span class="toc-number">10.</span> <span class="toc-text">Movie Source Type</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-5"><span class="toc-number">10.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-5"><span class="toc-number">10.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVAsset"><span class="toc-number">11.</span> <span class="toc-text">AVAsset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Allow-a-range-within-a-video-to-be-playable"><span class="toc-number">12.</span> <span class="toc-text">Allow a range within a video to be playable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time"><span class="toc-number">13.</span> <span class="toc-text">You can have many instances of AVPlayer playing at the same time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">14.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github 名片</p>
-<div class="github-card" data-github="https://github.com/onmyway133" data-width="220" data-height="119" data-theme="medium">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
   </div>
@@ -230,7 +230,7 @@
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -291,7 +291,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -339,15 +339,15 @@
 			
 		
 			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			
@@ -379,24 +379,15 @@
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
-
-  <div class="weiboshow">
-  <p class="asidetitle">新浪微博</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
 
 </aside>
 </div>
@@ -417,13 +408,13 @@
 	<div class="social-font" class="clearfix">
 		
 		
-		<a href="https://github.com/https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
 		
 		
-		<a href="http://stackoverflow.com/users/http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
 		
 		
-		<a href="https://twitter.com/https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
 		
 		
 		
@@ -645,7 +636,7 @@ ga('send', 'pageview');
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
