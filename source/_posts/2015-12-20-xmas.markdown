@@ -1,0 +1,56 @@
+---
+layout: post
+author: onmyway133
+title: "Xmas"
+date: 2015-12-20 10:23:58 +0700
+comments: true
+categories:
+---
+
+Christmas is when we I have the most special feeling. The cool air, the snow, the reunion, the church bell ringing, ...
+
+![](http://www.fantageek.com/images/christmas_scene.jpg)
+(From google)
+
+It 's beginning to look a lot like Christmas. First with Xcode
+
+Xmas
+--
+[Xmas](https://github.com/onmyway133/xmas) is an Xcode plugin that shows Xmas picture along with wishing message whenever a build succeeds
+
+![](https://github.com/onmyway133/Xmas/raw/master/Screenshots/xmas.png)
+
+How it works
+--
+
+### Swift
+- Try to do much of the job in Swift as possible
+
+### DVTKit
+- Xcode uses `DVTBezelAlertPanel` to display alert. So we swizzle its `initWithIcon:message:parentWindow:duration:`
+- `DVTBezelAlertPanel` is from `DVTKit`. I thought about importing [run time header](https://github.com/luisobo/Xcode-RuntimeHeaders) and just `extension` it. But I find swizzling in Objective C a much more easier solution
+
+### NSVisualEffectView
+- It seems that `NSImage` added to the panel 's `NSVisualEffectView` had it `template` set to YES again, hence causing the image into template color with the panel background color
+- This happens in the `init` method. So we must change `template` back to NO after `init` happens
+
+```objc
+- (id)xmas_initWithIcon:(id)icon
+                message:(NSString *)message
+           parentWindow:(id)parentWindow
+               duration:(double)duration {
+        [self xmas_initWithIcon:image message:gift.message parentWindow:parentWindow duration:duration];
+
+        image.template = NO;
+
+        return self;
+}
+```
+
+And, Merry Christmas to you and your family
+
+<iframe width="854" height="480" src="https://www.youtube.com/embed/yrRPLBYiiEc" frameborder="0" allowfullscreen></iframe>
+
+Reference
+--
+- [How To Create an Xcode Plugin: Part 1/3](http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1)

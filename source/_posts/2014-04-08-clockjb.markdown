@@ -1,0 +1,52 @@
+---
+author: onmyway133
+comments: true
+date: 2014-04-08 16:46:14+00:00
+layout: post
+slug: clockjb
+title: ClockJB
+wordpress_id: 698
+categories:
+- Mobile Labs
+---
+
+[![Screen Shot 2014-04-08 at 11.56.44 PM](http://www.fantageek.com/wp-content/uploads/2014/04/Screen-Shot-2014-04-08-at-11.56.44-PM.png)](http://www.fantageek.com/wp-content/uploads/2014/04/Screen-Shot-2014-04-08-at-11.56.44-PM.png)
+
+
+
+
+ClockJB is a version of the official Clock app included on Jelly Bean (Android 4.3).  
+
+It is compatible with Android 2.2 and above devices.  
+
+--- FEATURES ---  
+
+- Digital clock  
+
+- Countdown timer  
+
+- Stopwatch  
+
+- Digital/Analog widget  
+
+- Night mode  
+
+- Alarm  
+
+- Compatible with Android 2.2+  
+
+If you have some idea or problem with app, just write an email.
+
+
+
+
+[![Screen Shot 2014-04-08 at 11.44.20 PM](http://www.fantageek.com/wp-content/uploads/2014/04/Screen-Shot-2014-04-08-at-11.44.20-PM.png)](http://www.fantageek.com/wp-content/uploads/2014/04/Screen-Shot-2014-04-08-at-11.44.20-PM.png)
+
+
+
+
+[  
+
+![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)  
+
+](https://play.google.com/store/apps/details?id=com.fantageek.deskclock)

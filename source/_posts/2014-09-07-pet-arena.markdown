@@ -1,0 +1,31 @@
+---
+author: onmyway133
+comments: true
+date: 2014-09-07 05:15:32+00:00
+layout: post
+slug: pet-arena
+title: Pet Arena
+wordpress_id: 1369
+categories:
+- Mobile Labs
+tags:
+- nokia
+- ovi
+- pet arena
+- s40
+---
+
+Our first game
+
+Pet Arena is going to be the most exciting game ever.
+In the role of a pet master, you have to take care of your pet, train it and have it compete with your friends’ pets via Bluetooth or Wifi. Pet Arena will be a social and fun game.
+
+<!-- more -->
+
+The first version of the game features a "Tap That Pet" mini game, in which your job is to find your pet and tap the others wisely.
+
+![](http://p.d.ovi.com/p/g/store/7324760/Gameplay_Splash_-_Copy-192x192.png?q=-*iDvbyEdYc-dm4dL7DPqgaSGyZiVqip&c=ovi_store)![](http://p.d.ovi.com/p/g/store/7324773/Gameplay_Maingame_-_Copy-192x192.png?q=D-PiDFl6YZm0ngKgLAqGSOznKYvDXUnW&c=ovi_store)![](http://p.d.ovi.com/p/g/store/7324767/Gameplay_Mainmenu_-_Copy-192x192.png?q=Kf3W9qFhJtwYzZ3LjtGIgzXgAnlYiCPk&c=ovi_store)
+
+[Available on Ovi Store](http://store.ovi.com/content/216614)
+
+[![](http://blog.fring.com/southafrica/wp-content/uploads/2009/09/AvailableonOvi_RGB_Green.gif)](http://store.ovi.com/content/216614)

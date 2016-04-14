@@ -1,0 +1,77 @@
+---
+author: onmyway133
+comments: true
+date: 2015-07-15 15:31:40+00:00
+layout: post
+slug: xvim
+title: XVim
+wordpress_id: 1779
+categories:
+- iOS
+---
+
+### Assistant editors
+
+
+
+`:sp`
+
+
+
+<blockquote>
+  Add new assistant editor. Assistant editors are laid out horizontally.
+</blockquote>
+
+
+
+`:vsp`
+
+
+
+<blockquote>
+  Add new assistant editor. Assistant editors are laid out vertically.
+</blockquote>
+
+
+
+
+
+### Replace
+
+
+
+
+
+<blockquote>
+  When text is visually selected, press : to enter a command
+</blockquote>
+
+
+
+`s/old/new/g`
+
+
+
+### Search
+
+
+
+`/search_text`
+Press Enter, then next with `n`
+
+
+
+## Reference
+
+
+
+
+
+
+
+  * [XVim](https://github.com/XVimProject/XVim)
+
+
+  * [XVim feature list](https://github.com/XVimProject/XVim/blob/master/Documents/Users/FeatureList.md)
+
+

@@ -1,0 +1,244 @@
+---
+author: onmyway133
+comments: true
+date: 2015-01-16 06:43:31+00:00
+layout: post
+slug: lldb
+title: LLDB
+wordpress_id: 1566
+categories:
+- iOS
+---
+
+## Help
+
+
+
+[code language="objc"]
+(lldb) help
+(lldb) help bt
+[/code]
+
+
+
+## Abbreviation
+
+
+
+You can just write 1 or 2 letters of a command. For example, `expression` can be written as `e`, `expr`. Sometimes you must write more letters because fewer letter can conflict with other command. For example, `breakpoint` is written as `br`, because `b` is a different command
+
+
+
+## @import
+
+
+
+Read [An @import-ant Change in Xcode](http://furbo.org/2015/05/11/an-import-ant-change-in-xcode/)
+[code language="objc"]
+(lldb) expr @import UIKit
+(lldb) p self.window.bounds
+[/code]
+
+
+
+## po $arg1
+
+
+
+Read [Xcode: One Weird Debugging Trick That Will Save Your Life](http://natashatherobot.com/xcode-debugging-trick/)
+[code language="objc"]
+(lldb) po $arg1
+[/code]
+
+
+
+## expr
+
+
+
+
+
+### Modify values
+
+
+
+[code language="objc"]
+(lldb) expr userInteractionEnabled = YES
+[/code]
+
+
+
+### Create variable
+
+
+
+[code language="objc"]
+(lldb) e int $a = 2
+(lldb) p $a * 19
+[/code]
+
+
+
+## Breakpoint
+
+
+
+
+
+### List
+
+
+
+[code language="objc"]
+(lldb) br li
+[/code]
+
+
+
+## Create
+
+
+
+[code language="objc"]
+(lldb) br set -f main.m -l 16
+[/code]
+
+
+
+## Symbolic breakpoint
+
+
+
+[code language="objc"]
+(lldb) b -[MyViewController viewDidAppear:]
+[/code]
+
+
+
+## Thread
+
+
+
+
+
+### Return
+
+
+
+[code language="objc"]
+(lldb) thread return NO
+[/code]
+
+
+
+### Print the stacktrace
+
+
+
+[code language="objc"]
+(lldb) thread backtrace
+[/code]
+
+[code language="objc"]
+(lldb) bt
+[/code]
+
+
+
+### Do a source-level single step in the currently selected thread.
+
+
+
+[code language="objc"]
+(lldb) thread step-in
+[/code]
+
+[code language="objc"]
+(lldb) step
+[/code]
+
+
+
+### Do a source-level single step over in the currently selected thread
+
+
+
+[code language="objc"]
+(lldb) thread step-over
+[/code]
+
+[code language="objc"]
+(lldb) next
+[/code]
+
+
+
+## Register
+
+
+
+Read [My App Crashed, Now What? – Part 1](http://www.raywenderlich.com/10209/my-app-crashed-now-what-part-1)
+
+
+
+### $eax or $r0
+
+
+
+
+
+<blockquote>
+  The symbol $eax refers to one of the CPU registers. In the case of an exception, this register will contain a pointer to the NSException object. Note: $eax only works for the simulator, if you’re debugging on the device you’ll need to use register $r0.
+</blockquote>
+
+
+
+[code language="objc"]
+(lldb) po [$eax class]
+(lldb) po [$eax name]
+(lldb) po [$eax reason]
+[/code]
+
+
+
+## Python
+
+
+
+[code language="objc"]
+(lldb) script
+[/code]
+
+[code language="objc"]
+(lldb) script import os
+(lldb) script os.system("open http://www.objc.io/")
+[/code]
+
+
+
+## Reference
+
+
+
+
+
+
+
+  * [Navigating and discovering an iOS codebase using lldb](https://medium.com/ios-os-x-development/navigating-and-discovering-a-code-base-using-lldb-bca7c10115cf)
+
+
+  * [Dancing in the Debugger — A Waltz with LLDB](http://www.objc.io/issues/19-debugging/lldb-debugging/)
+
+
+  * [chisel](https://github.com/facebook/chisel)
+
+
+  * [Using LLDB as a Standalone Debugger](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-terminal-workflow-tutorial.html)
+
+
+  * [GDB and LLDB Command Examples](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-command-examples.html)
+
+
+  * [LLDB Tutorial in Raywenderlich](http://www.raywenderlich.com/?s=lldb&cof=FORID%3A10)
+
+
