@@ -15,11 +15,31 @@ tags:
 - push
 ---
 
-Here are some notes for working with Push Notification
+Here are my notes for working with Push Notification
 
 ## How to register
 
-- [iOS 8 Push Notification Registration](http://www.joshwright.com/tips/ios-8-push-notification-registration)
+- Register to receive push notification
+
+`registerForRemoteNotificationTypes` is deprecated in iOS 8+
+
+```swift
+UIApplication.sharedApplication().registerForRemoteNotifications()
+```
+
+- Register to alert user through UI
+
+> If your app displays alerts, play sounds, or badges its icon, you must call this method during your launch cycle to request permission to alert the user in these ways
+
+```swift
+let types: UIUserNotificationType = [.Badge, .Sound, .Alert]
+let categories = Set<UIUserNotificationCategory>()
+let settings = UIUserNotificationSettings(forTypes: types, categories: categories)
+
+UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+```
+
+You don't need to wait for `registerUserNotificationSettings` to callback before calling `registerForRemoteNotifications`
 
 ## When to register
 
@@ -29,7 +49,29 @@ Here are some notes for working with Push Notification
 
 > The user can change the notification settings for your app at any time using the Settings app. Because settings can change, always call the registerUserNotificationSettings: at launch time and use the application:didRegisterUserNotificationSettings: method to get the response. If the user disallows specific notification types, avoid using those types when configuring local and remote notifications for your app.
 
+## didReceiveRemoteNotification
+
+About `application:didReceiveRemoteNotification:`
+
+> Implement the application:didReceiveRemoteNotification:fetchCompletionHandler: method instead of this one whenever possible. If your delegate implements both methods, the app object calls the application:didReceiveRemoteNotification:fetchCompletionHandler: method.
+
+> If the app is not running when a remote notification arrives, the method launches the app and provides the appropriate information in the launch options dictionary. The app does not call this method to handle that remote notification. Instead, your implementation of the application:willFinishLaunchingWithOptions: or application:didFinishLaunchingWithOptions: method needs to get the remote notification payload data and respond appropriately.
+
+About `application:didReceiveRemoteNotification:fetchCompletionHandler:`
+
+This is for silent push notification with `content-available`
+
+> Unlike the application:didReceiveRemoteNotification: method, which is called only when your app is running in the foreground, the system calls this method when your app is running in the foreground or background
+
+> In addition, if you enabled the remote notifications background mode, the system launches your app (or wakes it from the suspended state) and puts it in the background state when a push notification arrives. However, the system does not automatically launch your app if the user has force-quit it. In that situation, the user must relaunch your app or restart the device before the system attempts to launch your app automatically again.
+
+> If the user opens your app from the system-displayed alert, the system may call this method again when your app is about to enter the foreground so that you can update your user interface and display information pertaining to the notification.
+
 ## How to handle
+
+Usually, the use of push notification is to display a specific article, a specific DetailViewController, ... in your app. So the good practices are
+- When the app is in foreground: Gently display some kind of alert view and ask the user whether he would like to go to that specific page or not
+- When user is brought from background to foreground, or from terminated to foreground: Just navigate to that specific page. For example, if you use UINavigationController, you can set that specific page the top most ViewController, if you use UITabBarController, you can set that specific page the selected tab, something like that
 
 ```swift
 - func handlePushNotification(userInfo: NSDictionary) {
@@ -44,82 +86,54 @@ Here are some notes for working with Push Notification
     }
 }
 ```
-
 Here we create another method `handlePushNotification:`` to handle push notification. When you receive push notification, 3 cases can occur
 
 
-### Case 1
+#### Case 1: Foreground
 
-Your app is running in the foreground (user is interacting with your app). No notification banner appears, instead `application:didReceiveRemoteNotification:`` is called with userInfo containing the payload
+Loud push
 
+- No system alert
+- `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-### Case 2
+Silent push
 
-Your app is running in the background (user is interacting with another app or the phone is locked). Notification banner appears.
+- No system alert
+- `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-- Case 2a: User taps on the Notification banner and select Close: Nothing happens
-- Case 2b: User taps on the Notification banner and select View: Your app is opened and application:didReceiveRemoteNotification: is called with userInfo containing the payload
-- Case 2c: User taps directly on your app icon: Your app is just opened and no method is called
+#### Case 2: Background
 
+Loud push
 
+- System alert
+- No method called
+- Tap notification and `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-#### Case 3
+Silent push
 
-Your app is terminated (User kill your app or it is killed by the OS).
+- System alert
+- `application:didReceiveRemoteNotification:fetchCompletionHandler:` called. If app is suspended, its state changed to `UIApplicationStateBackground`
+- Tap notification and `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-- Case 3a: User taps on the Notification banner and select Close: Nothing happens
-- Case 3b: User taps on the Notification banner and select View: Your app is launched and application:didFinishLaunchingWithOptions: is called with launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] containing the payload
-- Case 3c: User taps on directly on your app icon: Your app is launched and application:didFinishLaunchingWithOptions: is called with launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] being nil
+#### Case 3: Terminated
 
-In case 2a, 2c, 3a, 3c there is no way for your app to know about this payload
+Loud push
 
-Having acknowledge of those cases is useful but usually we just have to distinct between the 2 states, as you see in the handlePushNotification method. They are
-- When the app is in foreground
-- When user is brought from background to foreground, or from terminated to foreground
+- System alert
+- No method called
+- Tap notification and `application:didFinishLaunchingWithOptions:`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-Read more about [UIApplicationState here](https://developer.apple.com/library/ios/documentation/uikit/reference/UIApplication_Class/Reference/Reference.html#//apple_ref/doc/c_ref/UIApplicationState)
+Silent push
 
-Usually, the use of push notification is to display a specific article, a specific DetailViewController, ... in your app. So the good practices are
-- When the app is in foreground: Gently display some kind of alert view and ask the user whether he would like to go to that specific page or not
-- When user is brought from background to foreground, or from terminated to foreground: Just navigate to that specific page. For example, if you use UINavigationController, you can set that specific page the top most ViewController, if you use UITabBarController, you can set that specific page the selected tab, something like that
+- System alert
+- `application:didReceiveRemoteNotification:fetchCompletionHandler:` called. If app was not killed by user, it is woke up and state changed to `UIApplicationStateInactive`.
+- Tap notification and `application:didFinishLaunchingWithOptions:`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
 
-### Some refactoring
+## Reference
 
-Putting everything in your appDelegate is not a good idea. You have to create several new classes
-- PushNotification: this is your model to present the JSON received
-- PushNotificationParser: to parse JSON to your model
-- PushNotificationFilter: to filter only the interested payload
-- PushNotificationManager: to register, receive and handle the push notification
-
-
-
-### UrbanAirship
-
-If you use UrbanAirship to manage push notification, I highly recommend
-- [AFUrbanAirshipClient](https://github.com/mattt/AFUrbanAirshipClient) for old projects. It uses AFNetworking version 1
-- [Orbiter](https://github.com/mattt/Orbiter) for new projects. It uses AFNetworking version 2
-
-
-
-### Some quotes to note
-
-From [Handling Local and Remote Notifications](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW1)
-
-> If the action button is tapped (on a device running iOS), the system launches the application and the application calls its delegate’s application:didFinishLaunchingWithOptions: method (if implemented); it passes in the notification payload (for remote notifications) or the local-notification object (for local notifications).
-
-> If the application icon is tapped on a device running iOS, the application calls the same method, but furnishes no information about the notification . If the application icon is clicked on a computer running OS X, the application calls the delegate’s applicationDidFinishLaunching: method in which the delegate can obtain the remote-notification payload
-
-From [application:didReceiveRemoteNotification:](https://developer.apple.com/library/ios/documentation/uikit/reference/uiapplicationdelegate_protocol/Reference/Reference.html)
-
-> If the app is not running when a push notification arrives, the method launches the app and provides the appropriate information in the launch options dictionary. The app does not call this method to handle that push notification. Instead, your implementation of the application:willFinishLaunchingWithOptions: or application:didFinishLaunchingWithOptions: method needs to get the push notification payload data and respond appropriately.
-
-> If your delegate also implements the application:didReceiveRemoteNotification:fetchCompletionHandler: method, the app object calls that method instead of this one.
-
-By "no running" here, Apple really means "your app is terminated". Because "no running" also means that your app is in background
-
-### Reference
-
-1. [Scheduling, Registering, and Handling Notifications](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html)
-2. [Handle push notifications when arrived in ios application](http://www.abdus.me/ios-programming-tips/handle-push-notifications-when-arrived-ios/)
-3. [How to respond to push notification view if app is already running in the background](http://stackoverflow.com/questions/5099483/how-to-respond-to-push-notification-view-if-app-is-already-running-in-the-backgr)
-4. [didReceiveRemoteNotification when in background](http://stackoverflow.com/questions/5056689/didreceiveremotenotification-when-in-background)
+- [Scheduling, Registering, and Handling Notifications](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html)
+- [Handle push notifications when arrived in ios application](http://www.abdus.me/ios-programming-tips/handle-push-notifications-when-arrived-ios/)
+- [How to respond to push notification view if app is already running in the background](http://stackoverflow.com/questions/5099483/how-to-respond-to-push-notification-view-if-app-is-already-running-in-the-backgr)
+- [didReceiveRemoteNotification when in background](http://stackoverflow.com/questions/5056689/didreceiveremotenotification-when-in-background)
+- [How to handle remote notification with background mode enabled](http://samwize.com/2015/08/07/how-to-handle-remote-notification-with-background-mode-enabled/)
+- [Remote notification method called twice](http://stackoverflow.com/questions/20569201/remote-notification-method-called-twice)
