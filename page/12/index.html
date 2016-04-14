@@ -307,10 +307,20 @@
 </header>
     <div class="article-content">
         
-        <p>Here are some notes for working with Push Notification</p>
+        <p>Here are my notes for working with Push Notification</p>
 <h2 id="How-to-register"><a href="#How-to-register" class="headerlink" title="How to register"></a>How to register</h2><ul>
-<li><a href="http://www.joshwright.com/tips/ios-8-push-notification-registration" target="_blank" rel="external">iOS 8 Push Notification Registration</a></li>
+<li>Register to receive push notification</li>
 </ul>
+<p><code>registerForRemoteNotificationTypes</code> is deprecated in iOS 8+</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIApplication</span>.sharedApplication().registerForRemoteNotifications()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Register to alert user through UI</li>
+</ul>
+<blockquote>
+<p>If your app displays alerts, play sounds, or badges its icon, you must call this method during your launch cycle to request permission to alert the user in these ways</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> types: <span class="type">UIUserNotificationType</span> = [.<span class="type">Badge</span>, .<span class="type">Sound</span>, .<span class="type">Alert</span>]</span><br><span class="line"><span class="keyword">let</span> categories = <span class="type">Set</span>&lt;<span class="type">UIUserNotificationCategory</span>&gt;()</span><br><span class="line"><span class="keyword">let</span> settings = <span class="type">UIUserNotificationSettings</span>(forTypes: types, categories: categories)</span><br><span class="line"></span><br><span class="line"><span class="type">UIApplication</span>.sharedApplication().registerUserNotificationSettings(settings)</span><br></pre></td></tr></table></figure>
+<p>You don’t need to wait for <code>registerUserNotificationSettings</code> to callback before calling <code>registerForRemoteNotifications</code></p>
 <h2 id="When-to-register"><a href="#When-to-register" class="headerlink" title="When to register"></a>When to register</h2><ul>
 <li><a href="https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html" target="_blank" rel="external">Registering, Scheduling, and Handling User Notifications</a></li>
 </ul>
@@ -318,62 +328,67 @@
 <p>Never cache a device token; always get the token from the system whenever you need it. If your app previously registered for remote notifications, calling the registerForRemoteNotifications method again does not incur any additional overhead, and iOS returns the existing device token to your app delegate immediately. In addition, iOS calls your delegate method any time the device token changes, not just in response to your app registering or re-registering</p>
 <p>The user can change the notification settings for your app at any time using the Settings app. Because settings can change, always call the registerUserNotificationSettings: at launch time and use the application:didRegisterUserNotificationSettings: method to get the response. If the user disallows specific notification types, avoid using those types when configuring local and remote notifications for your app.</p>
 </blockquote>
-<h2 id="How-to-handle"><a href="#How-to-handle" class="headerlink" title="How to handle"></a>How to handle</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- <span class="function"><span class="keyword">func</span> <span class="title">handlePushNotification</span><span class="params">(userInfo: NSDictionary)</span></span> &#123;</span><br><span class="line">    <span class="comment">// Check applicationState</span></span><br><span class="line">	<span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateActive</span>) &#123;</span><br><span class="line">        <span class="comment">// Application is running in foreground</span></span><br><span class="line">        showAlertForPushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateBackground</span> || applicationState == <span class="type">UIApplicationStateInactive</span>) &#123;</span><br><span class="line">    <span class="comment">// Application is brought from background or launched after terminated</span></span><br><span class="line">        handlePushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Here we create another method `handlePushNotification:`` to handle push notification. When you receive push notification, 3 cases can occur</p>
-<h3 id="Case-1"><a href="#Case-1" class="headerlink" title="Case 1"></a>Case 1</h3><p>Your app is running in the foreground (user is interacting with your app). No notification banner appears, instead `application:didReceiveRemoteNotification:`` is called with userInfo containing the payload</p>
-<h3 id="Case-2"><a href="#Case-2" class="headerlink" title="Case 2"></a>Case 2</h3><p>Your app is running in the background (user is interacting with another app or the phone is locked). Notification banner appears.</p>
-<ul>
-<li>Case 2a: User taps on the Notification banner and select Close: Nothing happens</li>
-<li>Case 2b: User taps on the Notification banner and select View: Your app is opened and application:didReceiveRemoteNotification: is called with userInfo containing the payload</li>
-<li>Case 2c: User taps directly on your app icon: Your app is just opened and no method is called</li>
-</ul>
-<h4 id="Case-3"><a href="#Case-3" class="headerlink" title="Case 3"></a>Case 3</h4><p>Your app is terminated (User kill your app or it is killed by the OS).</p>
-<ul>
-<li>Case 3a: User taps on the Notification banner and select Close: Nothing happens</li>
-<li>Case 3b: User taps on the Notification banner and select View: Your app is launched and application:didFinishLaunchingWithOptions: is called with launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] containing the payload</li>
-<li>Case 3c: User taps on directly on your app icon: Your app is launched and application:didFinishLaunchingWithOptions: is called with launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] being nil</li>
-</ul>
-<p>In case 2a, 2c, 3a, 3c there is no way for your app to know about this payload</p>
-<p>Having acknowledge of those cases is useful but usually we just have to distinct between the 2 states, as you see in the handlePushNotification method. They are</p>
-<ul>
-<li>When the app is in foreground</li>
-<li>When user is brought from background to foreground, or from terminated to foreground</li>
-</ul>
-<p>Read more about <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIApplication_Class/Reference/Reference.html#//apple_ref/doc/c_ref/UIApplicationState" target="_blank" rel="external">UIApplicationState here</a></p>
-<p>Usually, the use of push notification is to display a specific article, a specific DetailViewController, … in your app. So the good practices are</p>
+<h2 id="didReceiveRemoteNotification"><a href="#didReceiveRemoteNotification" class="headerlink" title="didReceiveRemoteNotification"></a>didReceiveRemoteNotification</h2><p>About <code>application:didReceiveRemoteNotification:</code></p>
+<blockquote>
+<p>Implement the application:didReceiveRemoteNotification:fetchCompletionHandler: method instead of this one whenever possible. If your delegate implements both methods, the app object calls the application:didReceiveRemoteNotification:fetchCompletionHandler: method.</p>
+<p>If the app is not running when a remote notification arrives, the method launches the app and provides the appropriate information in the launch options dictionary. The app does not call this method to handle that remote notification. Instead, your implementation of the application:willFinishLaunchingWithOptions: or application:didFinishLaunchingWithOptions: method needs to get the remote notification payload data and respond appropriately.</p>
+</blockquote>
+<p>About <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code></p>
+<p>This is for silent push notification with <code>content-available</code></p>
+<blockquote>
+<p>Unlike the application:didReceiveRemoteNotification: method, which is called only when your app is running in the foreground, the system calls this method when your app is running in the foreground or background</p>
+<p>In addition, if you enabled the remote notifications background mode, the system launches your app (or wakes it from the suspended state) and puts it in the background state when a push notification arrives. However, the system does not automatically launch your app if the user has force-quit it. In that situation, the user must relaunch your app or restart the device before the system attempts to launch your app automatically again.</p>
+<p>If the user opens your app from the system-displayed alert, the system may call this method again when your app is about to enter the foreground so that you can update your user interface and display information pertaining to the notification.</p>
+</blockquote>
+<h2 id="How-to-handle"><a href="#How-to-handle" class="headerlink" title="How to handle"></a>How to handle</h2><p>Usually, the use of push notification is to display a specific article, a specific DetailViewController, … in your app. So the good practices are</p>
 <ul>
 <li>When the app is in foreground: Gently display some kind of alert view and ask the user whether he would like to go to that specific page or not</li>
 <li>When user is brought from background to foreground, or from terminated to foreground: Just navigate to that specific page. For example, if you use UINavigationController, you can set that specific page the top most ViewController, if you use UITabBarController, you can set that specific page the selected tab, something like that</li>
 </ul>
-<h3 id="Some-refactoring"><a href="#Some-refactoring" class="headerlink" title="Some refactoring"></a>Some refactoring</h3><p>Putting everything in your appDelegate is not a good idea. You have to create several new classes</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- <span class="function"><span class="keyword">func</span> <span class="title">handlePushNotification</span><span class="params">(userInfo: NSDictionary)</span></span> &#123;</span><br><span class="line">    <span class="comment">// Check applicationState</span></span><br><span class="line">	<span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateActive</span>) &#123;</span><br><span class="line">        <span class="comment">// Application is running in foreground</span></span><br><span class="line">        showAlertForPushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateBackground</span> || applicationState == <span class="type">UIApplicationStateInactive</span>) &#123;</span><br><span class="line">    <span class="comment">// Application is brought from background or launched after terminated</span></span><br><span class="line">        handlePushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here we create another method `handlePushNotification:`` to handle push notification. When you receive push notification, 3 cases can occur</p>
+<h4 id="Case-1-Foreground"><a href="#Case-1-Foreground" class="headerlink" title="Case 1: Foreground"></a>Case 1: Foreground</h4><p>Loud push</p>
 <ul>
-<li>PushNotification: this is your model to present the JSON received</li>
-<li>PushNotificationParser: to parse JSON to your model</li>
-<li>PushNotificationFilter: to filter only the interested payload</li>
-<li>PushNotificationManager: to register, receive and handle the push notification</li>
+<li>No system alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
 </ul>
-<h3 id="UrbanAirship"><a href="#UrbanAirship" class="headerlink" title="UrbanAirship"></a>UrbanAirship</h3><p>If you use UrbanAirship to manage push notification, I highly recommend</p>
+<p>Silent push</p>
 <ul>
-<li><a href="https://github.com/mattt/AFUrbanAirshipClient" target="_blank" rel="external">AFUrbanAirshipClient</a> for old projects. It uses AFNetworking version 1</li>
-<li><a href="https://github.com/mattt/Orbiter" target="_blank" rel="external">Orbiter</a> for new projects. It uses AFNetworking version 2</li>
+<li>No system alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
 </ul>
-<h3 id="Some-quotes-to-note"><a href="#Some-quotes-to-note" class="headerlink" title="Some quotes to note"></a>Some quotes to note</h3><p>From <a href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW1" target="_blank" rel="external">Handling Local and Remote Notifications</a></p>
-<blockquote>
-<p>If the action button is tapped (on a device running iOS), the system launches the application and the application calls its delegate’s application:didFinishLaunchingWithOptions: method (if implemented); it passes in the notification payload (for remote notifications) or the local-notification object (for local notifications).</p>
-<p>If the application icon is tapped on a device running iOS, the application calls the same method, but furnishes no information about the notification . If the application icon is clicked on a computer running OS X, the application calls the delegate’s applicationDidFinishLaunching: method in which the delegate can obtain the remote-notification payload</p>
-</blockquote>
-<p>From <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/uiapplicationdelegate_protocol/Reference/Reference.html" target="_blank" rel="external">application:didReceiveRemoteNotification:</a></p>
-<blockquote>
-<p>If the app is not running when a push notification arrives, the method launches the app and provides the appropriate information in the launch options dictionary. The app does not call this method to handle that push notification. Instead, your implementation of the application:willFinishLaunchingWithOptions: or application:didFinishLaunchingWithOptions: method needs to get the push notification payload data and respond appropriately.</p>
-<p>If your delegate also implements the application:didReceiveRemoteNotification:fetchCompletionHandler: method, the app object calls that method instead of this one.</p>
-</blockquote>
-<p>By “no running” here, Apple really means “your app is terminated”. Because “no running” also means that your app is in background</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<h4 id="Case-2-Background"><a href="#Case-2-Background" class="headerlink" title="Case 2: Background"></a>Case 2: Background</h4><p>Loud push</p>
+<ul>
+<li>System alert</li>
+<li>No method called</li>
+<li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<p>Silent push</p>
+<ul>
+<li>System alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app is suspended, its state changed to <code>UIApplicationStateBackground</code></li>
+<li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<h4 id="Case-3-Terminated"><a href="#Case-3-Terminated" class="headerlink" title="Case 3: Terminated"></a>Case 3: Terminated</h4><p>Loud push</p>
+<ul>
+<li>System alert</li>
+<li>No method called</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<p>Silent push</p>
+<ul>
+<li>System alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app was not killed by user, it is woke up and state changed to <code>UIApplicationStateInactive</code>.</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html" target="_blank" rel="external">Scheduling, Registering, and Handling Notifications</a></li>
 <li><a href="http://www.abdus.me/ios-programming-tips/handle-push-notifications-when-arrived-ios/" target="_blank" rel="external">Handle push notifications when arrived in ios application</a></li>
 <li><a href="http://stackoverflow.com/questions/5099483/how-to-respond-to-push-notification-view-if-app-is-already-running-in-the-backgr" target="_blank" rel="external">How to respond to push notification view if app is already running in the background</a></li>
 <li><a href="http://stackoverflow.com/questions/5056689/didreceiveremotenotification-when-in-background" target="_blank" rel="external">didReceiveRemoteNotification when in background</a></li>
-</ol>
+<li><a href="http://samwize.com/2015/08/07/how-to-handle-remote-notification-with-background-mode-enabled/" target="_blank" rel="external">How to handle remote notification with background mode enabled</a></li>
+<li><a href="http://stackoverflow.com/questions/20569201/remote-notification-method-called-twice" target="_blank" rel="external">Remote notification method called twice</a></li>
+</ul>
 
         
         
@@ -1017,27 +1032,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1045,15 +1044,23 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
@@ -1061,19 +1068,7 @@
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
@@ -1085,7 +1080,27 @@
 			
 		
 			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 		</ul>
