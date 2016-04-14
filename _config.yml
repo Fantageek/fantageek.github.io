@@ -3,16 +3,16 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
+title: Fantageek
+subtitle: Simple apps that make sense
 description:
-author: John Doe
-language:
+author: Khoa Pham
+language: English
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://www.fantageek.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
