@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/17/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-port-and-socket-demystified" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/26/port-and-socket-demystified/" class="article-date">
+  <time datetime="2013-04-26T05:32:45.000Z" itemprop="datePublished">2013-04-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/26/port-and-socket-demystified/">Port and socket demystified</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>When digging into the world of TCP, I get many terminologies I don’t know any misconceptions. But with the help of those geeks on SO, the problems were demystified. Now it’s time to sum up and share with others :D</p>
+<h3 id="What-defines-a-unique-connection"><a href="#What-defines-a-unique-connection" class="headerlink" title="What defines a unique connection ?"></a>What defines a unique connection ?</h3><p>There are 5 elements that identify a connection. They call them 5-tuple</p>
+<ol>
+<li>Protocol. This is often omitted as it is understood that we are talking about TCP, which leaves 4.</li>
+</ol>
+<ol>
+<li>Source IP address.</li>
+</ol>
+<ol>
+<li>Source port.</li>
+</ol>
+<ol>
+<li>Target P address.</li>
+</ol>
+<ol>
+<li>Target port.</li>
+</ol>
+<h3 id="Does-TCP-listen-on-one-port-and-talk-on-another-port"><a href="#Does-TCP-listen-on-one-port-and-talk-on-another-port" class="headerlink" title="Does TCP listen on one port and talk on another port ?"></a>Does TCP listen on one port and talk on another port ?</h3><p>No. This is a common misconception. TCP listens on 1 port and talk on that same port. If clients make multiple TCP connection to server. It’s the client OS that must generate different random source ports, so that server can see them as unique connections</p>
+<h3 id="What-is-the-maximum-number-of-concurrent-TCP-connections-that-a-server-can-handle-in-theory"><a href="#What-is-the-maximum-number-of-concurrent-TCP-connections-that-a-server-can-handle-in-theory" class="headerlink" title="What is the maximum number of concurrent TCP connections that a server can handle, in theory ?"></a>What is the maximum number of concurrent TCP connections that a server can handle, in theory ?</h3><p>A single listening port can accept more than one connection simultaneously.There is a ‘64K’ limit that is often cited, but that is per client per server port, and needs clarifying.</p>
+<p>If a client has many connections to the same port on the same destination, then three of those fields will be the same - only source_port varies to differentiate the different connections. Ports are 16-bit numbers, therefore the maximum number of connections any given client can have to any given host port is 64K.</p>
+<p>However, multiple clients can each have up to 64K connections to some server’s port, and if the server has multiple ports or either is multi-homed then you can multiply that further</p>
+<p>So the real limit is file descriptors. Each individual socket connection is given a file descriptor, so the limit is really the number of file descriptors that the system has been configured to allow and resources to handle. The maximum limit is typically up over 300K, but is configurable e.g. with sysctl</p>
+<h3 id="Concurrent-connection-request-vs-Concurrent-open-connection"><a href="#Concurrent-connection-request-vs-Concurrent-open-connection" class="headerlink" title="Concurrent connection request vs Concurrent open connection"></a>Concurrent connection request vs Concurrent open connection</h3><p>When clients want to make TCP connection with server, this request will be queued in server ‘s backlog queue. This backlog queue size is small (about 5 - 10), and this size limits the number of concurrent connection requests. However, server quickly pick connection request from that queue and accept it. Connection request which is accepted are called open connection. The number of concurrent open connections is limited by server ‘s resources allocated for file descriptor.</p>
+<h3 id="Why-connection-is-rejected-after-successful-TCP-handshake"><a href="#Why-connection-is-rejected-after-successful-TCP-handshake" class="headerlink" title="Why connection is rejected after successful TCP handshake ?"></a>Why connection is rejected after successful TCP handshake ?</h3><p>It’s normal. When server receive connection request from client (by receiving SYN), it will then response with SYN, ACK, hence cause successful TCP handshake. But this request are stills in backlog queue.</p>
+<p>But, if the application process exceeds the limit of max file descriptors it can use, then when server calls accept, then it realizes that there are no file descriptors available to be<br>the allocated for the socket and fails the accept call and the TCP connection sending a FIN to other side</p>
+<h3 id="What-are-active-and-passive-socket"><a href="#What-are-active-and-passive-socket" class="headerlink" title="What are active and passive socket ?"></a>What are active and passive socket ?</h3><p>Sockets come in two primary flavors. An active socket is con­nect­ed to a remote active socket via an open data con­nec­tion… A passive socket is not con­nect­ed, but rather awaits an in­com­ing con­nec­tion, which will spawn a new active socket once a con­nec­tion is es­tab­lished</p>
+<p>Each port can have a single passive socket binded to it, await­ing in­com­ing con­nec­tions, and mul­ti­ple active sockets, each cor­re­spond­ing to an open con­nec­tion on the port. It’s as if the factory worker is waiting for new mes­sages to arrive (he rep­re­sents the passive socket), and when one message arrives from a new sender, he ini­ti­ates a cor­re­spon­dence (a con­nec­tion) with them by del­e­gat­ing someone else (an active socket) to ac­tu­al­ly read the packet and respond back to the sender if nec­es­sary. This permits the factory worker to be free to receive new packets</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="http://stackoverflow.com/questions/152457/what-is-the-difference-between-a-port-and-a-socket" target="_blank" rel="external">What is the difference between a port and a socket?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/4696812/passive-and-active-sockets" target="_blank" rel="external">Passive and active sockets</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/3870260/why-will-a-tcp-server-send-a-fin-immediately-after-accepting-a-connection" target="_blank" rel="external">Why will a TCP Server send a FIN immediately after accepting a connection?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/2332741/what-is-the-theoretical-maximum-number-of-open-tcp-connections-that-a-modern-lin" target="_blank" rel="external">What is the theoretical maximum number of open TCP connections that a modern Linux box can have</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/114874/socket-listen-backlog-parameter-how-to-determine-this-value" target="_blank" rel="external">socket listen backlog parameter, how to determine this value?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/4253454/question-about-listening-and-backlog-for-sockets" target="_blank" rel="external">Question about listening and backlog for sockets</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/1752219/rejecting-a-tcp-connection-before-its-being-accepted" target="_blank" rel="external">Rejecting a TCP connection before it’s being accepted?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/6590181/best-way-to-generate-million-tcp-connection" target="_blank" rel="external">Best way to generate million tcp connection</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/985431/max-parallel-http-connections-in-a-browser" target="_blank" rel="external">Max parallel http connections in a browser?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/2831434/how-to-retain-one-million-simultaneous-tcp-connections" target="_blank" rel="external">How to retain one million simultaneous TCP connections?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/7735618/tcp-rst-packet-details" target="_blank" rel="external">TCP RST packet details</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/15761436/how-many-tuples-are-there-in-a-connection" target="_blank" rel="external">How many tuples are there in a connection?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/15761776/does-tcp-use-another-port-for-sending-data" target="_blank" rel="external">Does TCP use another port for sending data?</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/26/port-and-socket-demystified/" data-id="cin0nvbrz0037doox81ua9rty" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/active/">active</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/connection/">connection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/passive/">passive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/port/">port</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/socket/">socket</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-test-for-request-timeout" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/23/how-to-test-for-request-timeout/" class="article-date">
+  <time datetime="2013-04-23T06:45:42.000Z" itemprop="datePublished">2013-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/23/how-to-test-for-request-timeout/">How to test for request timeout</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Sometimes your software can hit bugs when a connection timeout occur. You want to reproduce this case to find the bug.<br>Here are 2 simple ways. The trick is that you can never receive reponse, thus cause a request timeout :)</p>
+<p><strong>Way 1</strong><br>Block inbound traffic for that specific IP in your router/firewall</p>
+<p><a href="http://www.fantageek.com/303/how-to-test-for-request-timeout/firewall_inbound_rule/" target="_blank" rel="external"><img src="http://www.fantageek.com/wp-content/uploads/2013/04/firewall_inbound_rule.png" alt="firewall_inbound_rule"></a></p>
+<p><strong>Way 2</strong><br>If you can’t touch the router. You can install <a href="http://www.netlimiter.com/" target="_blank" rel="external">NetLimiter</a>. Do these steps</p>
+<ol>
+<li>Select your software process.</li>
+<li>Choose Add Rule in the right panel, with these options</li>
+</ol>
+<ul>
+<li>Rule type: Firewall</li>
+</ul>
+<ul>
+<li>Direction: In</li>
+</ul>
+<ul>
+<li>Enabled: Checked</li>
+</ul>
+<ul>
+<li>Action: Deny</li>
+</ul>
+<p><a href="http://www.fantageek.com/303/how-to-test-for-request-timeout/netlimiter_firewall_rule/" target="_blank" rel="external"><img src="http://www.fantageek.com/wp-content/uploads/2013/04/netlimiter_firewall_rule.png" alt="netlimiter_firewall_rule"></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/23/how-to-test-for-request-timeout/" data-id="cin0nvbry0034dooxflkqpdlx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/request/">request</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/">test</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/timeout/">timeout</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-fastest-way-to-change-path-permanently-in-mac-osx" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/18/fastest-way-to-change-path-permanently-in-mac-osx/" class="article-date">
+  <time datetime="2013-04-18T02:52:29.000Z" itemprop="datePublished">2013-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/18/fastest-way-to-change-path-permanently-in-mac-osx/">Fastest way to change PATH permanently in Mac OSX</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The PATH variables list the directories containing the executables that the shell looks for. To see what is in your PATH, you can</p>
+<p>[code language=”css”]<br>echo $PATH<br>[/code]</p>
+<p>To add another directory to your PATH, you can</p>
+<p>[code language=”css”]<br>export PATH=$PATH:/Users/me/mydir<br>[/code]</p>
+<p>Or</p>
+<p>[code language=”css”]<br>export PATH=/Users/me/mydir:$PATH<br>[/code]</p>
+<p>If you want to prepend your directory</p>
+<p>But this is just a temporary solution. Your PATH will return to its previous state when you restart your Terminal. So the fastest, safest way is to use <a href="http://www.barebones.com/products/textwrangler/" target="_blank" rel="external">TextWrangler</a>. It is free and cool</p>
+<p>Cd to <em>/etc</em>. Open <em>paths</em> with TextWrangler. <em>paths</em> is the file that contains the PATH variables, and we will change it</p>
+<p>[code language=”css”]<br>open -a TextWrangler paths<br>[/code]</p>
+<p>Now change it with whatever your like, with caution of cause :). Then type your admin password just before you save it</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/18/fastest-way-to-change-path-permanently-in-mac-osx/" data-id="cin0nvbrw002zdoox8ym9fpgl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/best/">best</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/editor/">editor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/free/">free</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-osx/">mac osx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/text/">text</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-determine-if-your-intel-based-mac-is-32bit-or-64bit" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/18/how-to-determine-if-your-intel-based-mac-is-32bit-or-64bit/" class="article-date">
+  <time datetime="2013-04-18T01:42:49.000Z" itemprop="datePublished">2013-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/18/how-to-determine-if-your-intel-based-mac-is-32bit-or-64bit/">How to check if your Intel-based Mac is 32bit or 64bit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>For those geeks, this is a very easy problem. But for newbies, checking whether your Mac is 32bit or 64bit can help in case of installing new softwares or packages. Here are some tips</p>
+<p><strong>Way 1</strong><br>Launch System Profiler<br>In Contents section, choose Software<br>If “64-bit Kernel and Extensions” says “Yes”, then you are 64bit, else you are 32bit</p>
+<p><strong>Way 2</strong><br>Run Terminal with this<br>[code language=”css”]<br>sysctl hw.cpu64bit_capable<br>[/code]<br>If the output is 1, then you are 64bit</p>
+<p><strong>Way 3</strong><br>Run Terminal with this<br>[code language=”css”]<br>uname -a<br>[/code]<br>If it shows x86_64, then you are 64bit</p>
+<p>Hope it help</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/18/how-to-determine-if-your-intel-based-mac-is-32bit-or-64bit/" data-id="cin0nvbs4003hdooxdf4m3ayk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/32bit/">32bit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/64bit/">64bit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/intel/">intel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-osx/">mac osx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-use-svnx" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/18/how-to-use-svnx/" class="article-date">
+  <time datetime="2013-04-18T01:39:37.000Z" itemprop="datePublished">2013-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/18/how-to-use-svnx/">How to use svnX</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>svnX maybe the small suitable svn client for Mac OSX. It comes in open source GUI and support most svn client features. I intended to write tutorial about svnX, but since there’s many good tutorials out there, I just recommend you to read them.<br>These are tutorials I found useful when learning how to use svnX</p>
+<p><strong>Reference</strong></p>
+<ol>
+<li><a href="https://code.google.com/p/svnx/" target="_blank" rel="external">https://code.google.com/p/svnx/</a></li>
+<li><a href="http://www.collab.net/downloads/subversion#tab-3" target="_blank" rel="external">http://www.collab.net/downloads/subversion#tab-3</a></li>
+<li><a href="http://support.apple.com/kb/ht3696" target="_blank" rel="external">http://support.apple.com/kb/ht3696</a></li>
+<li><a href="http://www.switchingtomac.com/tutorials/get-started-with-subversion-using-svnx/" target="_blank" rel="external">http://www.switchingtomac.com/tutorials/get-started-with-subversion-using-svnx/</a></li>
+<li><a href="http://divvun.no/doc/tools/docu-svn-user-svnx.html" target="_blank" rel="external">http://divvun.no/doc/tools/docu-svn-user-svnx.html</a></li>
+<li><a href="http://apple.stackexchange.com/questions/62901/how-to-install-svn-binary-on-mountain-lion" target="_blank" rel="external">http://apple.stackexchange.com/questions/62901/how-to-install-svn-binary-on-mountain-lion</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/18/how-to-use-svnx/" data-id="cin0nvbrs002udooxnhd8rdor" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/32bit/">32bit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/64bit/">64bit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-osx/">mac osx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svn/">svn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svnx/">svnx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-bill-gates-11-rules-of-life" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/12/bill-gates-11-rules-of-life/" class="article-date">
+  <time datetime="2013-04-12T08:53:25.000Z" itemprop="datePublished">2013-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Miscellaneous/">Miscellaneous</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/12/bill-gates-11-rules-of-life/">Bill Gates&#39; 11 Rules of Life</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>BILL GATES’ SPEECH TO MT. WHITNEY HIGH SCHOOL in Visalia, California.</strong></p>
+<p>Love him or hate him, he sure hits the nail on the head with this!</p>
+<p>To anyone with kids of any age, here’s some advice. Bill Gates recently gave a speech at a High School about 11 things they did not and will not learn in school. He talks about how feel-good, politically correct teachings created a generation of kids with no concept of reality and how this concept set them up for failure in the real world.</p>
+<p><strong>Rule 1:</strong> Life is not fair – get used to it!</p>
+<p><strong>Rule 2:</strong> The world won’t care about your self-esteem. The world will expect you to accomplish something BEFORE you feel good about yourself.</p>
+<p><strong>Rule 3:</strong> You will NOT make $60,000 a year right out of high school. You won’t be a vice-president with a car phone until you earn both.</p>
+<p><strong>Rule 4:</strong> If you think your teacher is tough, wait till you get a boss.</p>
+<p><strong>Rule 5:</strong> Flipping burgers is not beneath your dignity. Your Grandparents had a different word for burger flipping – they called it opportunity.</p>
+<p><strong>Rule 6:</strong> If you mess up, it’s not your parents’ fault, so don’t whine about your mistakes, learn from them.</p>
+<p><strong>Rule 7:</strong> Before you were born, your parents weren’t as boring as they are now. They got that way from paying your bills, cleaning your clothes and listening to you talk about how cool you thought you are. So before you save the rain forest from the parasites of your parent’s generation, try delousing the closet in your own room.</p>
+<p><strong>Rule 8:</strong> Your school may have done away with winners and losers, but life HAS NOT. In some schools they have abolished failing grades and they’ll give you as MANY TIMES as you want to get the right answer. This doesn’t bear the slightest resemblance to ANYTHING in real life.</p>
+<p><strong>Rule 9:</strong> Life is not divided into semesters. You don’t get summers off and very few employers are interested in helping you FIND YOURSELF. Do that on your own time.</p>
+<p><strong>Rule 10:</strong> Television is NOT real life. In real life people actually have to leave the coffee shop and go to jobs.</p>
+<p><strong>Rule 11:</strong> Be nice to nerds. Chances are you’ll end up working for one.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/12/bill-gates-11-rules-of-life/" data-id="cin0nvbrr002sdooxozkfv5cs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/advice/">advice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bill-gate/">bill gate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rule/">rule</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-get-google-cache-of-any-webpage" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/04/10/how-to-get-google-cache-of-any-webpage/" class="article-date">
+  <time datetime="2013-04-10T00:52:05.000Z" itemprop="datePublished">2013-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/04/10/how-to-get-google-cache-of-any-webpage/">How to get Google cache of any webpage</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>If you want to get   Google cache of any webpage, simply use this url</p>
+<p>[sourcecode language=”csharp”]  </p>
+<p><a href="http://webcache.googleusercontent.com/search?q=cache:www.yourwebpage.com/path" target="_blank" rel="external">http://webcache.googleusercontent.com/search?q=cache:www.yourwebpage.com/path</a>  </p>
+<p>[/sourcecode]</p>
+<p><strong>For example</strong></p>
+<p>[sourcecode language=”csharp”]  </p>
+<p><a href="http://webcache.googleusercontent.com/search?q=cache:www.fantageek.com" target="_blank" rel="external">http://webcache.googleusercontent.com/search?q=cache:www.fantageek.com</a>  </p>
+<p>[/sourcecode]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/04/10/how-to-get-google-cache-of-any-webpage/" data-id="cin0nvbrq002pdoox1v3kmlei" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cache/">cache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/google/">google</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iphone-programing-course-from-standford" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/03/13/iphone-programing-course-from-standford/" class="article-date">
+  <time datetime="2013-03-13T15:54:36.000Z" itemprop="datePublished">2013-03-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/03/13/iphone-programing-course-from-standford/">iPhone programing course from Standford</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>For those who are new to iPhone programming, watching these courses can help a lot. All are free by Standford</p>
+<p><a href="http://www.fantageek.com/?attachment_id=269" target="_blank" rel="external"><img src="http://www.fantageek.com/wp-content/uploads/2013/03/Schermafbeelding_2011-11-22_om_12.03.38.png" alt="Schermafbeelding_2011-11-22_om_12.03.38"></a></p>
+<p><strong>Spring 2009</strong></p>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=xQzLHgls63E" target="_blank" rel="external">Introduction to Mac OS X and Cocoa Touch</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=D0-gg62MLhA" target="_blank" rel="external">Using Objective-C, Foundation Framework</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=zxiSv-BrpTk" target="_blank" rel="external">Custom Classes, Memory Management, and ObjC Properties</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=QxceHqIVCT4" target="_blank" rel="external">Interface Builder, Controls, Target-Action</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=79e1Ir5T1uw" target="_blank" rel="external">Views and Drawing, Animations</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=I99UHa2yUds" target="_blank" rel="external">View Controller Basics</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=4CBMusxvivE" target="_blank" rel="external">Navigation Controllers</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=udx4Z2dbdm4" target="_blank" rel="external">Table Views</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=y01GJ-wtcEI" target="_blank" rel="external">Dealing with Data: User Defaults, SQLite, Web Services</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=Bz-_Rx3A4Ag" target="_blank" rel="external">Performance and Threading</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=zO1liijRroI" target="_blank" rel="external">Text Input, Presenting Content Modally</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=coPJ_MtS9JU" target="_blank" rel="external">Web Views; Locations and Maps</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=hJb8CpPTvl8" target="_blank" rel="external">Debugging Tips, Searching, Notifications, KVC/KVO</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=nf9Ervc8tFU" target="_blank" rel="external">Touch Events and Multi-Touch</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=Mx7p_pOkjLE" target="_blank" rel="external">iPhone APIs: Location, Accelerometer &amp; Camera, Batteries</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=vTFT0G11VfY" target="_blank" rel="external">Audio APIs, Video Playback, Displaying Web Content, Settings</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=t1oIVYSJIAY&amp;noredirect=1" target="_blank" rel="external">Creating New Expressive Social Mediums on the iPhone</a></li>
+</ol>
+<ol>
+<li><a href="http://www.youtube.com/watch?v=jVolbQVXqss" target="_blank" rel="external">Unit Testing, Localization &amp; More</a></li>
+</ol>
+<p><strong>Fall 2010</strong></p>
+<ol>
+<li><a href="https://itunes.apple.com/us/itunes-u/developing-apps-for-ios-sd/id395631522" target="_blank" rel="external">Developing Apps for iOS</a></li>
+</ol>
+<p><strong>Winter 2010</strong></p>
+<ol>
+<li><a href="https://itunes.apple.com/us/itunes-u/iphone-application-development/id384233225" target="_blank" rel="external">iPhone Application Development</a></li>
+</ol>
+<p><strong>Fall 2011</strong></p>
+<ol>
+<li><a href="https://itunes.apple.com/us/itunes-u/ipad-iphone-application-development/id473757255" target="_blank" rel="external">iPad and iPhone Application Development</a></li>
+</ol>
+<p>For more information, visit <a href="http://www.stanford.edu/class/cs193p/cgi-bin/drupal/" target="_blank" rel="external">CS193P class</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/03/13/iphone-programing-course-from-standford/" data-id="cin0nvbs2003edooxb8dnpt47" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/course/">course</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cs193p/">cs193p</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iphone/">iphone</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/programming/">programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/standford/">standford</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-how-to-pass-arguments-to-command-line-application-in-visual-studio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/02/24/how-to-pass-arguments-to-command-line-application-in-visual-studio/" class="article-date">
+  <time datetime="2013-02-24T08:17:02.000Z" itemprop="datePublished">2013-02-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/02/24/how-to-pass-arguments-to-command-line-application-in-visual-studio/">How to pass arguments to command line application in Visual Studio ?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Sometimes you need to provide arguments to your Console application while running straight from Visual Studio. Follow these steps</p>
+<ol>
+<li>Right click on your project in Solution Explorer, select Properties</li>
+<li>Go to Configuration Properties, then select Debugging</li>
+<li>Select Command Arguments and input</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/02/24/how-to-pass-arguments-to-command-line-application-in-visual-studio/" data-id="cin0nvbrn002ldoox3r57xaig" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/argument/">argument</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/command-line/">command line</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/console/">console</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/visual-studio/">visual studio</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-what-is-the-joel-test" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/02/24/what-is-the-joel-test/" class="article-date">
+  <time datetime="2013-02-24T07:27:49.000Z" itemprop="datePublished">2013-02-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Others/">Others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/02/24/what-is-the-joel-test/">What is The Joel Test ?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The Joel Test</p>
+<p> is a well known test for determining how good your team is.</p>
+<ol>
+<li>Do you use source control?</li>
+</ol>
+<ol>
+<li>Can you make a build in one step?</li>
+</ol>
+<ol>
+<li>Do you make daily builds?</li>
+</ol>
+<ol>
+<li>Do you have a bug database?</li>
+</ol>
+<ol>
+<li>Do you fix bugs before writing new code?</li>
+</ol>
+<ol>
+<li>Do you have an up-to-date schedule?</li>
+</ol>
+<ol>
+<li>Do you have a spec?</li>
+</ol>
+<ol>
+<li>Do programmers have quiet working conditions?</li>
+</ol>
+<ol>
+<li>Do you use the best tools money can buy?</li>
+</ol>
+<ol>
+<li>Do you have testers?</li>
+</ol>
+<ol>
+<li>Do new candidates write code during their interview?</li>
+</ol>
+<ol>
+<li>Do you do hallway usability testing?</li>
+</ol>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><a href="http://www.joelonsoftware.com/articles/fog0000000043.html" target="_blank" rel="external">http://www.joelonsoftware.com</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2013/02/24/what-is-the-joel-test/" data-id="cin0nvbrk002edooxeu5s7ku1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/joel-test/">joel test</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/16/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/18/">__('next') &raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java-Script/">Java Script</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Miscellaneous/">Miscellaneous</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mobile-Labs/">Mobile Labs</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Others/">Others</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Others/Windows-8/">Windows 8</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows-8/">Windows 8</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Windows-8/Windows-Phone/">Windows Phone</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Windows-Phone/">Windows Phone</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/programming/">programming</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">.net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2012/">2012</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/32bit/">32bit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/6/">6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/64bit/">64bit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MultiByteToWideChar/">MultiByteToWideChar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Warning-error-log-has-been-disabled-for-security-reasons-in-home-fantagee-public-html-wp-includes-wp-db-php-on-line-1200/">Warning: error_log() has been disabled for security reasons in /home/fantagee/public_html/wp-includes/wp-db.php on line 1200</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WideCharToMultiByte/">WideCharToMultiByte</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/active/">active</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alan/">alan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/alert/">alert</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/amr/">amr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/anti/">anti</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app-size/">app size</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/appdelegate/">appdelegate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apps/">apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/argument/">argument</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/armv7/">armv7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arp/">arp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/articles/">articles</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/assign/">assign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/authority/">authority</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/autolayout/">autolayout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/autoreconf/">autoreconf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avcapture/">avcapture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avcapturesession/">avcapturesession</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avd/">avd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avfoundation/">avfoundation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avkit/">avkit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/avplayer/">avplayer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/behavior/">behavior</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/best/">best</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bill-gate/">bill gate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bit-rate/">bit rate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/block/">block</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/breakpoint-sip/">breakpoint. sip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/buffer/">buffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/buffet/">buffet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/build/">build</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/button/">button</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cache/">cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/canvas/">canvas</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/capture/">capture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/category/">category</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/certificate/">certificate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cgimagebuffer/">cgimagebuffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/char/">char</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chromium/">chromium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class-extension/">class extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class-library/">class library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmsamplebuffer/">cmsamplebuffer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/code/">code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/collection/">collection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/command/">command</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/command-line/">command line</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compile/">compile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conf/">conf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conference/">conference</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/config/">config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/configuration/">configuration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/connection/">connection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/console/">console</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constraint/">constraint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/contentsize/">contentsize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/contentview/">contentview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/controller/">controller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/convert/">convert</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/copy/">copy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/corner/">corner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/course/">course</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crack/">crack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs193p/">cs193p</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/csharp/">csharp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cstring/">cstring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrl-z/">ctrl z</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cvs/">cvs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-source/">data source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/datasource/">datasource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debug/">debug</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/depot-tools/">depot tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design-pattern/">design pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/development/">development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/directory/">directory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/disable/">disable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/domain/">domain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/double/">double</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/drawer/">drawer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dsl/">dsl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/editor/">editor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/efficient/">efficient</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elearning/">elearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emulator/">emulator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enable/">enable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/estimate-size/">estimate size</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exit/">exit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/export/">export</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/facebook/">facebook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fail/">fail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast/">fast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/">file</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/filter/">filter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fluent-interface/">fluent interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fly-out/">fly out</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/folder/">folder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/follow/">follow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/found/">found</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framelayout/">framelayout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/free/">free</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/g-i-s/">g.i.s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/general/">general</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geonames/">geonames</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gesture/">gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gnome/">gnome</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gui/">gui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hackercup/">hackercup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/header/">header</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hello-world/">hello world</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hooks/">hooks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-key/">hot key</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/how/">how</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hyper-v/">hyper-v</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/implement/">implement</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/implementation/">implementation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/initial/">initial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/intel/">intel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iphone/">iphone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jitter/">jitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/joel-test/">joel test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json-net/">json.net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keep/">keep</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keyboard/">keyboard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kid/">kid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/landscape/">landscape</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/language/">language</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learn/">learn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/level/">level</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libraries/">libraries</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/libyuv/">libyuv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/listbox/">listbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lower/">lower</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-osx/">mac osx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine/">machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macro/">macro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/main-view-controller/">main view controller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/manipulation/">manipulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapper/">mapper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapping/">mapping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/marquee/">marquee</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/masonry/">masonry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/match/">match</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mediaplayer/">mediaplayer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/">memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/menu/">menu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mercurial/">mercurial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/merge/">merge</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meta/">meta</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metro/">metro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mfc/">mfc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mindmap/">mindmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mingw/">mingw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/model/">model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/modern-ui/">modern ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/moment/">moment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mpmovieplayercontroller/">mpmovieplayercontroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/navigation/">navigation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nemiver/">nemiver</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netcut/">netcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/new/">new</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/no/">no</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nokia/">nokia</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notes/">notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notification/">notification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/objc/">objc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/objective-c/">objective c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/online/">online</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open/">open</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/">open source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opencore/">opencore</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openssl/">openssl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opus/">opus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/orientation/">orientation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ovi/">ovi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/packet-size/">packet size</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/parse/">parse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passive/">passive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pay/">pay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pch/">pch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pcl/">pcl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pet-arena/">pet arena</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pkg/">pkg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pkg-config/">pkg-config</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/play/">play</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/podcast/">podcast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/port/">port</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/portable/">portable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/power/">power</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/practice/">practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/precompile/">precompile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/precompiled/">precompiled</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/present/">present</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prevent/">prevent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/primitives/">primitives</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/problem/">problem</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming/">programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prompt/">prompt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/property/">property</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protocol/">protocol</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/push/">push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/question/">question</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/quick/">quick</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/quote/">quote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/quotes/">quotes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ramsize/">ramsize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reachability/">reachability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/read/">read</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/real-time/">real time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release/">release</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/replace/">replace</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/resource/">resource</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retain/">retain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retain-cycle/">retain cycle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/revision/">revision</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rule/">rule</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime-component/">runtime component</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/s40/">s40</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sample-rate/">sample rate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/school/">school</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/screencast/">screencast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/search-engine/">search engine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secret/">secret</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/">self</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/session/">session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sign/">sign</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/site/">site</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/six/">six</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/slider/">slider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sliding/">sliding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so/">so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/special-characters/">special characters</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/specific/">specific</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/split/">split</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spoofing/">spoofing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stackoverflow/">stackoverflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/standford/">standford</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stdafx/">stdafx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/">storyboard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/strange/">strange</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/string/">string</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/strong/">strong</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/study/">study</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/submit/">submit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svnx/">svnx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/syntax/">syntax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/">test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/text/">text</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/textblock/">textblock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/time/">time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/timeout/">timeout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tip/">tip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/toolbox/">toolbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tools/">tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tortoise/">tortoise</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tortoisesvn/">tortoisesvn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/trim/">trim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/turing/">turing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/twitter/">twitter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uiimage/">uiimage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uiscrollview/">uiscrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uitableviewcell/">uitableviewcell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uiwindow/">uiwindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/upper/">upper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useful/">useful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/version-control/">version control</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/video/">video</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/videodataoutput/">videodataoutput</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view-controller/">view controller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/visual-studio/">visual studio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vmware/">vmware</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/voip/">voip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vs/">vs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warren/">warren</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wchar/">wchar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/weak/">weak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win8/">win8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-8/">windows 8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-phone/">windows phone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-phone-8/">windows phone 8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-rt/">windows rt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/workbench/">workbench</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp7/">wp7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp8/">wp8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/write/">write</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xcode/">xcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xmind/">xmind</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yuv/">yuv</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/net/" style="font-size: 10px;">.net</a> <a href="/tags/2012/" style="font-size: 10px;">2012</a> <a href="/tags/32bit/" style="font-size: 11.67px;">32bit</a> <a href="/tags/6/" style="font-size: 10px;">6</a> <a href="/tags/64bit/" style="font-size: 11.67px;">64bit</a> <a href="/tags/C/" style="font-size: 15px;">C</a> <a href="/tags/MultiByteToWideChar/" style="font-size: 10px;">MultiByteToWideChar</a> <a href="/tags/Warning-error-log-has-been-disabled-for-security-reasons-in-home-fantagee-public-html-wp-includes-wp-db-php-on-line-1200/" style="font-size: 10px;">Warning: error_log() has been disabled for security reasons in /home/fantagee/public_html/wp-includes/wp-db.php on line 1200</a> <a href="/tags/WideCharToMultiByte/" style="font-size: 10px;">WideCharToMultiByte</a> <a href="/tags/active/" style="font-size: 10px;">active</a> <a href="/tags/advice/" style="font-size: 11.67px;">advice</a> <a href="/tags/alan/" style="font-size: 10px;">alan</a> <a href="/tags/alert/" style="font-size: 10px;">alert</a> <a href="/tags/amr/" style="font-size: 10px;">amr</a> <a href="/tags/android/" style="font-size: 15px;">android</a> <a href="/tags/anti/" style="font-size: 10px;">anti</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/app-size/" style="font-size: 10px;">app size</a> <a href="/tags/appdelegate/" style="font-size: 10px;">appdelegate</a> <a href="/tags/apps/" style="font-size: 10px;">apps</a> <a href="/tags/argument/" style="font-size: 10px;">argument</a> <a href="/tags/armv7/" style="font-size: 11.67px;">armv7</a> <a href="/tags/arp/" style="font-size: 10px;">arp</a> <a href="/tags/articles/" style="font-size: 10px;">articles</a> <a href="/tags/assign/" style="font-size: 10px;">assign</a> <a href="/tags/authority/" style="font-size: 10px;">authority</a> <a href="/tags/auto/" style="font-size: 10px;">auto</a> <a href="/tags/autolayout/" style="font-size: 10px;">autolayout</a> <a href="/tags/autoreconf/" style="font-size: 10px;">autoreconf</a> <a href="/tags/avcapture/" style="font-size: 10px;">avcapture</a> <a href="/tags/avcapturesession/" style="font-size: 10px;">avcapturesession</a> <a href="/tags/avd/" style="font-size: 10px;">avd</a> <a href="/tags/avfoundation/" style="font-size: 10px;">avfoundation</a> <a href="/tags/avkit/" style="font-size: 10px;">avkit</a> <a href="/tags/avplayer/" style="font-size: 10px;">avplayer</a> <a href="/tags/behavior/" style="font-size: 10px;">behavior</a> <a href="/tags/best/" style="font-size: 11.67px;">best</a> <a href="/tags/bill-gate/" style="font-size: 10px;">bill gate</a> <a href="/tags/bit-rate/" style="font-size: 10px;">bit rate</a> <a href="/tags/block/" style="font-size: 10px;">block</a> <a href="/tags/breakpoint-sip/" style="font-size: 10px;">breakpoint. sip</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/buffet/" style="font-size: 10px;">buffet</a> <a href="/tags/build/" style="font-size: 13.33px;">build</a> <a href="/tags/button/" style="font-size: 10px;">button</a> <a href="/tags/cache/" style="font-size: 10px;">cache</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/capture/" style="font-size: 10px;">capture</a> <a href="/tags/category/" style="font-size: 10px;">category</a> <a href="/tags/certificate/" style="font-size: 10px;">certificate</a> <a href="/tags/cgimagebuffer/" style="font-size: 10px;">cgimagebuffer</a> <a href="/tags/char/" style="font-size: 11.67px;">char</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/chromium/" style="font-size: 10px;">chromium</a> <a href="/tags/class-extension/" style="font-size: 10px;">class extension</a> <a href="/tags/class-library/" style="font-size: 10px;">class library</a> <a href="/tags/cmsamplebuffer/" style="font-size: 10px;">cmsamplebuffer</a> <a href="/tags/code/" style="font-size: 10px;">code</a> <a href="/tags/collection/" style="font-size: 10px;">collection</a> <a href="/tags/command/" style="font-size: 10px;">command</a> <a href="/tags/command-line/" style="font-size: 10px;">command line</a> <a href="/tags/compile/" style="font-size: 10px;">compile</a> <a href="/tags/conf/" style="font-size: 10px;">conf</a> <a href="/tags/conference/" style="font-size: 10px;">conference</a> <a href="/tags/config/" style="font-size: 10px;">config</a> <a href="/tags/configuration/" style="font-size: 10px;">configuration</a> <a href="/tags/connection/" style="font-size: 10px;">connection</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/constraint/" style="font-size: 10px;">constraint</a> <a href="/tags/contentsize/" style="font-size: 10px;">contentsize</a> <a href="/tags/contentview/" style="font-size: 10px;">contentview</a> <a href="/tags/controller/" style="font-size: 10px;">controller</a> <a href="/tags/convert/" style="font-size: 15px;">convert</a> <a href="/tags/copy/" style="font-size: 10px;">copy</a> <a href="/tags/corner/" style="font-size: 10px;">corner</a> <a href="/tags/course/" style="font-size: 10px;">course</a> <a href="/tags/crack/" style="font-size: 10px;">crack</a> <a href="/tags/cs193p/" style="font-size: 10px;">cs193p</a> <a href="/tags/csharp/" style="font-size: 10px;">csharp</a> <a href="/tags/cstring/" style="font-size: 10px;">cstring</a> <a href="/tags/ctrl-z/" style="font-size: 10px;">ctrl z</a> <a href="/tags/cvs/" style="font-size: 10px;">cvs</a> <a href="/tags/data-source/" style="font-size: 10px;">data source</a> <a href="/tags/datasource/" style="font-size: 10px;">datasource</a> <a href="/tags/debug/" style="font-size: 11.67px;">debug</a> <a href="/tags/depot-tools/" style="font-size: 10px;">depot tools</a> <a href="/tags/design-pattern/" style="font-size: 10px;">design pattern</a> <a href="/tags/development/" style="font-size: 10px;">development</a> <a href="/tags/directory/" style="font-size: 10px;">directory</a> <a href="/tags/disable/" style="font-size: 13.33px;">disable</a> <a href="/tags/domain/" style="font-size: 10px;">domain</a> <a href="/tags/double/" style="font-size: 10px;">double</a> <a href="/tags/drawer/" style="font-size: 10px;">drawer</a> <a href="/tags/dsl/" style="font-size: 10px;">dsl</a> <a href="/tags/editor/" style="font-size: 10px;">editor</a> <a href="/tags/efficient/" style="font-size: 10px;">efficient</a> <a href="/tags/elearning/" style="font-size: 10px;">elearning</a> <a href="/tags/emulator/" style="font-size: 10px;">emulator</a> <a href="/tags/enable/" style="font-size: 10px;">enable</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/estimate-size/" style="font-size: 10px;">estimate size</a> <a href="/tags/exit/" style="font-size: 10px;">exit</a> <a href="/tags/experience/" style="font-size: 10px;">experience</a> <a href="/tags/export/" style="font-size: 10px;">export</a> <a href="/tags/facebook/" style="font-size: 13.33px;">facebook</a> <a href="/tags/fail/" style="font-size: 10px;">fail</a> <a href="/tags/fast/" style="font-size: 10px;">fast</a> <a href="/tags/file/" style="font-size: 13.33px;">file</a> <a href="/tags/filter/" style="font-size: 10px;">filter</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/fluent-interface/" style="font-size: 10px;">fluent interface</a> <a href="/tags/fly-out/" style="font-size: 10px;">fly out</a> <a href="/tags/folder/" style="font-size: 10px;">folder</a> <a href="/tags/follow/" style="font-size: 10px;">follow</a> <a href="/tags/found/" style="font-size: 10px;">found</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/framelayout/" style="font-size: 10px;">framelayout</a> <a href="/tags/free/" style="font-size: 11.67px;">free</a> <a href="/tags/g-i-s/" style="font-size: 10px;">g.i.s</a> <a href="/tags/general/" style="font-size: 10px;">general</a> <a href="/tags/geonames/" style="font-size: 10px;">geonames</a> <a href="/tags/gesture/" style="font-size: 10px;">gesture</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gnome/" style="font-size: 10px;">gnome</a> <a href="/tags/google/" style="font-size: 11.67px;">google</a> <a href="/tags/gui/" style="font-size: 10px;">gui</a> <a href="/tags/hackercup/" style="font-size: 10px;">hackercup</a> <a href="/tags/header/" style="font-size: 10px;">header</a> <a href="/tags/hello-world/" style="font-size: 10px;">hello world</a> <a href="/tags/hooks/" style="font-size: 10px;">hooks</a> <a href="/tags/hot-key/" style="font-size: 10px;">hot key</a> <a href="/tags/how/" style="font-size: 11.67px;">how</a> <a href="/tags/hyper-v/" style="font-size: 10px;">hyper-v</a> <a href="/tags/implement/" style="font-size: 10px;">implement</a> <a href="/tags/implementation/" style="font-size: 10px;">implementation</a> <a href="/tags/initial/" style="font-size: 10px;">initial</a> <a href="/tags/intel/" style="font-size: 10px;">intel</a> <a href="/tags/ios/" style="font-size: 20px;">ios</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jitter/" style="font-size: 10px;">jitter</a> <a href="/tags/joel-test/" style="font-size: 10px;">joel test</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/json-net/" style="font-size: 10px;">json.net</a> <a href="/tags/keep/" style="font-size: 10px;">keep</a> <a href="/tags/keyboard/" style="font-size: 10px;">keyboard</a> <a href="/tags/kid/" style="font-size: 10px;">kid</a> <a href="/tags/landscape/" style="font-size: 10px;">landscape</a> <a href="/tags/language/" style="font-size: 10px;">language</a> <a href="/tags/learn/" style="font-size: 10px;">learn</a> <a href="/tags/level/" style="font-size: 10px;">level</a> <a href="/tags/libraries/" style="font-size: 10px;">libraries</a> <a href="/tags/libyuv/" style="font-size: 10px;">libyuv</a> <a href="/tags/life/" style="font-size: 10px;">life</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/listbox/" style="font-size: 11.67px;">listbox</a> <a href="/tags/lower/" style="font-size: 10px;">lower</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/mac-osx/" style="font-size: 16.67px;">mac osx</a> <a href="/tags/machine/" style="font-size: 10px;">machine</a> <a href="/tags/macro/" style="font-size: 10px;">macro</a> <a href="/tags/main-view-controller/" style="font-size: 10px;">main view controller</a> <a href="/tags/manipulation/" style="font-size: 10px;">manipulation</a> <a href="/tags/mapper/" style="font-size: 10px;">mapper</a> <a href="/tags/mapping/" style="font-size: 10px;">mapping</a> <a href="/tags/marquee/" style="font-size: 10px;">marquee</a> <a href="/tags/masonry/" style="font-size: 10px;">masonry</a> <a href="/tags/match/" style="font-size: 10px;">match</a> <a href="/tags/mediaplayer/" style="font-size: 10px;">mediaplayer</a> <a href="/tags/memory/" style="font-size: 10px;">memory</a> <a href="/tags/menu/" style="font-size: 11.67px;">menu</a> <a href="/tags/mercurial/" style="font-size: 10px;">mercurial</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/meta/" style="font-size: 10px;">meta</a> <a href="/tags/metro/" style="font-size: 10px;">metro</a> <a href="/tags/mfc/" style="font-size: 10px;">mfc</a> <a href="/tags/mindmap/" style="font-size: 10px;">mindmap</a> <a href="/tags/mingw/" style="font-size: 10px;">mingw</a> <a href="/tags/model/" style="font-size: 10px;">model</a> <a href="/tags/modern-ui/" style="font-size: 10px;">modern ui</a> <a href="/tags/moment/" style="font-size: 10px;">moment</a> <a href="/tags/mpmovieplayercontroller/" style="font-size: 10px;">mpmovieplayercontroller</a> <a href="/tags/navigation/" style="font-size: 11.67px;">navigation</a> <a href="/tags/nemiver/" style="font-size: 10px;">nemiver</a> <a href="/tags/netcut/" style="font-size: 10px;">netcut</a> <a href="/tags/new/" style="font-size: 10px;">new</a> <a href="/tags/no/" style="font-size: 10px;">no</a> <a href="/tags/nokia/" style="font-size: 10px;">nokia</a> <a href="/tags/notes/" style="font-size: 10px;">notes</a> <a href="/tags/notification/" style="font-size: 10px;">notification</a> <a href="/tags/objc/" style="font-size: 10px;">objc</a> <a href="/tags/objective-c/" style="font-size: 11.67px;">objective c</a> <a href="/tags/online/" style="font-size: 10px;">online</a> <a href="/tags/open/" style="font-size: 11.67px;">open</a> <a href="/tags/open-source/" style="font-size: 10px;">open source</a> <a href="/tags/opencore/" style="font-size: 10px;">opencore</a> <a href="/tags/openssl/" style="font-size: 13.33px;">openssl</a> <a href="/tags/opus/" style="font-size: 10px;">opus</a> <a href="/tags/orientation/" style="font-size: 10px;">orientation</a> <a href="/tags/ovi/" style="font-size: 10px;">ovi</a> <a href="/tags/packet-size/" style="font-size: 10px;">packet size</a> <a href="/tags/parse/" style="font-size: 10px;">parse</a> <a href="/tags/passive/" style="font-size: 10px;">passive</a> <a href="/tags/pay/" style="font-size: 10px;">pay</a> <a href="/tags/pch/" style="font-size: 10px;">pch</a> <a href="/tags/pcl/" style="font-size: 10px;">pcl</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/pet-arena/" style="font-size: 10px;">pet arena</a> <a href="/tags/pkg/" style="font-size: 10px;">pkg</a> <a href="/tags/pkg-config/" style="font-size: 10px;">pkg-config</a> <a href="/tags/play/" style="font-size: 10px;">play</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/podcast/" style="font-size: 10px;">podcast</a> <a href="/tags/port/" style="font-size: 10px;">port</a> <a href="/tags/portable/" style="font-size: 10px;">portable</a> <a href="/tags/power/" style="font-size: 10px;">power</a> <a href="/tags/practice/" style="font-size: 10px;">practice</a> <a href="/tags/precompile/" style="font-size: 10px;">precompile</a> <a href="/tags/precompiled/" style="font-size: 10px;">precompiled</a> <a href="/tags/present/" style="font-size: 10px;">present</a> <a href="/tags/prevent/" style="font-size: 10px;">prevent</a> <a href="/tags/primitives/" style="font-size: 10px;">primitives</a> <a href="/tags/problem/" style="font-size: 10px;">problem</a> <a href="/tags/programming/" style="font-size: 13.33px;">programming</a> <a href="/tags/project/" style="font-size: 13.33px;">project</a> <a href="/tags/prompt/" style="font-size: 10px;">prompt</a> <a href="/tags/property/" style="font-size: 11.67px;">property</a> <a href="/tags/protocol/" style="font-size: 10px;">protocol</a> <a href="/tags/push/" style="font-size: 10px;">push</a> <a href="/tags/question/" style="font-size: 10px;">question</a> <a href="/tags/quick/" style="font-size: 10px;">quick</a> <a href="/tags/quote/" style="font-size: 10px;">quote</a> <a href="/tags/quotes/" style="font-size: 10px;">quotes</a> <a href="/tags/ramsize/" style="font-size: 10px;">ramsize</a> <a href="/tags/reachability/" style="font-size: 10px;">reachability</a> <a href="/tags/read/" style="font-size: 10px;">read</a> <a href="/tags/real-time/" style="font-size: 10px;">real time</a> <a href="/tags/release/" style="font-size: 10px;">release</a> <a href="/tags/replace/" style="font-size: 10px;">replace</a> <a href="/tags/request/" style="font-size: 10px;">request</a> <a href="/tags/resource/" style="font-size: 11.67px;">resource</a> <a href="/tags/retain/" style="font-size: 10px;">retain</a> <a href="/tags/retain-cycle/" style="font-size: 10px;">retain cycle</a> <a href="/tags/revision/" style="font-size: 10px;">revision</a> <a href="/tags/rule/" style="font-size: 10px;">rule</a> <a href="/tags/runtime-component/" style="font-size: 10px;">runtime component</a> <a href="/tags/s40/" style="font-size: 10px;">s40</a> <a href="/tags/sample-rate/" style="font-size: 10px;">sample rate</a> <a href="/tags/school/" style="font-size: 10px;">school</a> <a href="/tags/screencast/" style="font-size: 10px;">screencast</a> <a href="/tags/search-engine/" style="font-size: 10px;">search engine</a> <a href="/tags/secret/" style="font-size: 10px;">secret</a> <a href="/tags/self/" style="font-size: 10px;">self</a> <a href="/tags/session/" style="font-size: 10px;">session</a> <a href="/tags/sign/" style="font-size: 10px;">sign</a> <a href="/tags/site/" style="font-size: 10px;">site</a> <a href="/tags/six/" style="font-size: 10px;">six</a> <a href="/tags/slider/" style="font-size: 10px;">slider</a> <a href="/tags/sliding/" style="font-size: 11.67px;">sliding</a> <a href="/tags/so/" style="font-size: 10px;">so</a> <a href="/tags/socket/" style="font-size: 10px;">socket</a> <a href="/tags/special-characters/" style="font-size: 10px;">special characters</a> <a href="/tags/specific/" style="font-size: 10px;">specific</a> <a href="/tags/split/" style="font-size: 11.67px;">split</a> <a href="/tags/spoofing/" style="font-size: 10px;">spoofing</a> <a href="/tags/stackoverflow/" style="font-size: 10px;">stackoverflow</a> <a href="/tags/standford/" style="font-size: 10px;">standford</a> <a href="/tags/stdafx/" style="font-size: 10px;">stdafx</a> <a href="/tags/storyboard/" style="font-size: 11.67px;">storyboard</a> <a href="/tags/strange/" style="font-size: 10px;">strange</a> <a href="/tags/string/" style="font-size: 10px;">string</a> <a href="/tags/strong/" style="font-size: 10px;">strong</a> <a href="/tags/study/" style="font-size: 10px;">study</a> <a href="/tags/submit/" style="font-size: 10px;">submit</a> <a href="/tags/svn/" style="font-size: 13.33px;">svn</a> <a href="/tags/svnx/" style="font-size: 10px;">svnx</a> <a href="/tags/swift/" style="font-size: 11.67px;">swift</a> <a href="/tags/syntax/" style="font-size: 10px;">syntax</a> <a href="/tags/test/" style="font-size: 10px;">test</a> <a href="/tags/text/" style="font-size: 10px;">text</a> <a href="/tags/textblock/" style="font-size: 10px;">textblock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/timeout/" style="font-size: 10px;">timeout</a> <a href="/tags/tip/" style="font-size: 10px;">tip</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/toolbox/" style="font-size: 10px;">toolbox</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/tortoise/" style="font-size: 10px;">tortoise</a> <a href="/tags/tortoisesvn/" style="font-size: 10px;">tortoisesvn</a> <a href="/tags/trim/" style="font-size: 10px;">trim</a> <a href="/tags/turing/" style="font-size: 10px;">turing</a> <a href="/tags/tutorial/" style="font-size: 16.67px;">tutorial</a> <a href="/tags/twitter/" style="font-size: 10px;">twitter</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/uiimage/" style="font-size: 10px;">uiimage</a> <a href="/tags/uiscrollview/" style="font-size: 10px;">uiscrollview</a> <a href="/tags/uitableviewcell/" style="font-size: 10px;">uitableviewcell</a> <a href="/tags/uiwindow/" style="font-size: 10px;">uiwindow</a> <a href="/tags/upper/" style="font-size: 10px;">upper</a> <a href="/tags/useful/" style="font-size: 10px;">useful</a> <a href="/tags/version-control/" style="font-size: 10px;">version control</a> <a href="/tags/video/" style="font-size: 10px;">video</a> <a href="/tags/videodataoutput/" style="font-size: 10px;">videodataoutput</a> <a href="/tags/view-controller/" style="font-size: 13.33px;">view controller</a> <a href="/tags/visual-studio/" style="font-size: 13.33px;">visual studio</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/voip/" style="font-size: 13.33px;">voip</a> <a href="/tags/vs/" style="font-size: 10px;">vs</a> <a href="/tags/warren/" style="font-size: 10px;">warren</a> <a href="/tags/wchar/" style="font-size: 10px;">wchar</a> <a href="/tags/weak/" style="font-size: 10px;">weak</a> <a href="/tags/win8/" style="font-size: 10px;">win8</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/windows/" style="font-size: 10px;">windows</a> <a href="/tags/windows-8/" style="font-size: 15px;">windows 8</a> <a href="/tags/windows-phone/" style="font-size: 11.67px;">windows phone</a> <a href="/tags/windows-phone-8/" style="font-size: 11.67px;">windows phone 8</a> <a href="/tags/windows-rt/" style="font-size: 10px;">windows rt</a> <a href="/tags/workbench/" style="font-size: 10px;">workbench</a> <a href="/tags/wp7/" style="font-size: 18.33px;">wp7</a> <a href="/tags/wp8/" style="font-size: 15px;">wp8</a> <a href="/tags/write/" style="font-size: 10px;">write</a> <a href="/tags/xcode/" style="font-size: 13.33px;">xcode</a> <a href="/tags/xmind/" style="font-size: 10px;">xmind</a> <a href="/tags/yuv/" style="font-size: 10px;">yuv</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/02/">February 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">December 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/04/14/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/26/sdk-and-deployment-target/">SDK and Deployment Target</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/25/nsapplicationdelegate-and-notification/">NSApplicationDelegate and notification</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/20/digit-grouping-in-swift/">Digit grouping in Swift</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/20/selecting-objects-in-xcode-interface-builder/">Selecting objects in Xcode Interface Builder</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
