@@ -1,6 +1,6 @@
 
  <!DOCTYPE HTML>
-<html lang="English">
+<html >
 <head>
   <meta charset="UTF-8">
   
@@ -55,7 +55,7 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
 				<h2 class="blog-motto">Simple apps that make sense</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -71,7 +71,7 @@ Info.plistEach target should have its own Info.plist. Info.plist">
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.fantageek.com">
 					</form>
 					
@@ -94,14 +94,14 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-04T02:19:32.000Z" itemprop="datePublished"> Published 2015-07-04</time>
+    <time datetime="2015-07-04T02:19:32.000Z" itemprop="datePublished"> 发表于 2015-07-04</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Source-file"><span class="toc-number">1.</span> <span class="toc-text">Source file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Info-plist"><span class="toc-number">2.</span> <span class="toc-text">Info.plist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Entitlement"><span class="toc-number">3.</span> <span class="toc-text">Entitlement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset-Catalog"><span class="toc-number">4.</span> <span class="toc-text">Asset Catalog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read-Build-Setting-Reference"><span class="toc-number">5.</span> <span class="toc-text">Read Build Setting Reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Preprocessor-Macro"><span class="toc-number">6.</span> <span class="toc-text">Preprocessor Macro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration"><span class="toc-number">7.</span> <span class="toc-text">Configuration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ifdef"><span class="toc-number">7.1.</span> <span class="toc-text">ifdef</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-config-h-file-and-multiple-config-m-file-for-each-target"><span class="toc-number">7.2.</span> <span class="toc-text">1 config.h file and multiple config.m file for each target</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Protocol-and-Abstract-Factory"><span class="toc-number">7.3.</span> <span class="toc-text">Protocol and Abstract Factory</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Theme"><span class="toc-number">8.</span> <span class="toc-text">Theme</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
 		
@@ -247,22 +247,22 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Source-file"><span class="toc-number">1.</span> <span class="toc-text">Source file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Info-plist"><span class="toc-number">2.</span> <span class="toc-text">Info.plist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Entitlement"><span class="toc-number">3.</span> <span class="toc-text">Entitlement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Asset-Catalog"><span class="toc-number">4.</span> <span class="toc-text">Asset Catalog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Read-Build-Setting-Reference"><span class="toc-number">5.</span> <span class="toc-text">Read Build Setting Reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Preprocessor-Macro"><span class="toc-number">6.</span> <span class="toc-text">Preprocessor Macro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuration"><span class="toc-number">7.</span> <span class="toc-text">Configuration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ifdef"><span class="toc-number">7.1.</span> <span class="toc-text">ifdef</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-config-h-file-and-multiple-config-m-file-for-each-target"><span class="toc-number">7.2.</span> <span class="toc-text">1 config.h file and multiple config.m file for each target</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Protocol-and-Abstract-Factory"><span class="toc-number">7.3.</span> <span class="toc-text">Protocol and Abstract Factory</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Theme"><span class="toc-number">8.</span> <span class="toc-text">Theme</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">Github 名片</p>
 <div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -272,7 +272,7 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
@@ -333,7 +333,7 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -421,14 +421,14 @@ Info.plistEach target should have its own Info.plist. Info.plist">
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
     </ul>
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -678,7 +678,7 @@ ga('send', 'pageview');
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
