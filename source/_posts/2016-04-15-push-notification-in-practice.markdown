@@ -1,7 +1,7 @@
 ---
 author: onmyway133
 comments: true
-date: 2014-05-31 17:02:49+00:00
+date: 2015-04-15 17:02:49+00:00
 layout: post
 slug: push-notification-in-practice
 title: Push Notification in practice
