@@ -1,0 +1,695 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Why Objective-C Metaprogramming Dramatically Improves Your iOS App | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="ForewordThe original post is from http://kurtedelbrock.com/objective-c-metaprogramming/ but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are intereste">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why Objective-C Metaprogramming Dramatically Improves Your iOS App">
+<meta property="og:url" content="http://www.fantageek.com/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="ForewordThe original post is from http://kurtedelbrock.com/objective-c-metaprogramming/ but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are intereste">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Why Objective-C Metaprogramming Dramatically Improves Your iOS App">
+<meta name="twitter:description" content="ForewordThe original post is from http://kurtedelbrock.com/objective-c-metaprogramming/ but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are intereste">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/" title="Why Objective-C Metaprogramming Dramatically Improves Your iOS App" itemprop="url">Why Objective-C Metaprogramming Dramatically Improves Your iOS App</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-12-26T13:50:26.000Z" itemprop="datePublished"> Published 2013-12-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Foreword"><span class="toc-number">1.</span> <span class="toc-text">Foreword</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-Reasons-Why-Objective-C-Can-Be-Painful"><span class="toc-number"></span> <span class="toc-text">Two Reasons Why Objective-C Can Be Painful</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Objective-C-and-Cocoa-Greatly-Restrain-Programmer-Efficiency"><span class="toc-number">1.</span> <span class="toc-text">1. Objective-C (and Cocoa) Greatly Restrain Programmer Efficiency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Objective-C-Often-Lacks-Abstraction"><span class="toc-number">2.</span> <span class="toc-text">2. Objective-C Often Lacks Abstraction</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#So-What-Is-Metaprogramming"><span class="toc-number"></span> <span class="toc-text">So What Is Metaprogramming?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#…And-What-Are-The-Benefits"><span class="toc-number"></span> <span class="toc-text">…And What Are The Benefits?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Less-Bugs"><span class="toc-number">1.</span> <span class="toc-text">1. Less Bugs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Faster-Development"><span class="toc-number">2.</span> <span class="toc-text">2. Faster Development</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-More-Refactored-Code"><span class="toc-number">3.</span> <span class="toc-text">3. More Refactored Code</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Awesome-Examples-of-Metaprogramming"><span class="toc-number"></span> <span class="toc-text">Awesome Examples of Metaprogramming</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Domain-Specific-Languages-dynamic-method-naming"><span class="toc-number">1.</span> <span class="toc-text">1. Domain Specific Languages (dynamic method naming)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Validation"><span class="toc-number">2.</span> <span class="toc-text">2. Validation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Templates"><span class="toc-number">3.</span> <span class="toc-text">3. Templates</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Mocking"><span class="toc-number">4.</span> <span class="toc-text">4. Mocking</span></a></li></ol>
+		
+		</div>
+		
+		<h4 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h4><p>The original post is from <a href="http://kurtedelbrock.com/objective-c-metaprogramming/" target="_blank" rel="external">http://kurtedelbrock.com/objective-c-metaprogramming/</a> but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are interested</p>
+<p>For those of you who work with me, you know that I evenly split my time between complaining about how chunky, verbose, and buggy Objective-C can be and evangelizing (better) languages like Haskell, Clojure, and Ruby. Of course, Apple won’t use languages like that on iOS, so I was beginning to accept that building iPhone and iPad apps would never be as fun or as seamless as deploying web apps with Rack or Node.js.</p>
+<a id="more"></a>
+<p>That is, until I learned about metaprogramming in Objective-C, which completely changed how I architect and implement applications. The beauty of it is that it allows developers to create templates, domain specific languages and overrides that ultimately improve programmer efficiency and minimize the occurence of bugs. First, though, it might be helpful to look at some of the sticking points in Objective-C to help understand why metaprogramming will solve them.</p>
+<h3 id="Two-Reasons-Why-Objective-C-Can-Be-Painful"><a href="#Two-Reasons-Why-Objective-C-Can-Be-Painful" class="headerlink" title="Two Reasons Why Objective-C Can Be Painful"></a>Two Reasons Why Objective-C Can Be Painful</h3><h4 id="1-Objective-C-and-Cocoa-Greatly-Restrain-Programmer-Efficiency"><a href="#1-Objective-C-and-Cocoa-Greatly-Restrain-Programmer-Efficiency" class="headerlink" title="1. Objective-C (and Cocoa) Greatly Restrain Programmer Efficiency"></a>1. Objective-C (and Cocoa) Greatly Restrain Programmer Efficiency</h4><p>This is probably no surprise to someone who’s done any iOS programming, but it takes an ungodly amount of code to do even the most simple tasks in Objective-C, be it trying to print yesterday’s date to the console or implementing a UITableView from an array. It is not uncommon for more than half of the code in a UIController to be related to creating a table view, and all of this view coding in the controller can kill the meaning and usefulness of a model-view-controller architecture pretty quickly.</p>
+<p>Furthermore, the infix notation used to send messages to objects makes the language much more difficult for a developer to read and comprehend even though the semantics are almost identical to C++ and Java. Even if you can get around all of the brackets and the colons, the blurring between the method name and first parameter that’s common in defining Objective-C selectors, along with the convention of very long method names, can make the language especially difficult.</p>
+<p>Even when you get more comfortable with   the language, it doesn’t help the fact that Objective-C is a very large language. It seems to go directly against the tenets of creating a simple, DSL-style API by having a large variety of similar sounding methods as well as incorporating all of the functionality of C (Objective-C is a superset of C, after all). Thankfully, as Ash Furrow points out in Why Objective-C is Hard to Learn , Apple has been taking steps to add new constructs to Objective-C that make the language simpler, such as blocks, dot-notation for getters and setters, and synthesized properties.</p>
+<h4 id="2-Objective-C-Often-Lacks-Abstraction"><a href="#2-Objective-C-Often-Lacks-Abstraction" class="headerlink" title="2. Objective-C Often Lacks Abstraction"></a>2. Objective-C Often Lacks Abstraction</h4><p>The pain points above are the general complaints you’ll often hear when people describe why they don’t like Objective-C. However, one of the main reasons why I don’t always like Objective-C, and a reason I don’t hear all that often, is that it’s too low level.</p>
+<p>In general, programming languages need to do two things: resource allocation, and sequencing. Resource allocation is things like creating objects, setting variables, pointers and memory, and this is usually abstracted quite well by things like garbage collection and automatic reference counting. However, sequencing is more difficult to abstract because it usually consists of adding more keywords and standard functions to make commands more clear and also to bundle them together in usable units. Functional programming languages solve sequencing abstraction by getting rid of sequencing all together and using, for instance, Haskell’s lazy evaluating. In Objective-C, it seems that the best way to add sequence abstraction is to create less keywords instead of more via tightly refactored domain specific languages, which is something that metaprogramming can improve greatly.</p>
+<h3 id="So-What-Is-Metaprogramming"><a href="#So-What-Is-Metaprogramming" class="headerlink" title="So What Is Metaprogramming?"></a>So What Is Metaprogramming?</h3><p>Put simply, it’s code that generates code. It comes in a variety of factors, such as code templates, Rails-style generators, adding methods and classes on the fly, and all kinds of other runtime hacking. Objective-C has a strong set of tools you can use to metaprogram, the most useful of which is the Objective-C Runtime tools.</p>
+<h3 id="…And-What-Are-The-Benefits"><a href="#…And-What-Are-The-Benefits" class="headerlink" title="…And What Are The Benefits?"></a>…And What Are The Benefits?</h3><p>Metaprogramming speeds up development, reduces bugs, and is a lot of fun. Here’s why:</p>
+<h4 id="1-Less-Bugs"><a href="#1-Less-Bugs" class="headerlink" title="1. Less Bugs"></a>1. Less Bugs</h4><p>The templates and reusable code you create in the process of metaprogranning only has to be written once, and therefore only has to go through QA once. Much like object-oriented patterns, metaprogranning reduces the size of the codebase and maximizes reuse.</p>
+<h4 id="2-Faster-Development"><a href="#2-Faster-Development" class="headerlink" title="2. Faster Development"></a>2. Faster Development</h4><p>We often do a lot of tedious work and boilerplate coding when we are working on iOS apps, and metaprogramming can help us avoid that by templatizing the patterns and interactions we use most often.</p>
+<h4 id="3-More-Refactored-Code"><a href="#3-More-Refactored-Code" class="headerlink" title="3. More Refactored Code"></a>3. More Refactored Code</h4><p>Refactoring normally focuses on breaking code into smaller and more reusable pieces. Metaprogramming takes it a step further by allowing you to take those pieces and rearrange them as needed, often removing the need for “if-then” heavy methods and non-DRY friendly boilerplate code spread across different objects.</p>
+<h3 id="Awesome-Examples-of-Metaprogramming"><a href="#Awesome-Examples-of-Metaprogramming" class="headerlink" title="Awesome Examples of Metaprogramming"></a>Awesome Examples of Metaprogramming</h3><p>Here are some of the things you can do with metaprogramming in Objective-C and iOS to make developing apps much easier and also much more fun. Note that metaprogramming may not be the best way to do this, but it’s really interesting nonetheless. If you want even more examples of ways to speed up iOS development and autogenerate code, you should subscribe to the newsletter .</p>
+<h4 id="1-Domain-Specific-Languages-dynamic-method-naming"><a href="#1-Domain-Specific-Languages-dynamic-method-naming" class="headerlink" title="1. Domain Specific Languages (dynamic method naming)"></a>1. Domain Specific Languages (dynamic method naming)</h4><p>Domain specific languages (DSLs) are “mini-programming languages” you can use to access functionality with semantic languages. If you’ve ever used ActiveRecord, Cucumber, or RSpec on Ruby, you’ve used a DSL.</p>
+<p>Lately, I’ve been working on creating a DSL based on Mongoid used for fetching and accessing objects from Core Data. Here’s a quick demonstration of the language:</p>
+<p>Model *objects = [[[Users findByName:@”John”]  </p>
+<p>roleNot:@”Administrator”]  </p>
+<p>first];  </p>
+<p>I use the dynamic method naming functionality of the Objective-C Runtime functions to add a whole slew of methods to the Model class based on the names of the attributes I added in Core Data. While my DSL is a work in progress, here’s some of the language constructs I’ve implemented.</p>
+<ul>
+<li><p>findBy{field};  </p>
+</li>
+<li><p>{field}Not;  </p>
+</li>
+<li><p>{field}Gte;  </p>
+</li>
+<li><p>{field}Gt;  </p>
+</li>
+<li><p>{field}Lte;  </p>
+</li>
+<li><p>{field}Lt;  </p>
+</li>
+</ul>
+<p>These are all chainable, so you can do things like:</p>
+<p>Model *objects = [[[Users findByName:@”John”] tap:^(id obj){  </p>
+<p>[obj count]; // Puts the number of users named John  </p>
+<p>}] index:3];  </p>
+<p>Tap lets you inject a block into any place in the method chain. This lets you do things like debug pieces of the chain or hold a pointer to intermediate steps without having to assign parts to a variable. I stole it from Ruby, so you can learn more about tap from Tom Mortel’s explanation .</p>
+<p>To create the dynamic methods, I overrode the resolveClassMethod: in a subclass. There, I just do some pattern matching with the name of the selector, and add the method to the runtime by attaching the handleFindBy function:</p>
+<p>if ([methodName hasPrefix:@”findBy”] &amp;&amp; [arrayOfFields valueForKey:fieldName])  </p>
+<p>{  </p>
+<p>Class selfMetaClass = objc_getMetaClass([NSStringFromClass([self class]) UTF8String]);  </p>
+<p>class_addMethod(selfMetaClass, aSEL, (IMP) handleFindBy, “@”);  </p>
+<p>}</p>
+<h4 id="2-Validation"><a href="#2-Validation" class="headerlink" title="2. Validation"></a>2. Validation</h4><p>One of the best ways to prevent simple errors and bugs is to validate inputs provided both by the user and by the development team. Core Data provides functionality that can do the validation for us, but that only applies when the input is being saved to a persistent store. What about vanilla properties synthesized on your object and used to hold things like emails or phone numbers? You don’t want to copy-paste a ton of validation code to each of the custom setters. Metaprogramming to the rescue.</p>
+<p>You can use metaprogramming to replace a synthesized or overridden setter with a method that calls a validation method instead that will in turn call the original setter if validation passes. I would do this with a wrapper method that looks like this:</p>
+<p>[SexyValidator validatesEmailAddressFor:@[ @”emailAddress”, @”oldEmailAddress” ]];  </p>
+<p>This would ultimately boil down to method swizzling that would look like this:</p>
+<p>// This is more pseudo-code than code and meant more as an example than as something that could run. As I finish this, I’ll add it to GitHub and share it here.</p>
+<p>// Move your original setter to a new method  </p>
+<p>class_addMethod(selfMetaClass, @selector(setterForEmail:), (IMP) originalImp, “@”);</p>
+<p>// And replace it with a new method  </p>
+<p>class_replaceMethod(selfMetaClass, @selector(setEmail:), (IMP) validatesEmail, “@”);</p>
+<p>// And implement it  </p>
+<p>void validatesEmail(id self, SEL _cmd, NSString* content) {  </p>
+<p>if ([content isEmail])  </p>
+<p>{  </p>
+<p>[self setterForEmail:content];  </p>
+<p>} else {  </p>
+<p>// tell the user that it failed validation  </p>
+<p>}  </p>
+<p>}</p>
+<h4 id="3-Templates"><a href="#3-Templates" class="headerlink" title="3. Templates"></a>3. Templates</h4><p>A lot of the coding I find myself doing is ridiculously redundant, especially when it comes to setting up views with content based on Core Data. In particular, I often need a table view that lists the results of a query, has built-in search functionality, and loads a view controller that shows a single object whenever a user taps on a specific cell. To stop myself from recreating the wheel, I created templates for the list view and the single view, and use metaprogramming to fill in the classes when needed. Here’s an example of the key functionality:</p>
+<p>// Create a subclass called ReportListViewController, where “Report” is the entity name/model you want to display</p>
+<p>NSString *className = NSStringFromClass([self class]); // converts ReportListViewController to a string  </p>
+<p>NSString *specificClass = [className trimListViewController]; // returns “Report”  </p>
+<p>Now, whenever I want my template to fill in the specific class, I can do that with:</p>
+<p>NSClassFromString(specificClass);</p>
+<p>// For instance, fetching all the records  </p>
+<p>[NSClassFromString(specificClass) all];</p>
+<h4 id="4-Mocking"><a href="#4-Mocking" class="headerlink" title="4. Mocking"></a>4. Mocking</h4><p>Another good use for metaprogramming is mocking properties and method calls during unit testing. Sometimes, you don’t want to fully implement a function in order to get it working in a unit test, so instead, you can use metaprogramming to replace the method with something that returns the value you expect.</p>
+<p>For instance, let’s say you wrote a test that relies on a count method, but you haven’t gotten around to writing it yet. Or, even more likely, you don’t want to have to add a bunch of data to the models so that count returns something meaningful. You want count to return 3, even when it should really be 0.</p>
+<p>To do that, you can use metaprogramming to replace the count method with return 3; . Basically, mocking teaches your methods how to lie appropriately. To implement this, all you need to is create a block with the code you actually want:</p>
+<p>int block = ^{ return 3; }  </p>
+<p>Then, convert that block into an IMP, and feed it to class_replaceMethod :</p>
+<p>IMP blockAsImp = imp_implementationWithBlock(impyBlock);  </p>
+<p>class_replaceMethod(selfMetaClass, @selector(count:), (IMP) blockAsImp, “@”);  </p>
+<p>Et voilà! Now your objects will lie to you.</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/programming/">programming</a><a href="/tags/meta/">meta</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/" data-title="Why Objective-C Metaprogramming Dramatically Improves Your iOS App | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/01/12/create-and-use-custom-view-in-ios/" title="Create and use custom view in iOS">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Create and use custom view in iOS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2013/11/09/install-both-xcode-4-and-xcode-5/"  title="Install both Xcode 4 and Xcode 5">
+ <strong>下一篇：</strong><br/> 
+ <span>Install both Xcode 4 and Xcode 5
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Foreword"><span class="toc-number">1.</span> <span class="toc-text">Foreword</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-Reasons-Why-Objective-C-Can-Be-Painful"><span class="toc-number"></span> <span class="toc-text">Two Reasons Why Objective-C Can Be Painful</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Objective-C-and-Cocoa-Greatly-Restrain-Programmer-Efficiency"><span class="toc-number">1.</span> <span class="toc-text">1. Objective-C (and Cocoa) Greatly Restrain Programmer Efficiency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Objective-C-Often-Lacks-Abstraction"><span class="toc-number">2.</span> <span class="toc-text">2. Objective-C Often Lacks Abstraction</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#So-What-Is-Metaprogramming"><span class="toc-number"></span> <span class="toc-text">So What Is Metaprogramming?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#…And-What-Are-The-Benefits"><span class="toc-number"></span> <span class="toc-text">…And What Are The Benefits?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Less-Bugs"><span class="toc-number">1.</span> <span class="toc-text">1. Less Bugs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Faster-Development"><span class="toc-number">2.</span> <span class="toc-text">2. Faster Development</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-More-Refactored-Code"><span class="toc-number">3.</span> <span class="toc-text">3. More Refactored Code</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Awesome-Examples-of-Metaprogramming"><span class="toc-number"></span> <span class="toc-text">Awesome Examples of Metaprogramming</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Domain-Specific-Languages-dynamic-method-naming"><span class="toc-number">1.</span> <span class="toc-text">1. Domain Specific Languages (dynamic method naming)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Validation"><span class="toc-number">2.</span> <span class="toc-text">2. Validation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Templates"><span class="toc-number">3.</span> <span class="toc-text">3. Templates</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Mocking"><span class="toc-number">4.</span> <span class="toc-text">4. Mocking</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

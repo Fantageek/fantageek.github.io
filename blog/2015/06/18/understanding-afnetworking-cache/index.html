@@ -1,0 +1,684 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Understanding AFNetworking - Cache | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="CachingI’m talking about AFHTTPSessionManager, but the same applies to AFHTTPRequestOperationManager. AFNetworking is just a wrapper around AFURLSession and AFURLConnection, and uses NSURLCache to mak">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understanding AFNetworking - Cache">
+<meta property="og:url" content="http://www.fantageek.com/blog/2015/06/18/understanding-afnetworking-cache/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="CachingI’m talking about AFHTTPSessionManager, but the same applies to AFHTTPRequestOperationManager. AFNetworking is just a wrapper around AFURLSession and AFURLConnection, and uses NSURLCache to mak">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Understanding AFNetworking - Cache">
+<meta name="twitter:description" content="CachingI’m talking about AFHTTPSessionManager, but the same applies to AFHTTPRequestOperationManager. AFNetworking is just a wrapper around AFURLSession and AFURLConnection, and uses NSURLCache to mak">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/06/18/understanding-afnetworking-cache/" title="Understanding AFNetworking - Cache" itemprop="url">Understanding AFNetworking - Cache</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-18T14:29:19.000Z" itemprop="datePublished"> Published 2015-06-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Caching"><span class="toc-number">1.</span> <span class="toc-text">Caching</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Does-AFNetworking-cache"><span class="toc-number">1.1.</span> <span class="toc-text">Does AFNetworking cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Usage"><span class="toc-number">1.2.</span> <span class="toc-text">Usage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSURLSessionConfiguration"><span class="toc-number">1.3.</span> <span class="toc-text">NSURLSessionConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#URLCache"><span class="toc-number">1.3.1.</span> <span class="toc-text">URLCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#requestCachePolicy"><span class="toc-number">1.3.2.</span> <span class="toc-text">requestCachePolicy</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dataTaskWillCacheResponse"><span class="toc-number">1.4.</span> <span class="toc-text">dataTaskWillCacheResponse</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-prevent-caching"><span class="toc-number">1.5.</span> <span class="toc-text">How to prevent caching</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="Caching"><a href="#Caching" class="headerlink" title="Caching"></a>Caching</h2><p>I’m talking about <code>AFHTTPSessionManager</code>, but the same applies to <code>AFHTTPRequestOperationManager</code>. AFNetworking is just a wrapper around <code>AFURLSession</code> and <code>AFURLConnection</code>, and uses <code>NSURLCache</code> to make caching happen</p>
+<h3 id="Does-AFNetworking-cache"><a href="#Does-AFNetworking-cache" class="headerlink" title="Does AFNetworking cache"></a>Does AFNetworking cache</h3><p>AFNetworking only uses NSCache for caching images, as implemented in AFImageCache. Read more <a href="http://blog.originate.com/blog/2014/02/20/afimagecache-vs-nsurlcache/" target="_blank" rel="external">How Does Caching Work in AFNetworking? : AFImageCache &amp; NSUrlCache Explained</a></p>
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>We often usage <code>AFHTTPSessionManager</code> like this<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[AFHTTPSessionManager manager]</span><br></pre></td></tr></table></figure></p>
+<p>Which is using default session configuration<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithSessionConfiguration:(<span class="built_in">NSURLSessionConfiguration</span> *)configuration &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!configuration) &#123;</span><br><span class="line">        configuration = [<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">self</span>.sessionConfiguration = configuration;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="NSURLSessionConfiguration"><a href="#NSURLSessionConfiguration" class="headerlink" title="NSURLSessionConfiguration"></a>NSURLSessionConfiguration</h3><p>The <code>defaultSessionConfiguration</code> has 2 cache properties</p>
+<h4 id="URLCache"><a href="#URLCache" class="headerlink" title="URLCache"></a>URLCache</h4><blockquote><br>  The URL cache for providing cached responses to requests within the session.<br><br>  This property determines the URL cache object used by tasks within sessions based on this configuration.<br>  To disable caching, set this property to nil.<br>  For default sessions, the default value is the shared URL cache object.<br>  For background sessions, the default value is nil.<br>  For ephemeral sessions, the default value is a private cache object that stores data in memory only, and is destroyed when you invalidate the session.<br></blockquote>
+
+
+
+
+
+<h4 id="requestCachePolicy"><a href="#requestCachePolicy" class="headerlink" title="requestCachePolicy"></a>requestCachePolicy</h4><blockquote><br>  A predefined constant that determines when to return a response from the cache.<br><br>  This property determines the request caching policy used by tasks within sessions based on this configuration.<br>  Set this property to one of the constants defined in NSURLRequestCachePolicy to specify whether the cache policy should depend on expiration dates and age, whether the cache should be disabled entirely, and whether the server should be contacted to determine if the content has changed since it was last requested.<br>  The default value is NSURLRequestUseProtocolCachePolicy.<br></blockquote>
+
+
+
+
+
+<h3 id="dataTaskWillCacheResponse"><a href="#dataTaskWillCacheResponse" class="headerlink" title="dataTaskWillCacheResponse"></a>dataTaskWillCacheResponse</h3><blockquote><br>  Sets a block to be executed to determine the caching behavior of a data task<br></blockquote>
+
+
+
+<p>AFNetworking uses this block as a chance to us to intercept to the response</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)URLSession:(<span class="built_in">NSURLSession</span> *)session</span><br><span class="line">          dataTask:(<span class="built_in">NSURLSessionDataTask</span> *)dataTask</span><br><span class="line"> willCacheResponse:(<span class="built_in">NSCachedURLResponse</span> *)proposedResponse</span><br><span class="line"> completionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">NSCachedURLResponse</span> *cachedResponse))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSCachedURLResponse</span> *cachedResponse = proposedResponse;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.dataTaskWillCacheResponse) &#123;</span><br><span class="line">        cachedResponse = <span class="keyword">self</span>.dataTaskWillCacheResponse(session, dataTask, proposedResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (completionHandler) &#123;</span><br><span class="line">        completionHandler(cachedResponse);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Reading <code>URLSession:dataTask:willCacheResponse:completionHandler</code> tells us that</p>
+<blockquote><br>  The session calls this delegate method after the task finishes receiving all of the expected data. If you do not implement this method, the default behavior is to use the caching policy specified in the session’s configuration object. The primary purpose of this method is to prevent caching of specific URLs or to modify the userInfo dictionary associated with the URL response.<br><br>  The session calls this delegate method after the task finishes receiving all of the expected data. If you do not implement this method, the default behavior is to use the caching policy specified in the session’s configuration object. The primary purpose of this method is to prevent caching of specific URLs or to modify the userInfo dictionary associated with the URL response.<br>  - This method is called only if the NSURLProtocol handling the request decides to cache the response. As a rule, responses are cached only when all of the following are true:<br>  - The request is for an HTTP or HTTPS URL (or your own custom networking protocol that supports caching).<br>  - The request was successful (with a status code in the 200–299 range).<br>  - The provided response came from the server, rather than out of the cache.<br>  - The session configuration’s cache policy allows caching.<br>  - The provided NSURLRequest object’s cache policy (if applicable) allows caching.<br>  - The cache-related headers in the server’s response (if present) allow caching.<br>  - The response size is small enough to reasonably fit within the cache. (For example, if you provide a disk cache, the response must be no larger than about 5% of the disk cache size.)<br></blockquote>
+
+
+
+
+
+<h3 id="How-to-prevent-caching"><a href="#How-to-prevent-caching" class="headerlink" title="How to prevent caching"></a>How to prevent caching</h3><p>We can prevent caching by either</p>
+<ol>
+<li>Implement <code>dataTaskWillCacheResponse</code> and return nil</li>
+<li>Set <code>requestCachePolicy</code> to <code>NSURLRequestReloadIgnoringLocalCacheData</code><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];</span><br><span class="line">sessionManager.session.configuration.requestCachePolicy = <span class="built_in">NSURLRequestReloadIgnoringLocalCacheData</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Note that <code>NSURLRequestReloadIgnoringLocalAndRemoteCacheData</code> is not implemented by the OS, and <code>NSURLRequestReloadIgnoringCacheData</code> is just synonym for <code>NSURLRequestReloadIgnoringLocalCacheData</code></p>
+<ol>
+<li><p>Set <code>URLCache</code> to nil</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];</span><br><span class="line">sessionManager.session.configuration.URLCache = <span class="literal">nil</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>NSURLRequest cachePolicy<br>NSURLRequest has <code>cachePolicy</code> that can be used to control caching for specific request</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html#//apple_ref/doc/uid/10000165-BCICJDHA" target="_blank" rel="external">URL Loading System Programming Guide</a></li>
+</ol>
+<ol>
+<li><a href="http://www.raywenderlich.com/59982/nsurlprotocol-tutorial" target="_blank" rel="external">NSURLProtocol Tutorial</a></li>
+</ol>
+<ol>
+<li><a href="http://catthoughts.ghost.io/in-depth-nsurlcache/" target="_blank" rel="external">NSURLCACHE &amp; NSCACHED URLRESPONSE</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/12180727/afnetworking-how-to-know-if-response-is-using-cache-or-not-304-or-200" target="_blank" rel="external">AFNetworking : How to know if response is using cache or not ? 304 or 200</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/25586244/afnetworking-2-0-forced-caching" target="_blank" rel="external">AFNetworking 2.0 - Forced caching</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/24328461/how-to-disable-caching-from-nsurlsessiontask" target="_blank" rel="external">How to disable caching from NSURLSessionTask</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/24281331/afnetworking-different-cache-settings-for-different-content" target="_blank" rel="external">AFNetworking different cache settings for different content</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/20768968/why-is-nsurlsession-dont-use-my-configured-nsurlcache" target="_blank" rel="external">Why is NSURLSession don’t use my configured NSURLCache?</a></li>
+</ol>
+<ol>
+<li><a href="http://nshipster.com/nsurlcache/" target="_blank" rel="external">NSURLCache</a></li>
+</ol>
+<ol>
+<li><a href="https://blackpixel.com/writing/2012/05/caching-and-nsurlconnection.html" target="_blank" rel="external">Caching and NSURLConnection</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2015/06/18/understanding-afnetworking-cache/" data-title="Understanding AFNetworking - Cache | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/06/18/understanding-afnetworking-operation/" title="Understanding AFNetworking - Operation">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Understanding AFNetworking - Operation</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/04/18/opportunities/"  title="Opportunities">
+ <strong>下一篇：</strong><br/> 
+ <span>Opportunities
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Caching"><span class="toc-number">1.</span> <span class="toc-text">Caching</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Does-AFNetworking-cache"><span class="toc-number">1.1.</span> <span class="toc-text">Does AFNetworking cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Usage"><span class="toc-number">1.2.</span> <span class="toc-text">Usage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSURLSessionConfiguration"><span class="toc-number">1.3.</span> <span class="toc-text">NSURLSessionConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#URLCache"><span class="toc-number">1.3.1.</span> <span class="toc-text">URLCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#requestCachePolicy"><span class="toc-number">1.3.2.</span> <span class="toc-text">requestCachePolicy</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dataTaskWillCacheResponse"><span class="toc-number">1.4.</span> <span class="toc-text">dataTaskWillCacheResponse</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-prevent-caching"><span class="toc-number">1.5.</span> <span class="toc-text">How to prevent caching</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">2.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

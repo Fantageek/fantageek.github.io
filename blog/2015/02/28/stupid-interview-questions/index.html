@@ -1,0 +1,617 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Stupid Interview Questions | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="The original is http://exold.com/article/stupid-interview-questions but it seems the site if off, so I made a copy here as a reference for myself and those who need
+I was reading a blog post on some g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stupid Interview Questions">
+<meta property="og:url" content="http://www.fantageek.com/blog/2015/02/28/stupid-interview-questions/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="The original is http://exold.com/article/stupid-interview-questions but it seems the site if off, so I made a copy here as a reference for myself and those who need
+I was reading a blog post on some g">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Stupid Interview Questions">
+<meta name="twitter:description" content="The original is http://exold.com/article/stupid-interview-questions but it seems the site if off, so I made a copy here as a reference for myself and those who need
+I was reading a blog post on some g">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/02/28/stupid-interview-questions/" title="Stupid Interview Questions" itemprop="url">Stupid Interview Questions</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-02-28T16:56:50.000Z" itemprop="datePublished"> Published 2015-02-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+		<p>The original is <a href="http://exold.com/article/stupid-interview-questions" target="_blank" rel="external">http://exold.com/article/stupid-interview-questions</a> but it seems the site if off, so I made a copy here as a reference for myself and those who need</p>
+<p>I was reading a blog post on some guy’s programming interview, where he complained about being asked to write a file copy function. Now, while it’s quite possible to take umbrage at this, if I were in that situation, I’d see it as a chance for some free entertainment <em>cool</em>.</p>
+<p>Q. What do you mean by “copy”?<br>A. Ummm…copy the contents of the file to a new file.<br>Q. What about the date/time stamps?<br>A. No, those don’t need to be copied.<br>Q. Does the result file have to have the same name?<br>A. No.<br>Q. Can it have the same name?<br>A. Umm…no.<br>Q. Do I have to worry about name spoofing? What about the Turkish I?<br>A. Don’t worry about that.<br>Q. Does it have to be in the same location? Note that if it is in the same location, it (probably) can’t have the same name. Unless you copy it to itself (another question…).<br>A. Yes.<br>Q. What about the attributes?<br>A. Make the attributes the same.<br>Q. Should I modify the attributes of the source file? If this file copy is part of a backup or archive operation, it’d probably be a mistake to leave the ‘Archive’ attribute on.<br>A. No, leave them as-is.<br>Q. What if the source file has the Archive attribute off? If I make it off on the new file as well, it could screw up the user’s backup software.<br>A. Just make it the same. I don’t care about the user’s backup software.<br>Q. Well, I’m not sure that’s the best approach to take when thinking about designing software FOR users, but if you say so.<br>A. …<br>Q. What about compression? It’s a file attribute, but the copy destination may not support compression.<br>A. Don’t compress the copy.<br>Q. Even if the source is compressed, and the destination supports compression?<br>A. YES.<br>Q. What about encryption? What if the source file is encrypted, but the destination does not support encryption?<br>A. Don’t encrypt the copy if the destination doesn’t support it.<br>Q. Mmmmm, sorry, don’t mean to digress, but…that could be a serious security hole. Especially if wherever this file copy function ends up supports arbitrary parameters (directly or indirectly).<br>A. Look, just copy the damn file.<br>Q. What about the file creator?<br>A. Don’t care.<br>Q. What about the file owner?<br>A. Don’t care.<br>Q. What about file permissions? Is there a separate way we should handle inherited permissions and assigned permissions?<br>A. Forget the permissions.<br>Q. What operating system will this function be required to run on?<br>A. Windows XP.<br>Q. Home, or Pro, or Media Center, or one or more?<br>A. Pro.<br>Q. What service pack level are we aiming for?<br>A. Service Pack 2.<br>Q. Does that mean we don’t have to support any other SP level?<br>A. Yes, fine.<br>Q. How will the source file name be supplied?<br>A. As a parameter.<br>Q. Is it going to be supplied as a null-terminated string, a counted string, or an object?<br>A. Null-terminated string.<br>Q. Is it possible that a NULL pointer will be passed in?<br>A. No.<br>Q. Is it possible that an empty string will be passed in?<br>A. No.<br>Q. Is it possible that a malformed string will be passed in (e.g., no NULL terminator)?<br>A. No.<br>Q. What encoding will the filename be in?<br>A. Unicode.<br>Q. Sorry, umm…Unicode is not an encoding, really. If we’re using Unicode data, it has to have a specific encoding, like UTF-8, UCS-2, UTF-16, etc.<br>A. Fine. Make it UTF-8.<br>Q. OK. I’d like to note at this point that it’s a bit of a pain to have to transcode UTF-8 to UTF-16 in order to be able to supply it to Windows API calls.<br>A. Fine! UTF-16!<br>Q. Big-endian or little-endian?<br>A. ARGH. Whichever you want!<br>Q. Should we accept relative paths, or only fully-specified paths?<br>A. Only full paths.<br>Q. Are there any characteristics of the paths we are supposed to accept that I can screen the parameters on?<br>A. No. The caller will do all screening of paths and file names.<br>Q. How will the destination file name be generated or supplied?<br>…<br>Q. Am I required to support (or allow) an asynchronous copy operation?<br>A. No.<br>Q. How should I report errors? Exceptions? Error codes?<br>A. Whatever.<br>Q. Should I try and handle exceptions from called functions internally, or let them pass through to the caller?<br>A. Err…let them pass through.<br>Q. What if the destination file already exists?<br>A. It won’t.<br>Q. So the caller ensures that?<br>A. Right, sure.<br>Q. So if it does exist, I can just terminate the program, then? Obviously this would be a violation of preconditions, and who knows WHAT is going on.<br>A. Sure, whatever you want.<br>Q. What about alternate data streams?<br>A. Do whatever you want!<br>Q. Look, I’m sorry if you feel put-upon here, please don’t get hostile. I’m just trying to get a clear picture of the specs I need here. Obviously if I’m going to write a file copy method, instead of using one of the many extant file copy routines in various libraries and frameworks, it’s going to be fulfilling a specialized set of requirements, and I’m going to need to have good answers for these questions. If you want, I can hack something together in a minute, but I’d have to note that there were many unresolved issues as to requirements and purposes.<br>A. AIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</p>
+<p>Mission accomplished. wink</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Programming/">Programming</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2015/02/28/stupid-interview-questions/" data-title="Stupid Interview Questions | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/03/09/recommended-books-for-developers/" title="Recommended books for developers">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Recommended books for developers</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/02/27/programmers/"  title="Programmers">
+ <strong>下一篇：</strong><br/> 
+ <span>Programmers
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

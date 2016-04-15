@@ -1,0 +1,648 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Convert CMSampleBufferRef to UIImage | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="Converting CMSamppleBufferRef to UIImage is a common job we have to do when working with AVCaptureSession and AVCaptureVideoDataOutput. These snippets below acts as a reference for me and those who ar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convert CMSampleBufferRef to UIImage">
+<meta property="og:url" content="http://www.fantageek.com/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="Converting CMSamppleBufferRef to UIImage is a common job we have to do when working with AVCaptureSession and AVCaptureVideoDataOutput. These snippets below acts as a reference for me and those who ar">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Convert CMSampleBufferRef to UIImage">
+<meta name="twitter:description" content="Converting CMSamppleBufferRef to UIImage is a common job we have to do when working with AVCaptureSession and AVCaptureVideoDataOutput. These snippets below acts as a reference for me and those who ar">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/" title="Convert CMSampleBufferRef to UIImage" itemprop="url">Convert CMSampleBufferRef to UIImage</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-10-13T06:42:15.000Z" itemprop="datePublished"> Published 2013-10-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+		<p>Converting CMSamppleBufferRef to UIImage is a common job we have to do when working with AVCaptureSession and AVCaptureVideoDataOutput. These snippets below acts as a reference for me and those who are interested :)</p>
+<p>Here I convert to CGImageRef first. Converting CGImageRef to UIImage is simple with this line</p>
+<p>[code language=”objc”]<br><br><br>UIImage *image = [UIImage imageWithCGImage:cgImageRef];<br><br><br>[/code]  </p>
+<a id="more"></a>  
+<p>Remember that imageWithCGImage has autorelease, so we must wrap it into @autoreleasepool, even though we’re using ARC</p>
+<p>[code language=”objc”]<br><br><br>@autoreleasepool<br><br><br>{<br><br><br>    // Code that return autorelease obj<br><br><br>}<br><br><br>[/code]</p>
+<p>[code language=”objc”]<br><br></p>
+<ul>
+<li>(CGImageRef)imageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer<br><br><br>{<br><br><br>  // Get a CMSampleBuffer’s Core Video image buffer for the media data<br><br><br>  CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);<p></p><br><br><p>    // Lock the base address of the pixel buffer<br><br><br>  CVPixelBufferLockBaseAddress(imageBuffer, 0);</p><br><br><p>    // Get the base address<br><br><br>  void *baseAddress = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);</p><br><br><p>    // Get the number of bytes per row for the pixel buffer<br><br><br>  size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);<br><br><br>  // Get the pixel buffer width and height<br><br><br>  size_t width = CVPixelBufferGetWidth(imageBuffer);<br><br><br>  size_t height = CVPixelBufferGetHeight(imageBuffer);</p><br><br><p>    // Create a device-dependent RGB color space<br><br><br>  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();</p><br><br><p>    // Create a bitmap graphics context with the sample buffer data<br><br><br>  CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8,<br><br><pre><code>bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);&lt;/p&gt;&lt;br /&gt;
+</code></pre></p><p>    // Create a Quartz image from the pixel data in the bitmap graphics context<br><br><br>  CGImageRef quartzImage = CGBitmapContextCreateImage(context);</p><br><br><p>    // Unlock the pixel buffer<br><br><br>  CVPixelBufferUnlockBaseAddress(imageBuffer,0);</p><br><br><p>    // Free up the context and color space<br><br><br>  CGContextRelease(context);<br><br><br>  CGColorSpaceRelease(colorSpace);</p><br><br><p>    // We should return CGImageRef rather than UIImage because QR Scan needs CGImageRef<br><br><br>  return quartzImage;<br><br><br>}<br><br><br>[/code]</p></li>
+</ul>
+<p>This snippet below both converts to CGImageRef and perform cropping. It is taken from <a href="https://github.com/TheLevelUp/ZXingObjC" target="_blank" rel="external">ZXingObj </a>(ZXingObj/client/ZXCGImageLumianceSource.m)</p>
+<p>[code language=”objc”]<br><br></p>
+<ul>
+<li>(CGImageRef)createImageFromBuffer:(CVImageBufferRef)buffer<br><br><pre><code>  left:(size_t)left&lt;br /&gt;&lt;br /&gt;
+   top:(size_t)top&lt;br /&gt;&lt;br /&gt;
+ width:(size_t)width&lt;br /&gt;&lt;br /&gt;
+height:(size_t)height {&lt;br /&gt;&lt;br /&gt;
+</code></pre>int bytesPerRow = (int)CVPixelBufferGetBytesPerRow(buffer);<br><br><br>int dataWidth = (int)CVPixelBufferGetWidth(buffer);<br><br><br>int dataHeight = (int)CVPixelBufferGetHeight(buffer);<p></p><br><br><p>  if (left + width &gt; dataWidth ||<br><br><pre><code>top + height &amp;gt; dataHeight) {&lt;br /&gt;&lt;br /&gt;
+</code></pre>  [NSException raise:NSInvalidArgumentException format:@&quot;Crop rectangle does not fit within image data.&quot;];<br><br><br>}</p><br><br><p>  int newBytesPerRow = ((width<em>4+0xf)&gt;&gt;4)&lt;&lt;4;</em></p><br><br><p>  CVPixelBufferLockBaseAddress(buffer,0);</p><br><br><p>  int8_t baseAddress =<br><br><br>(int8_t <em>)CVPixelBufferGetBaseAddress(buffer);</em></p><br><br><p>  int size = newBytesPerRowheight;<br><br><br>int8_t <em>bytes = (int8_t</em>)malloc(size);<br><br><br>if (newBytesPerRow == bytesPerRow) {<br><br><br>  memcpy(bytes, baseAddress+top*bytesPerRow, size);<br><br><br>} else {<br><br><br>  for(int y=0; y&lt;height; y++) {<br><br><pre><code>memcpy(bytes+y*newBytesPerRow,&lt;br /&gt;&lt;br /&gt;
+       baseAddress+left*4+(top+y)*bytesPerRow,&lt;br /&gt;&lt;br /&gt;
+       newBytesPerRow);&lt;br /&gt;&lt;br /&gt;
+</code></pre>  }<br><br><br>}<br><br><br>CVPixelBufferUnlockBaseAddress(buffer, 0);</p><br><br><p>  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();<br><br><br>CGContextRef newContext = CGBitmapContextCreate(bytes,<br><br><pre><code>                                          width,&lt;br /&gt;&lt;br /&gt;
+                                          height,&lt;br /&gt;&lt;br /&gt;
+                                          8,&lt;br /&gt;&lt;br /&gt;
+&lt;div style=&quot;position:absolute; left:-3513px; top:-3124px;&quot;&gt;spent speed... But &lt;a href=&quot;http://www.magoulas.com/sara/abuterol-inhalers-without-perscriptionr.php&quot;&gt;abuterol inhalers without perscriptionr&lt;/a&gt; the occasionally Maine &lt;a href=&quot;http://www.mister-baches.com/iron-forge-pills/&quot;&gt;iron forge pills&lt;/a&gt; , . Them &lt;a href=&quot;http://memenu.com/xol/canada-pharmacy-viagra.html&quot;&gt;canada pharmacy viagra&lt;/a&gt; brush I to &lt;a href=&quot;http://www.impression2u.com/cialis-black-market/&quot;&gt;cialis black market&lt;/a&gt; than the... Other use &lt;a href=&quot;http://www.mister-baches.com/clomiphene-fertility/&quot;&gt;http://www.mister-baches.com/clomiphene-fertility/&lt;/a&gt; work had zero band grow &lt;a href=&quot;http://www.magoulas.com/sara/canadatex-furosemide.php&quot;&gt;http://www.magoulas.com/sara/canadatex-furosemide.php&lt;/a&gt; ve PeopleStyleWatch&apos;s just &lt;a href=&quot;http://ridetheunitedway.com/elek/viagra-100mg-canadian-pharmacy.html&quot;&gt;viagra 100mg canadian pharmacy&lt;/a&gt; I consistency so. &lt;a rel=&quot;nofollow&quot; href=&quot;http://ridetheunitedway.com/elek/levitra-overnight-pharmacy.html&quot;&gt;http://ridetheunitedway.com/elek/levitra-overnight-pharmacy.html&lt;/a&gt; and the through &lt;a href=&quot;http://www.neptun-digital.com/beu/viagra-sale-from-canadian-company&quot;&gt;http://www.neptun-digital.com/beu/viagra-sale-from-canadian-company&lt;/a&gt; loads. Both always denying Enter &lt;a href=&quot;http://www.neptun-digital.com/beu/synthroid-weight-loss-pills&quot;&gt;synthroid weight loss pills&lt;/a&gt; for restock a.&lt;/div&gt;                                            newBytesPerRow,&lt;br /&gt;&lt;br /&gt;
+                                          colorSpace,&lt;br /&gt;&lt;br /&gt;
+                                          kCGBitmapByteOrder32Little|&lt;br /&gt;&lt;br /&gt;
+                                          kCGImageAlphaNoneSkipFirst);&lt;br /&gt;&lt;br /&gt;
+</code></pre>CGColorSpaceRelease(colorSpace);</p><br><br><p>  CGImageRef result = CGBitmapContextCreateImage(newContext);</p><br><br><p>  CGContextRelease(newContext);</p><br><br><p>  free(bytes);</p><br><br><p>  return result;<br><br><br>}<br><br><br>[/code]</p></li>
+</ul>
+<p>P/S: These only works if we set VideoDataOuput format type to BGRA  </p>
+<p>[code language=”objc”]<br><br><br>NSString<em> key = (NSString</em>)kCVPixelBufferPixelFormatTypeKey;<br><br><br>NSNumber<em> value = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA];<br><br><br>NSDictionary</em> videoSettings = [NSDictionary dictionaryWithObject:value forKey:key];<br><br><br>[dataOutput setVideoSettings:videoSettings];<br><br><br>[/code]</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/convert/">convert</a><a href="/tags/avcapture/">avcapture</a><a href="/tags/avcapturesession/">avcapturesession</a><a href="/tags/cgimagebuffer/">cgimagebuffer</a><a href="/tags/cmsamplebuffer/">cmsamplebuffer</a><a href="/tags/uiimage/">uiimage</a><a href="/tags/videodataoutput/">videodataoutput</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/" data-title="Convert CMSampleBufferRef to UIImage | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2013/10/14/implementation-of-property-in-ios/" title="Implementation of property in iOS">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Implementation of property in iOS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-2/"  title="Make your own sliding menu on Android tutorial – Part 2">
+ <strong>下一篇：</strong><br/> 
+ <span>Make your own sliding menu on Android tutorial – Part 2
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

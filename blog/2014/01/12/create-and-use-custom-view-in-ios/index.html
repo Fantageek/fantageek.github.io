@@ -1,0 +1,784 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Create and use custom view in iOS | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="This maybe old to most of you, but completely new to me, I just met iOS several months ago and it is a little late.
+The problem today is how to do with UI reusability. During the development, we find">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Create and use custom view in iOS">
+<meta property="og:url" content="http://www.fantageek.com/blog/2014/01/12/create-and-use-custom-view-in-ios/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="This maybe old to most of you, but completely new to me, I just met iOS several months ago and it is a little late.
+The problem today is how to do with UI reusability. During the development, we find">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Create and use custom view in iOS">
+<meta name="twitter:description" content="This maybe old to most of you, but completely new to me, I just met iOS several months ago and it is a little late.
+The problem today is how to do with UI reusability. During the development, we find">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/01/12/create-and-use-custom-view-in-ios/" title="Create and use custom view in iOS" itemprop="url">Create and use custom view in iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-01-12T02:57:18.000Z" itemprop="datePublished"> Published 2014-01-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CREATE-CUSTOM-VIEW-IN-CODE"><span class="toc-number">1.</span> <span class="toc-text">CREATE CUSTOM VIEW IN CODE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-CodeCustomView-IN-CODE"><span class="toc-number">1.1.</span> <span class="toc-text">USE CodeCustomView IN CODE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-CodeCustomView-IN-NIB"><span class="toc-number">1.2.</span> <span class="toc-text">USE CodeCustomView IN NIB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CREATE-CUSTOM-VIEW-IN-XIB"><span class="toc-number">2.</span> <span class="toc-text">CREATE CUSTOM VIEW IN XIB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-NibCustomView-IN-CODE"><span class="toc-number">2.1.</span> <span class="toc-text">USE NibCustomView IN CODE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-NibCustomView-IN-NIB"><span class="toc-number">2.2.</span> <span class="toc-text">USE NibCustomView IN NIB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-talkative"><span class="toc-number">3.</span> <span class="toc-text">More talkative</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#awakeFromNib"><span class="toc-number">3.1.</span> <span class="toc-text">awakeFromNib</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Issues-with-Initializers"><span class="toc-number">3.2.</span> <span class="toc-text">Issues with Initializers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">3.3.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>This maybe old to most of you, but completely new to me, I just met iOS several months ago and it is a little late.</p>
+<p>The problem today is how to do with UI reusability. During the development, we find the need to create custom views and want to reuse them everywhere we need to, whether in code or in another nib. This post is particular for the use with Nib, but I’ll recap the use with code as well, and from a pragmatic point of view :D</p>
+<p>The example will be about creating a Custom View (containing a Button and a Label) and reuse that custom view in the View Controller</p>
+<a id="more"></a>
+<h2 id="CREATE-CUSTOM-VIEW-IN-CODE"><a href="#CREATE-CUSTOM-VIEW-IN-CODE" class="headerlink" title="CREATE CUSTOM VIEW IN CODE"></a>CREATE CUSTOM VIEW IN CODE</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CodeCustomView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="built_in">UIButton</span> *button;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="built_in">UILabel</span> *label;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CodeCustomView</span></span></span><br><span class="line">- (<span class="keyword">void</span>)baseInit</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    <span class="built_in">UILabel</span> *label = [[<span class="built_in">UILabel</span> alloc] init];</span><br><span class="line">    [<span class="keyword">self</span> addSubview:button];</span><br><span class="line">    [<span class="keyword">self</span> addSubview:label];</span><br><span class="line">    <span class="keyword">self</span>.button = button;</span><br><span class="line">    <span class="keyword">self</span>.label = label;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">id</span>)initWithFrame:(<span class="built_in">CGRect</span>)frame</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> initWithFrame:frame];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        [<span class="keyword">self</span> baseInit];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">id</span>)initWithCoder:(<span class="built_in">NSCoder</span> *)aDecoder</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> initWithCoder:aDecoder];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        [<span class="keyword">self</span> baseInit];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here the baseInit acts as init helper method, this is where the Button and Label get allocated. The initWithFrame and initWithCoder allows the CodeCustomView to be used in code and xib as well.</p>
+<h3 id="USE-CodeCustomView-IN-CODE"><a href="#USE-CodeCustomView-IN-CODE" class="headerlink" title="USE CodeCustomView IN CODE"></a>USE CodeCustomView IN CODE</h3><p>In the ViewController ‘s viewDidLoad method</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    CodeCustomView *codeCustomView = [[CodeCustomView alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>)];</span><br><span class="line">    <span class="built_in">NSAssert</span>(codeCustomView.button, <span class="string">@""</span>);</span><br><span class="line">    <span class="built_in">NSAssert</span>(codeCustomView.label, <span class="string">@""</span>);</span><br><span class="line">    <span class="keyword">self</span>.codeCustomView = codeCustomView;</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:codeCustomView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Every new view object you define should include a custom initWithFrame: initializer method. This method is responsible for initializing the class at creation time and putting your view object into a known state. You use this method when creating instances of your view programmatically in your code.</p>
+</blockquote>
+<p>The CodeCustomView ‘s initWithFrame method is called, and its baseInit is called. It is the baseInit that the Button and Label get allocated, hence the NSAssert will succeed</p>
+<h3 id="USE-CodeCustomView-IN-NIB"><a href="#USE-CodeCustomView-IN-NIB" class="headerlink" title="USE CodeCustomView IN NIB"></a>USE CodeCustomView IN NIB</h3><blockquote>
+<p>When you create a view controller in a storyboard, the attributes you configure in Interface Builder are serialized into an archive. Later, when the view controller is instantiated, this archive is loaded into memory and processed. The result is a set of objects whose attributes match those you set in Interface Builder. The archive is loaded by calling the view controller’s initWithCoder: method. Then, the awakeFromNib method is called on any object that implements that method. You use this method to perform any configuration steps that require other objects to already be instantiated</p>
+</blockquote>
+<p>Do these steps to add the CodeCustomView to the ViewController view in Nib</p>
+<ol>
+<li>Open ViewController.xib</li>
+</ol>
+<ol>
+<li>Drag a UIView to the ViewController’s view</li>
+</ol>
+<ol>
+<li>With that UIView selected, open Identity Inspector and specify CodeCustomView as its custom class</li>
+</ol>
+<ol>
+<li>Connect that UIView (CodeCustomView) to the ViewController ‘s codeCustomView property</li>
+</ol>
+<p>For the first time the ViewController ‘s view is accessed, the ViewController will unarchive its associated ViewController.xib file, use NSCoder mechanism to create the UI objects in that Xib file. In this process, the CodeCustomView ‘s initWithCoder method is called</p>
+<p>You can check whether the codeCustomView is OK in the ViewController ‘s viewDidLoad method, which is called when the ViewController ‘s view (and its subviews) is completely loaded from the Xib file</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.codeCustomView.button, <span class="string">@""</span>);</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.codeCustomView.label, <span class="string">@""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Wonder why the NSAssert succeeded ?</p>
+<blockquote>
+<p>If you plan to load instances of your custom view class from a nib file, you should be aware that in iOS, the nib-loading code does not use the initWithFrame: method to instantiate new view objects. Instead, it uses the initWithCoder: method that is part of the NSCoding protocol.</p>
+<p>Even if your view adopts the NSCoding protocol, Interface Builder does not know about your view’s custom properties and therefore does not encode those properties into the nib file. As a result, your own initWithCoder: method should perform whatever initialization code it can to put the view into a known state. You can also implement the awakeFromNib method in your view class and use that method to perform additional initialization</p>
+</blockquote>
+<p>The Nib loading process is something like this (from pragmatic point of view)</p>
+<ol>
+<li>Create the CodeCustomView</li>
+</ol>
+<ol>
+<li>Call its initWithCoder</li>
+</ol>
+<ol>
+<li>Try to create objects Subview in the UIView, but since the UIView is empty, nothing happens</li>
+</ol>
+<p>Since the CodeCustomView ‘s button and label properties are consider “custom properties”, in the CodeCustomView ‘s initWithCoder method, we call baseInit to allocate those properties</p>
+<p>Remember that we added a blank UIView and specified CodeCustomView as its custom class. That blank UIView makes the Nib loading process create a “placeholder” CodeCustomView object that contains nothing. But with intercepting the initWithCoder to call the baseInit, the Button and Label get allocated.</p>
+<h2 id="CREATE-CUSTOM-VIEW-IN-XIB"><a href="#CREATE-CUSTOM-VIEW-IN-XIB" class="headerlink" title="CREATE CUSTOM VIEW IN XIB"></a>CREATE CUSTOM VIEW IN XIB</h2><p>To create Custom View in Xib, we first declare a custom class and specify that class for the Xib</p>
+<ol>
+<li>Go to File -&gt; New File -&gt; Cocoa Touch -&gt; Objective C class</li>
+</ol>
+<ol>
+<li>Create a NibCustomView class which is a subclass of UIView</li>
+</ol>
+<ol>
+<li>Declare the properties to be connected in Xib</li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NibCustomView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIButton</span> *button;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UILabel</span> *label;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NibCustomView</span></span></span><br><span class="line">- (<span class="keyword">id</span>)initWithCoder:(<span class="built_in">NSCoder</span> *)aDecoder</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> initWithCoder:aDecoder];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> ) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Go to File -&gt; New -&gt; File -&gt; User Interface -&gt; Empty (we don’t need Files’s owner)</li>
+</ol>
+<ol>
+<li>Name that NibCustomView.xib</li>
+</ol>
+<ol>
+<li>Drag the UIView to the canvas, specify NibCustomView as its custom class</li>
+</ol>
+<ol>
+<li>Drag UIButton and UILabel to that UIView</li>
+</ol>
+<ol>
+<li>Connect those UIButton and UILabel to the properties of the NibCustomView class</li>
+</ol>
+<h3 id="USE-NibCustomView-IN-CODE"><a href="#USE-NibCustomView-IN-CODE" class="headerlink" title="USE NibCustomView IN CODE"></a>USE NibCustomView IN CODE</h3><p>The sample code to create NibCustomView in code is below, you may already know that</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSArray</span> *elementsInNib = [[<span class="built_in">NSBundle</span> mainBundle] loadNibNamed:<span class="string">@"NibCustomView"</span> owner:Nil options:<span class="literal">nil</span>];</span><br><span class="line">    NibCustomView *nibCustomView = [elementsInNib lastObject];</span><br><span class="line">    <span class="keyword">self</span>.nibCustomView = nibCustomView;</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:nibCustomView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The Nib loading process for the NibCustomView is something like this</p>
+<ol>
+<li>Create the NibCustomView</li>
+</ol>
+<ol>
+<li>Call its initWithCoder method</li>
+</ol>
+<ol>
+<li>Create the UILabel and UIButton, and connect them to the previous created NibCustomView ‘s properties</li>
+</ol>
+<h3 id="USE-NibCustomView-IN-NIB"><a href="#USE-NibCustomView-IN-NIB" class="headerlink" title="USE NibCustomView IN NIB"></a>USE NibCustomView IN NIB</h3><p>Now comes to the hard part and the main reason for this post. I consider it hard because it doesn’t seem ease at first (compared to how I usually use Custom View in Android and Windows Phone)</p>
+<p>To add the NibCustomView to the ViewController view in Nib, we usually do this</p>
+<ol>
+<li>Open ViewController.xib</li>
+</ol>
+<ol>
+<li>Drag a UIView as a subview of the ViewController ‘s view</li>
+</ol>
+<ol>
+<li>Specify NibCustomView as a custom class for that UIView</li>
+</ol>
+<ol>
+<li>Connect that UIView to the nibCustomView IBOutlet property of the ViewController</li>
+</ol>
+<p>Now inspect whether it works</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.nibCustomView.button, <span class="string">@""</span>);</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.nibCustomView.label, <span class="string">@""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The NSAssert will fail. Why ?</p>
+<p>As previously said, when the ViewController ‘s view is accessed for the first time, it will trigger the ViewController ‘s Nib loading process to create the view for it, and the NibCustomView is created in this process, but not the way we want, let’s see</p>
+<ol>
+<li>This Nib loading process create the NibCustomView object</li>
+</ol>
+<ol>
+<li>Calls its initWithCoder method</li>
+</ol>
+<ol>
+<li>Do nothing (it doesn’t deal with the NibCustomView.xib, but with the blank UIView we just added to the ViewController’s view, that’s why the Button and Label properties are nil)</li>
+</ol>
+<p>We call this NibCustomView object “placeholder”, since it is created with a blank UIView. We want the “real thing”, which is created with its according Nib file</p>
+<p>The solution here is to use <strong>awakeAfterUsingCoder</strong>, which is called after initWithCoder</p>
+<blockquote>
+<p>Overridden by subclasses to substitute another object in place of the object that was decoded and subsequently received this message.</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)awakeAfterUsingCoder:(<span class="built_in">NSCoder</span> *)aDecoder</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span>.subviews count] == <span class="number">0</span>) &#123; <span class="comment">// (1)</span></span><br><span class="line">        <span class="built_in">NSArray</span> *elementsInNib = [[<span class="built_in">NSBundle</span> mainBundle] loadNibNamed:<span class="string">@"NibCustomView"</span> owner:Nil options:<span class="literal">nil</span>]; <span class="comment">// (2)</span></span><br><span class="line">        NibCustomView *realThing = [elementsInNib lastObject];</span><br><span class="line">        realThing.frame = <span class="keyword">self</span>.frame; <span class="comment">// (3)</span></span><br><span class="line">        realThing.autoresizingMask = <span class="keyword">self</span>.autoresizingMask;</span><br><span class="line">        <span class="keyword">return</span> realThing;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here self is the “placeholder” object that the Nib loading process created, we want to substitute it with “realThing”</p>
+<ol>
+<li>(1) This check is to avoid infinite recursive call to awakeAfterUsingCoder, because loadNibNamed also calls awakeAfterUsingCoder. When the ViewController ‘s Nib loading process call this awakeAfterUsingCoder, the “placeholder” ‘s subviews count is 0</li>
+</ol>
+<ol>
+<li>(2) the loadNibNamed agains call awakeAfterUsingCoder, but the realThing ‘s subviews is 2 (there are Button and Label). This way awakeAfterUsingCoder is guaranteed to be called once</li>
+</ol>
+<ol>
+<li>(3) The “placeholder” object does not contains any subviews, but during the Nib loading process, the ViewController assigns to it frame, autoresizingMask, …These properties are useful, we need to reassign them to realThing</li>
+</ol>
+<p>Try to check again</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.nibCustomView.button, <span class="string">@""</span>);</span><br><span class="line">    <span class="built_in">NSAssert</span>(<span class="keyword">self</span>.nibCustomView.label, <span class="string">@""</span>);&lt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>All NSAssert succeed. Yeah !</p>
+<h2 id="More-talkative"><a href="#More-talkative" class="headerlink" title="More talkative"></a>More talkative</h2><h3 id="awakeFromNib"><a href="#awakeFromNib" class="headerlink" title="awakeFromNib"></a>awakeFromNib</h3><p>This method will be called for both “placeholder” and “real thing”, in this order</p>
+<ol>
+<li>initWithCoder</li>
+</ol>
+<ol>
+<li>awakeAfterUsingCoder</li>
+</ol>
+<ol>
+<li>awakeFromNib</li>
+</ol>
+<blockquote>
+<p>The nib-loading infrastructure sends an awakeFromNib message to each object recreated from a nib archive, but only after all the objects in the archive have been loaded and initialized. When an object receives an awakeFromNib message, it is guaranteed to have all its outlet and action connections already established.</p>
+<p>You must call the super implementation of awakeFromNib to give parent classes the opportunity to perform any additional initialization they require. Although the default implementation of this method does nothing, many UIKit classes provide non-empty implementations. You may call the super implementation at any point during your own awakeFromNib method.</p>
+</blockquote>
+<h3 id="Issues-with-Initializers"><a href="#Issues-with-Initializers" class="headerlink" title="Issues with Initializers"></a>Issues with Initializers</h3><p>Some memory recalled for <a href="https://developer.apple.com/library/ios/documentation/general/conceptual/CocoaEncyclopedia/Initialization/Initialization.html" target="_blank" rel="external">Issues with Initializers</a></p>
+<blockquote>
+<p>Although init… methods are required by their method signature to return an object, that object is not necessarily the one that was most recently allocated—the receiver of the init… message. In other words, the object you get back from an initializer might not be the one you thought was being initialized.</p>
+<p>Two conditions prompt the return of something other than the just-allocated object. The first involves two related situations: when there must be a singleton instance or when the defining attribute of an object must be unique. Some Cocoa classes—NSWorkspace, for instance—allow only one instance in a program; a class in such a case must ensure (in an initializer or, more likely, in a class factory method) that only one instance is created, returning this instance if there is any further request for a new one.</p>
+</blockquote>
+<p>awakeAferUsingCoder is an example of the issue. Here we want to create and return “real thing” object instead of return the nonsense “placeholder”</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><p><a href="https://blog.compeople.eu/apps/?p=97" target="_blank" rel="external">Load custom views from a Nib</a>  </p>
+</li>
+<li><p><a href="http://nscookbook.com/2013/01/recipe-6-creating-a-custom-uiview-using-a-nib/" target="_blank" rel="external">iOS Programming Recipe 6: Creating a custom UIView using a Nib</a>  </p>
+</li>
+<li><p><a href="https://blog.compeople.eu/apps/?p=142" target="_blank" rel="external">Embedding custom-view Nibs in another Nib: Towards the holy grail</a>  </p>
+</li>
+<li><p><a href="http://www.raywenderlich.com/1768/uiview-tutorial-for-ios-how-to-make-a-custom-uiview-in-ios-5-a-5-star-rating-view" target="_blank" rel="external">How To Make a Custom UIView in iOS 5: A 5 Star Rating View</a>  </p>
+</li>
+<li><p><a href="https://developer.apple.com/library/ios/documentation/windowsviews/conceptual/viewpg_iphoneos/CreatingViews/CreatingViews.html" target="_blank" rel="external">View Programming Guide for iOS</a>  </p>
+</li>
+<li><p><a href="https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/ViewLoadingandUnloading/ViewLoadingandUnloading.html" target="_blank" rel="external">View Controller Programming Guide for iOS</a></p>
+</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Warning-error-log-has-been-disabled-for-security-reasons-in-home-fantagee-public-html-wp-includes-wp-db-php-on-line-1200/">Warning: error_log() has been disabled for security reasons in /home/fantagee/public_html/wp-includes/wp-db.php on line 1200</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2014/01/12/create-and-use-custom-view-in-ios/" data-title="Create and use custom view in iOS | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/01/28/how-i-learn-ios/" title="How I learnt iOS">
+  <strong>上一篇：</strong><br/>
+  <span>
+  How I learnt iOS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/"  title="Why Objective-C Metaprogramming Dramatically Improves Your iOS App">
+ <strong>下一篇：</strong><br/> 
+ <span>Why Objective-C Metaprogramming Dramatically Improves Your iOS App
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CREATE-CUSTOM-VIEW-IN-CODE"><span class="toc-number">1.</span> <span class="toc-text">CREATE CUSTOM VIEW IN CODE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-CodeCustomView-IN-CODE"><span class="toc-number">1.1.</span> <span class="toc-text">USE CodeCustomView IN CODE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-CodeCustomView-IN-NIB"><span class="toc-number">1.2.</span> <span class="toc-text">USE CodeCustomView IN NIB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CREATE-CUSTOM-VIEW-IN-XIB"><span class="toc-number">2.</span> <span class="toc-text">CREATE CUSTOM VIEW IN XIB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-NibCustomView-IN-CODE"><span class="toc-number">2.1.</span> <span class="toc-text">USE NibCustomView IN CODE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USE-NibCustomView-IN-NIB"><span class="toc-number">2.2.</span> <span class="toc-text">USE NibCustomView IN NIB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-talkative"><span class="toc-number">3.</span> <span class="toc-text">More talkative</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#awakeFromNib"><span class="toc-number">3.1.</span> <span class="toc-text">awakeFromNib</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Issues-with-Initializers"><span class="toc-number">3.2.</span> <span class="toc-text">Issues with Initializers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">3.3.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

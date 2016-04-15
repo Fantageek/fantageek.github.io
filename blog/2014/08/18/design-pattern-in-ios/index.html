@@ -1,0 +1,684 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Design Pattern in iOS | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="When talking about design pattern, I very much like this saying
+Separating what changes from what stays the same
+
+
+
+
+Normally, I tend to think of software engineer as world creator, and classes are ci">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Design Pattern in iOS">
+<meta property="og:url" content="http://www.fantageek.com/blog/2014/08/18/design-pattern-in-ios/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="When talking about design pattern, I very much like this saying
+Separating what changes from what stays the same
+
+
+
+
+Normally, I tend to think of software engineer as world creator, and classes are ci">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Design Pattern in iOS">
+<meta name="twitter:description" content="When talking about design pattern, I very much like this saying
+Separating what changes from what stays the same
+
+
+
+
+Normally, I tend to think of software engineer as world creator, and classes are ci">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/08/18/design-pattern-in-ios/" title="Design Pattern in iOS" itemprop="url">Design Pattern in iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-08-18T06:57:14.000Z" itemprop="datePublished"> Published 2014-08-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Creational-design-patterns"><span class="toc-number">1.</span> <span class="toc-text">Creational design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-Factory"><span class="toc-number">1.1.</span> <span class="toc-text">Abstract Factory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Builder"><span class="toc-number">1.2.</span> <span class="toc-text">Builder</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Factory-Method"><span class="toc-number">1.3.</span> <span class="toc-text">Factory Method</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Object-Pool"><span class="toc-number">1.4.</span> <span class="toc-text">Object Pool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prototype"><span class="toc-number">1.5.</span> <span class="toc-text">Prototype</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Singleton"><span class="toc-number">1.6.</span> <span class="toc-text">Singleton</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Structural-design-patterns"><span class="toc-number">2.</span> <span class="toc-text">Structural design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Adapter"><span class="toc-number">2.1.</span> <span class="toc-text">Adapter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Bridge"><span class="toc-number">2.2.</span> <span class="toc-text">Bridge</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Composite"><span class="toc-number">2.3.</span> <span class="toc-text">Composite</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Decorator"><span class="toc-number">2.4.</span> <span class="toc-text">Decorator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Facade"><span class="toc-number">2.5.</span> <span class="toc-text">Facade</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flyweight"><span class="toc-number">2.6.</span> <span class="toc-text">Flyweight</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Private-Class-Data"><span class="toc-number">2.7.</span> <span class="toc-text">Private Class Data</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxy"><span class="toc-number">2.8.</span> <span class="toc-text">Proxy</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Behavioral-design-patterns"><span class="toc-number">3.</span> <span class="toc-text">Behavioral design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chain-of-responsibility"><span class="toc-number">3.1.</span> <span class="toc-text">Chain of responsibility</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Command"><span class="toc-number">3.2.</span> <span class="toc-text">Command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Interpreter"><span class="toc-number">3.3.</span> <span class="toc-text">Interpreter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Iterator"><span class="toc-number">3.4.</span> <span class="toc-text">Iterator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mediator"><span class="toc-number">3.5.</span> <span class="toc-text">Mediator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memento"><span class="toc-number">3.6.</span> <span class="toc-text">Memento</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Null-Object"><span class="toc-number">3.7.</span> <span class="toc-text">Null Object</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Observer"><span class="toc-number">3.8.</span> <span class="toc-text">Observer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#State"><span class="toc-number">3.9.</span> <span class="toc-text">State</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Strategy"><span class="toc-number">3.10.</span> <span class="toc-text">Strategy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Template-method"><span class="toc-number">3.11.</span> <span class="toc-text">Template method</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Visitor"><span class="toc-number">3.12.</span> <span class="toc-text">Visitor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Misc"><span class="toc-number">4.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MVC"><span class="toc-number">4.1.</span> <span class="toc-text">MVC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MVVM"><span class="toc-number">4.2.</span> <span class="toc-text">MVVM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Specification"><span class="toc-number">4.3.</span> <span class="toc-text">Specification</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lazy-initialization"><span class="toc-number">4.4.</span> <span class="toc-text">Lazy initialization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Receptionist"><span class="toc-number">4.5.</span> <span class="toc-text">Receptionist</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multiton"><span class="toc-number">4.6.</span> <span class="toc-text">Multiton</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reactor"><span class="toc-number">4.7.</span> <span class="toc-text">Reactor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reference"><span class="toc-number">4.8.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>When talking about design pattern, I very much like this saying</p>
+<blockquote>Separating what changes from what stays the same</blockquote>
+
+
+
+
+<p>Normally, I tend to think of software engineer as world creator, and classes are citizen. You should assign each person small and specific tasks, don’t let him do too much. Make him loosely coupled with others. Also, when you create another world, you should be able to call the experienced citizen (code resuse)</p>
+<a id="more"></a>
+<p>I will list here some examples where iOS makes use of design patterns. This list follows <a href="http://sourcemaking.com/design_patterns" target="_blank" rel="external">SourceMaking list</a></p>
+<h3 id="Creational-design-patterns"><a href="#Creational-design-patterns" class="headerlink" title="Creational design patterns"></a>Creational design patterns</h3><h4 id="Abstract-Factory"><a href="#Abstract-Factory" class="headerlink" title="Abstract Factory"></a>Abstract Factory</h4><p>Creates an instance of several families of classes<br>Class Cluster (NSArray, NSDictionary, …)</p>
+<h4 id="Builder"><a href="#Builder" class="headerlink" title="Builder"></a>Builder</h4><p>Separates object construction from its representation<br>NSDateComponents<br>NSURLComponents</p>
+<h4 id="Factory-Method"><a href="#Factory-Method" class="headerlink" title="Factory Method"></a>Factory Method</h4><p>Creates an instance of several derived classes<br>[NSLayoutConstraint constraintWithItems…]</p>
+<h4 id="Object-Pool"><a href="#Object-Pool" class="headerlink" title="Object Pool"></a>Object Pool</h4><p>Avoid expensive acquisition and release of resources by recycling objects that are no longer in use<br>dequeueReusableCellWithIdentifier</p>
+<h4 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h4><p>A fully initialized instance to be copied or cloned<br>NSCopying</p>
+<h4 id="Singleton"><a href="#Singleton" class="headerlink" title="Singleton"></a>Singleton</h4><p>A class of which only a single instance can exist<br>[UIApplication sharedApplication]<br>[NSFileManager defaultManager]</p>
+<h3 id="Structural-design-patterns"><a href="#Structural-design-patterns" class="headerlink" title="Structural design patterns"></a>Structural design patterns</h3><h4 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h4><p>Match interfaces of different classes</p>
+<h4 id="Bridge"><a href="#Bridge" class="headerlink" title="Bridge"></a>Bridge</h4><p>Separates an object’s interface from its implementation</p>
+<h4 id="Composite"><a href="#Composite" class="headerlink" title="Composite"></a>Composite</h4><p>A tree structure of simple and composite objects<br>UIView<br>NSCompoundPredicate<br>UIDynamicBehavior</p>
+<h4 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h4><p>Add responsibilities to objects dynamically<br>Category<br>UITableViewDelegate</p>
+<h4 id="Facade"><a href="#Facade" class="headerlink" title="Facade"></a>Facade</h4><p>A single class that represents an entire subsystem</p>
+<h4 id="Flyweight"><a href="#Flyweight" class="headerlink" title="Flyweight"></a>Flyweight</h4><p>A fine-grained instance used for efficient sharing</p>
+<h4 id="Private-Class-Data"><a href="#Private-Class-Data" class="headerlink" title="Private Class Data"></a>Private Class Data</h4><p>Restricts accessor/mutator access</p>
+<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>An object representing another object<br>NSProxy<br>UIAppearance</p>
+<h3 id="Behavioral-design-patterns"><a href="#Behavioral-design-patterns" class="headerlink" title="Behavioral design patterns"></a>Behavioral design patterns</h3><h4 id="Chain-of-responsibility"><a href="#Chain-of-responsibility" class="headerlink" title="Chain of responsibility"></a>Chain of responsibility</h4><p>A way of passing a request between a chain of objects<br>UIResponder</p>
+<h4 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h4><p>Encapsulate a command request as an object<br>NSInvocation</p>
+<h4 id="Interpreter"><a href="#Interpreter" class="headerlink" title="Interpreter"></a>Interpreter</h4><p>A way to include language elements in a program</p>
+<h4 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h4><p>Sequentially access the elements of a collection<br>NSEnumerator</p>
+<h4 id="Mediator"><a href="#Mediator" class="headerlink" title="Mediator"></a>Mediator</h4><p>Defines simplified communication between classes<br>UIPresentationController</p>
+<h4 id="Memento"><a href="#Memento" class="headerlink" title="Memento"></a>Memento</h4><p>Capture and restore an object’s internal state<br>NSKeyedArchiver</p>
+<h4 id="Null-Object"><a href="#Null-Object" class="headerlink" title="Null Object"></a>Null Object</h4><p>Designed to act as a default value of an object</p>
+<h4 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h4><p>A way of notifying change to a number of classes<br>KVO<br>NSNotificationCenter</p>
+<h4 id="State"><a href="#State" class="headerlink" title="State"></a>State</h4><p>Alter an object’s behavior when its state changes</p>
+<h4 id="Strategy"><a href="#Strategy" class="headerlink" title="Strategy"></a>Strategy</h4><p>Encapsulates an algorithm inside a class</p>
+<h4 id="Template-method"><a href="#Template-method" class="headerlink" title="Template method"></a>Template method</h4><p>Defer the exact steps of an algorithm to a subclass</p>
+<h4 id="Visitor"><a href="#Visitor" class="headerlink" title="Visitor"></a>Visitor</h4><p>Defines a new operation to a class without change</p>
+<h3 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h3><h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>Model-View-Controller</p>
+<h4 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h4><p>Model-View-ViewModel</p>
+<h4 id="Specification"><a href="#Specification" class="headerlink" title="Specification"></a>Specification</h4><p>Business rules can be recombined by chaining the business rules together using boolean logic.</p>
+<h4 id="Lazy-initialization"><a href="#Lazy-initialization" class="headerlink" title="Lazy initialization"></a>Lazy initialization</h4><p>Tactic of delaying the creation of an object, the calculation of a value, or some other expensive process until the first time it is needed.</p>
+<h4 id="Receptionist"><a href="#Receptionist" class="headerlink" title="Receptionist"></a>Receptionist</h4><p>Addresses the general problem of redirecting an event occurring in one execution context of an application to another execution context for handling</p>
+<h4 id="Multiton"><a href="#Multiton" class="headerlink" title="Multiton"></a>Multiton</h4><p>Ensure a class has only named instances, and provide global point of access to them.</p>
+<h4 id="Reactor"><a href="#Reactor" class="headerlink" title="Reactor"></a>Reactor</h4><p>A reactor object provides an asynchronous interface to resources that must be handled synchronously.</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
+<li><a href="https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaDesignPatterns/CocoaDesignPatterns.html" target="_blank" rel="external">Cocoa Fundamentals Guide: Cocoa Design Patterns</a></li>
+<li><a href="https://developer.apple.com/library/ios/referencelibrary/GettingStarted/RoadMapiOS/DesignPatterns.html" target="_blank" rel="external">Start Developing iOS Apps Today: Using Design Patterns</a></li>
+<li><a href="http://www.raywenderlich.com/46988/ios-design-patterns" target="_blank" rel="external">iOS Design Patterns</a></li>
+<li><a href="http://www.amazon.com/Cocoa-Design-Patterns-Erik-Buck/dp/0321535022/ref=pd_bxgy_b_img_y" target="_blank" rel="external">Cocoa Design Patterns by Erik Buck and Donald Yacktman</a></li>
+<li><a href="http://www.amazon.com/Pro-Objective-C-Design-Patterns-iOS/dp/1430233303" target="_blank" rel="external">Pro Objective-C Design Patterns for iOS by Carlo Chung</a></li>
+<li><a href="http://www.amazon.com/Head-First-Design-Patterns-Freeman/dp/0596007124/" target="_blank" rel="external">Head First Design Patterns</a></li>
+<li><a href="http://sourcemaking.com/design_patterns" target="_blank" rel="external">Design Patterns</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/design-pattern/">design pattern</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2014/08/18/design-pattern-in-ios/" data-title="Design Pattern in iOS | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/08/18/handle-reachability-in-ios/" title="Handling reachability in iOS">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Handling reachability in iOS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2014/08/13/using-of-android-xml-drawables-part-3-statelistdrawable/"  title="Android XML drawables Tips – Part 3: StateListDrawable">
+ <strong>下一篇：</strong><br/> 
+ <span>Android XML drawables Tips – Part 3: StateListDrawable
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Creational-design-patterns"><span class="toc-number">1.</span> <span class="toc-text">Creational design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Abstract-Factory"><span class="toc-number">1.1.</span> <span class="toc-text">Abstract Factory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Builder"><span class="toc-number">1.2.</span> <span class="toc-text">Builder</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Factory-Method"><span class="toc-number">1.3.</span> <span class="toc-text">Factory Method</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Object-Pool"><span class="toc-number">1.4.</span> <span class="toc-text">Object Pool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prototype"><span class="toc-number">1.5.</span> <span class="toc-text">Prototype</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Singleton"><span class="toc-number">1.6.</span> <span class="toc-text">Singleton</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Structural-design-patterns"><span class="toc-number">2.</span> <span class="toc-text">Structural design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Adapter"><span class="toc-number">2.1.</span> <span class="toc-text">Adapter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Bridge"><span class="toc-number">2.2.</span> <span class="toc-text">Bridge</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Composite"><span class="toc-number">2.3.</span> <span class="toc-text">Composite</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Decorator"><span class="toc-number">2.4.</span> <span class="toc-text">Decorator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Facade"><span class="toc-number">2.5.</span> <span class="toc-text">Facade</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flyweight"><span class="toc-number">2.6.</span> <span class="toc-text">Flyweight</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Private-Class-Data"><span class="toc-number">2.7.</span> <span class="toc-text">Private Class Data</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proxy"><span class="toc-number">2.8.</span> <span class="toc-text">Proxy</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Behavioral-design-patterns"><span class="toc-number">3.</span> <span class="toc-text">Behavioral design patterns</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chain-of-responsibility"><span class="toc-number">3.1.</span> <span class="toc-text">Chain of responsibility</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Command"><span class="toc-number">3.2.</span> <span class="toc-text">Command</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Interpreter"><span class="toc-number">3.3.</span> <span class="toc-text">Interpreter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Iterator"><span class="toc-number">3.4.</span> <span class="toc-text">Iterator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Mediator"><span class="toc-number">3.5.</span> <span class="toc-text">Mediator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memento"><span class="toc-number">3.6.</span> <span class="toc-text">Memento</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Null-Object"><span class="toc-number">3.7.</span> <span class="toc-text">Null Object</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Observer"><span class="toc-number">3.8.</span> <span class="toc-text">Observer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#State"><span class="toc-number">3.9.</span> <span class="toc-text">State</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Strategy"><span class="toc-number">3.10.</span> <span class="toc-text">Strategy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Template-method"><span class="toc-number">3.11.</span> <span class="toc-text">Template method</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Visitor"><span class="toc-number">3.12.</span> <span class="toc-text">Visitor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Misc"><span class="toc-number">4.</span> <span class="toc-text">Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MVC"><span class="toc-number">4.1.</span> <span class="toc-text">MVC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MVVM"><span class="toc-number">4.2.</span> <span class="toc-text">MVVM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Specification"><span class="toc-number">4.3.</span> <span class="toc-text">Specification</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lazy-initialization"><span class="toc-number">4.4.</span> <span class="toc-text">Lazy initialization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Receptionist"><span class="toc-number">4.5.</span> <span class="toc-text">Receptionist</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multiton"><span class="toc-number">4.6.</span> <span class="toc-text">Multiton</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reactor"><span class="toc-number">4.7.</span> <span class="toc-text">Reactor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reference"><span class="toc-number">4.8.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

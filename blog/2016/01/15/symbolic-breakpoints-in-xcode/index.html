@@ -1,0 +1,669 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Symbolic breakpoints in Xcode | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="Symbolic breakpoints are breakpoints based on symbols like functions or methods.
+In SwiftYou can set symbolic breakpoints on any free functions, instance and class methods, whether in your own classes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Symbolic breakpoints in Xcode">
+<meta property="og:url" content="http://www.fantageek.com/blog/2016/01/15/symbolic-breakpoints-in-xcode/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="Symbolic breakpoints are breakpoints based on symbols like functions or methods.
+In SwiftYou can set symbolic breakpoints on any free functions, instance and class methods, whether in your own classes">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Symbolic breakpoints in Xcode">
+<meta name="twitter:description" content="Symbolic breakpoints are breakpoints based on symbols like functions or methods.
+In SwiftYou can set symbolic breakpoints on any free functions, instance and class methods, whether in your own classes">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2016/01/15/symbolic-breakpoints-in-xcode/" title="Symbolic breakpoints in Xcode" itemprop="url">Symbolic breakpoints in Xcode</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-15T05:23:17.000Z" itemprop="datePublished"> Published 2016-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#In-Swift"><span class="toc-number">1.</span> <span class="toc-text">In Swift</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#In-Objective-C"><span class="toc-number">2.</span> <span class="toc-text">In Objective-C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Syntax"><span class="toc-number">3.</span> <span class="toc-text">Syntax</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-symbols"><span class="toc-number">4.</span> <span class="toc-text">System symbols</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Auto-Layout"><span class="toc-number">4.1.</span> <span class="toc-text">Auto Layout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Breakpoints-v2-xcbkptlist"><span class="toc-number">4.2.</span> <span class="toc-text">Breakpoints_v2.xcbkptlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swift-willThrow"><span class="toc-number">4.3.</span> <span class="toc-text">swift_willThrow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#objc-exception-throw"><span class="toc-number">4.4.</span> <span class="toc-text">objc_exception_throw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Swizzle"><span class="toc-number">4.5.</span> <span class="toc-text">Swizzle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Assembly"><span class="toc-number">4.6.</span> <span class="toc-text">Assembly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interesting"><span class="toc-number">4.7.</span> <span class="toc-text">Interesting</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chisel"><span class="toc-number">5.</span> <span class="toc-text">chisel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<p>Symbolic breakpoints are breakpoints based on symbols like functions or methods.</p>
+<h2 id="In-Swift"><a href="#In-Swift" class="headerlink" title="In Swift"></a>In Swift</h2><p>You can set symbolic breakpoints on any free functions, instance and class methods, whether in your own classes or not.</p>
+<p>Here is an example</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">freeFunction</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"freeFunction"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Robot</span> </span>&#123;</span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"init"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">instanceMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"instanceMethod"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">instanceMethod</span><span class="params">(noise: Int)</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"instanceMethod"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">instanceMethodWithArguments</span><span class="params">(a: Int, b: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"instanceMethodWithArguments"</span>)</span><br><span class="line">        <span class="keyword">return</span> a + b</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">instanceMethodWithArguments</span><span class="params">(a: Int, b: Int, <span class="built_in">c</span>: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"instanceMethodWithArguments"</span>)</span><br><span class="line">        <span class="keyword">return</span> a + b + <span class="built_in">c</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">classMethod</span>() </span>&#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"classMethod"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">staticMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"staticMethod"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">staticMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"staticMethod"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>You can have some breakpoints in Swift like</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">UIViewController.viewDidLoad</span><br><span class="line">freeFunction</span><br><span class="line">Robot.instanceMethod</span><br><span class="line">instanceMethodWithArguments</span><br><span class="line">Robot.classMethod</span><br><span class="line">Robot.init</span><br><span class="line">Robot.MyStruct.staticMethod</span><br></pre></td></tr></table></figure>
+<ul>
+<li>There seems no difference between instance and class methods !!</li>
+<li><code>Robot.MyStruct.staticMethod</code> says that it must match <code>staticMethod</code> inside Robot.MyStruct</li>
+<li>With <code>instanceMethodWithArguments</code>, Xcode Breakpoint panel shows options for <code>(Robot)(Swift.Int)(b: Swift.Int) -&gt; Swift.Int</code> and <code>(Robot)(Swift.Int)(b: Swift.Int)(c: Swift.Int) -&gt; Swift.Int</code>. This may remind you of <a href="http://oleb.net/blog/2014/07/swift-instance-methods-curried-functions/" target="_blank" rel="external">Instance Methods are Curried Functions in Swift</a></li>
+<li>I thought that symbolic breakpoint must match <code>Selector</code>, like <code>instanceMethodWithArguments:b:c</code>, but it is not</li>
+<li>Objective-C style <code>-[UIViewController viewDidLoad]</code> or <code>-[Robot instanceMethod]</code> does not work !!</li>
+</ul>
+<p>And talking about Swift selector, you may want to take a look at this proposal <a href="https://github.com/apple/swift-evolution/blob/master/proposals/0022-objc-selectors.md" target="_blank" rel="external">Referencing the Objective-C selector of a method</a></p>
+<h2 id="In-Objective-C"><a href="#In-Objective-C" class="headerlink" title="In Objective-C"></a>In Objective-C</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> freeFunction() &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"freeFunction"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Robot</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)instanceMethod;</span><br><span class="line">- (<span class="keyword">void</span>)instanceMethod:(<span class="built_in">NSInteger</span>)a b:(<span class="built_in">NSInteger</span>)b;</span><br><span class="line">+ (<span class="keyword">void</span>)classMethod;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Robot</span></span></span><br><span class="line"></span><br><span class="line">- (instancetype)initWithName:(<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">self</span>.name = name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)instanceMethod &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"instanceMethod"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)instanceMethod:(<span class="built_in">NSInteger</span>)a b:(<span class="built_in">NSInteger</span>)b &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"instanceMethod:b:"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)classMethod &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"classMethod"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>You can have some breakpoints in Objective-C like</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-[UIViewController viewDidLoad]</span><br><span class="line">freeFunction</span><br><span class="line">-[Robot initWithName:]</span><br><span class="line">-[Robot instanceMethod]</span><br><span class="line">-[Robot instanceMethod:b:]</span><br><span class="line">+[Robot classMethod]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>We must specify the correct method with arguments like <code>-[Robot instanceMethod:b:]</code></li>
+<li>I use another Swift class into this Objective-C project</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@objc</span> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"hello"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>but the symbolic breakpoint <code>-[Animal hello]</code> does not work. Only <code>Animal.hello</code> works !!</p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><ul>
+<li>There are Swift syntax <code>Animal.hello</code> and Objective-C syntax <code>-[Animal hello]</code>. It seems that Swift syntax must be used on Swift files. So in Swift project, we should use Swift syntax</li>
+<li><code>init</code> is instance method, see <a href="http://stackoverflow.com/questions/34317766/how-to-swizzle-init-in-swift" target="_blank" rel="external">How to swizzle init in Swift</a></li>
+</ul>
+<h2 id="System-symbols"><a href="#System-symbols" class="headerlink" title="System symbols"></a>System symbols</h2><p>Symbolic breakpoints are helpful in case you want to inspect system behaviours</p>
+<h3 id="Auto-Layout"><a href="#Auto-Layout" class="headerlink" title="Auto Layout"></a>Auto Layout</h3><ul>
+<li><a href="http://nshint.io/blog/2015/08/17/autolayout-breakpoints/" target="_blank" rel="external">Autolayout Breakpoints</a></li>
+</ul>
+<h3 id="Breakpoints-v2-xcbkptlist"><a href="#Breakpoints-v2-xcbkptlist" class="headerlink" title="Breakpoints_v2.xcbkptlist"></a>Breakpoints_v2.xcbkptlist</h3><ul>
+<li><a href="https://gist.github.com/Ashton-W/5c1ede17f8cec1f8b529" target="_blank" rel="external">Breakpoints_v2.xcbkptlist</a> A list of common symbolic breakpoints and actions</li>
+</ul>
+<h3 id="swift-willThrow"><a href="#swift-willThrow" class="headerlink" title="swift_willThrow"></a>swift_willThrow</h3><ul>
+<li><a href="http://www.robertvojta.com/2015/07/23/breakpoint-on-all-throws/" target="_blank" rel="external">Breakpoint on all throws</a></li>
+</ul>
+<h3 id="objc-exception-throw"><a href="#objc-exception-throw" class="headerlink" title="objc_exception_throw"></a>objc_exception_throw</h3><p>It is your <code>Exception Breakpoint</code> with <code>Break</code> set to <code>Throw</code></p>
+<p>There’s a <code>Break</code> type <code>Catch</code> also</p>
+<h3 id="Swizzle"><a href="#Swizzle" class="headerlink" title="Swizzle"></a>Swizzle</h3><p>Symbolic breakpoints help when you want to understand system call, like when you try to make Xcode plugin</p>
+<p>See <a href="http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">How To Create an Xcode Plugin: Part 1/3</a> on how to break in <code>initWithIcon:message:parentWindow:duration</code></p>
+<h3 id="Assembly"><a href="#Assembly" class="headerlink" title="Assembly"></a>Assembly</h3><p>Break on system classes and you want to understand the parameters there, so an understanding of assembly helps</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/15513045/how-to-get-parameters-using-symbolic-breakpoints-in-objective-c" target="_blank" rel="external">How to get parameters using symbolic breakpoints in Objective-C</a></li>
+<li><a href="http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">A Whirlwind Detour of Assembly</a></li>
+<li><a href="https://mikeash.com/pyblog/friday-qa-2011-12-16-disassembling-the-assembly-part-1.html" target="_blank" rel="external">Disassembling the Assembly, Part 1</a></li>
+<li><a href="http://www.raywenderlich.com/37181/ios-assembly-tutorial" target="_blank" rel="external">iOS Assembly Tutorial: Understanding ARM</a></li>
+</ul>
+<h3 id="Interesting"><a href="#Interesting" class="headerlink" title="Interesting"></a>Interesting</h3><p>Some interesting questions</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/9275195/how-to-automatically-set-breakpoints-on-all-methods-in-xcode" target="_blank" rel="external">How to automatically set breakpoints on all methods in XCode?</a></li>
+</ul>
+<h2 id="chisel"><a href="#chisel" class="headerlink" title="chisel"></a>chisel</h2><p>Facebook has <a href="https://github.com/facebook/chisel" target="_blank" rel="external">chisel</a>, which is a collection of lldb commands in Python</p>
+<p>Specifically, <code>bmessage</code></p>
+<blockquote>
+<p>Set a symbolic breakpoint on the method of a class or the method of an instance without worrying which class in the hierarchy actually implements the method.</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.bignerdranch.com/blog/xcode-breakpoint-wizardry/" target="_blank" rel="external">Xcode Breakpoint Wizardry</a></li>
+<li><a href="https://www.objc.io/issues/19-debugging/lldb-debugging/" target="_blank" rel="external">Dancing in the Debugger — A Waltz with LLDB</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2016/01/15/symbolic-breakpoints-in-xcode/" data-title="Symbolic breakpoints in Xcode | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2016/01/15/ios-best-pratices/" title="iOS best practices">
+  <strong>上一篇：</strong><br/>
+  <span>
+  iOS best practices</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2016/01/15/some-mac-osx-tools/"  title="Some Mac OSX Tools">
+ <strong>下一篇：</strong><br/> 
+ <span>Some Mac OSX Tools
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#In-Swift"><span class="toc-number">1.</span> <span class="toc-text">In Swift</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#In-Objective-C"><span class="toc-number">2.</span> <span class="toc-text">In Objective-C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Syntax"><span class="toc-number">3.</span> <span class="toc-text">Syntax</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-symbols"><span class="toc-number">4.</span> <span class="toc-text">System symbols</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Auto-Layout"><span class="toc-number">4.1.</span> <span class="toc-text">Auto Layout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Breakpoints-v2-xcbkptlist"><span class="toc-number">4.2.</span> <span class="toc-text">Breakpoints_v2.xcbkptlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swift-willThrow"><span class="toc-number">4.3.</span> <span class="toc-text">swift_willThrow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#objc-exception-throw"><span class="toc-number">4.4.</span> <span class="toc-text">objc_exception_throw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Swizzle"><span class="toc-number">4.5.</span> <span class="toc-text">Swizzle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Assembly"><span class="toc-number">4.6.</span> <span class="toc-text">Assembly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interesting"><span class="toc-number">4.7.</span> <span class="toc-text">Interesting</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chisel"><span class="toc-number">5.</span> <span class="toc-text">chisel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

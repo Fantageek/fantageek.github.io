@@ -1,0 +1,694 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Language features | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="As you know, in the Pragmatic Progarmmer, section Your Knowledge Portfolio, it is said that
+
+Learn at least one new language every year. Different languages solve the same problems in different ways.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Language features">
+<meta property="og:url" content="http://www.fantageek.com/blog/2015/09/18/language-features/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="As you know, in the Pragmatic Progarmmer, section Your Knowledge Portfolio, it is said that
+
+Learn at least one new language every year. Different languages solve the same problems in different ways.">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Language features">
+<meta name="twitter:description" content="As you know, in the Pragmatic Progarmmer, section Your Knowledge Portfolio, it is said that
+
+Learn at least one new language every year. Different languages solve the same problems in different ways.">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/09/18/language-features/" title="Language features" itemprop="url">Language features</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-18T16:29:11.000Z" itemprop="datePublished"> Published 2015-09-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Curly-braces"><span class="toc-number">1.</span> <span class="toc-text">Curly braces</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Named-parameter"><span class="toc-number">2.</span> <span class="toc-text">Named parameter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Explicit-type"><span class="toc-number">3.</span> <span class="toc-text">Explicit type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List-comprehension"><span class="toc-number">4.</span> <span class="toc-text">List comprehension</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#First-class-function"><span class="toc-number">5.</span> <span class="toc-text">First class function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Curry"><span class="toc-number">6.</span> <span class="toc-text">Curry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pattern-matching"><span class="toc-number">7.</span> <span class="toc-text">Pattern matching</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Recursion"><span class="toc-number">8.</span> <span class="toc-text">Recursion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Laziness"><span class="toc-number">9.</span> <span class="toc-text">Laziness</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-operator"><span class="toc-number">10.</span> <span class="toc-text">Custom operator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Functor-Applicative-Functor-Monoid-Monad"><span class="toc-number">11.</span> <span class="toc-text">Functor, Applicative Functor, Monoid, Monad</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Trait-and-mixin"><span class="toc-number">12.</span> <span class="toc-text">Trait and mixin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Many-more-things"><span class="toc-number">13.</span> <span class="toc-text">Many more things</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
+		
+		</div>
+		
+		<p>As you know, in the <a href="http://www.amazon.com/The-Pragmatic-Programmer-Journeyman-Master/dp/020161622X" target="_blank" rel="external">Pragmatic Progarmmer</a>, section <code>Your Knowledge Portfolio</code>, it is said that</p>
+<blockquote>
+<p>Learn at least one new language every year. Different languages solve the same problems in different ways. By learning several different approaches, you can help broaden your thinking and avoid getting stuck in a rut. Additionally, learning many languages is far easier now, thanks to the wealth of freely available software on the Internet</p>
+</blockquote>
+<p>I see learning programming languages as a chance to open up my horizon and learn some new concepts. It also encourage good habit like immutability, composition, modulation, …</p>
+<p>I’d like to review some of the features of all the languages I ‘ve been played with. Some are useful, some just make me intertested or say “wow”</p>
+<h3 id="Curly-braces"><a href="#Curly-braces" class="headerlink" title="Curly braces"></a>Curly braces</h3><p>Each language can have its own style of grouping block of code, but I myself like the curly braces the most, which are cute :]</p>
+<p>Some like C, Java, Swift, … use curly braces</p>
+<p><code>Swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">init(total: Double, taxPct: Double) &#123;</span><br><span class="line">    self.total = total</span><br><span class="line">    self.taxPct = taxPct</span><br><span class="line">    subtotal = total / (taxPct + 1)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>Some like Haskell, Python, … use indentation</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bmiTell :: (RealFloat a) =&gt; a -&gt; String  </span><br><span class="line">bmiTell bmi  </span><br><span class="line">    | bmi &lt;= 18.5 = &quot;You&apos;re underweight, you emo, you!&quot;  </span><br><span class="line">    | bmi &lt;= 25.0 = &quot;You&apos;re supposedly normal. Pffft, I bet you&apos;re ugly!&quot;  </span><br><span class="line">    | bmi &lt;= 30.0 = &quot;You&apos;re fat! Lose some weight, fatty!&quot;  </span><br><span class="line">    | otherwise   = &quot;You&apos;re a whale, congratulations!&quot;</span><br></pre></td></tr></table></figure></p>
+<p>Some like Elixir use keyword list</p>
+<p><code>ELixir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if false, do: :this, else: :that</span><br></pre></td></tr></table></figure></p>
+<h3 id="Named-parameter"><a href="#Named-parameter" class="headerlink" title="Named parameter"></a>Named parameter</h3><p>Language like Objective C, Swift offer named parameter, which make it easier to reason about a function call<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func sayHello(to person: String, and anotherPerson: String) -&gt; String &#123;</span><br><span class="line">    return &quot;Hello \(person) and \(anotherPerson)!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Explicit-type"><a href="#Explicit-type" class="headerlink" title="Explicit type"></a>Explicit type</h3><p>Language like C, Swift, Java, … have type information in parameter and in return, which make it easier to reason about a function call</p>
+<p><code>Swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func sayHello(personName: String, alreadyGreeted: Bool) -&gt; String &#123;</span><br><span class="line">    if alreadyGreeted &#123;</span><br><span class="line">        return sayHelloAgain(personName)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return sayHello(personName)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="List-comprehension"><a href="#List-comprehension" class="headerlink" title="List comprehension"></a>List comprehension</h3><p>Languages like Haskell, Pythin, Elixir, support list comprehension</p>
+<p><code>Elixir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iex&gt; for n &lt;- [1, 2, 3, 4], do: n * n</span><br><span class="line">[1, 4, 9, 16]</span><br></pre></td></tr></table></figure></p>
+<h3 id="First-class-function"><a href="#First-class-function" class="headerlink" title="First class function"></a>First class function</h3><p>I enjoy functional programming, so first class function support in Javascript, Swift, Haskell, Elixir, … really make me happy</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zipWith&apos; (*) (replicate 5 2) [1..]</span><br></pre></td></tr></table></figure></p>
+<h3 id="Curry"><a href="#Curry" class="headerlink" title="Curry"></a>Curry</h3><blockquote>
+<p>Currying is the technique of translating the evaluation of a function that takes multiple arguments (or a tuple of arguments) into evaluating a sequence of functions, each with a single argument (partial application)</p>
+</blockquote>
+<p>Language like Swift, Haskell, … have curry by default. Some like Javascript can use libraries (Lodash, …) to achieve this. In Haskell, every function officially only takes one parameter.</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">multThree :: (Num a) =&gt; a -&gt; a -&gt; a -&gt; a  </span><br><span class="line">multThree x y z = x * y * z</span><br></pre></td></tr></table></figure></p>
+<p>By calling functions with too few parameters, we’re creating new functions on the fly.</p>
+<p><code>Javascript</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var curry = require(&apos;lodash.curry&apos;);</span><br><span class="line">var map = curry(function(f, ary) &#123;</span><br><span class="line">  return ary.map(f);</span><br><span class="line">&#125;);</span><br><span class="line">var getChildren = function(x) &#123;</span><br><span class="line">  return x.childNodes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">var allTheChildren = map(getChildren);</span><br></pre></td></tr></table></figure></p>
+<h3 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h3><p>I find pattern matching as a better way around <code>if else</code> statement</p>
+<p>Swift supports pattern matching in <code>switch</code> statement</p>
+<p><code>Swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">enum Trades &#123;</span><br><span class="line">    case Buy(stock: String, amount: Int, stockPrice: Float)</span><br><span class="line">    case Sell(stock: String, amount: Int, stockPrice: Float)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let aTrade = Trades.Buy(stock: &quot;APPL&quot;, amount: 200, stockPrice: 115.5)</span><br><span class="line"></span><br><span class="line">switch aTrade &#123;</span><br><span class="line">case .Buy(let stock, let amount, _):</span><br><span class="line">    process(stock, amount)</span><br><span class="line">case .Sell(let stock, let amount, _):</span><br><span class="line">    process(stock, amount * -1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Some like Haskell, Elixir, … also pattern matches on function name, which makes it work great for recursion</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sayMe :: (Integral a) =&gt; a -&gt; String  </span><br><span class="line">sayMe 1 = &quot;One!&quot;  </span><br><span class="line">sayMe 2 = &quot;Two!&quot;  </span><br><span class="line">sayMe 3 = &quot;Three!&quot;  </span><br><span class="line">sayMe 4 = &quot;Four!&quot;  </span><br><span class="line">sayMe 5 = &quot;Five!&quot;  </span><br><span class="line">sayMe x = &quot;Not between 1 and 5&quot;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">map _ []     = []</span><br><span class="line">map f (x:xs) = f x : map f xs</span><br></pre></td></tr></table></figure></p>
+<p>In Elixir, the <code>=</code> operator is actually a  match operator</p>
+<p><code>Elixir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iex&gt; x = 1</span><br><span class="line">1</span><br><span class="line">iex&gt; x</span><br><span class="line">1</span><br><span class="line">iex&gt; 1 = x</span><br><span class="line">1</span><br><span class="line">iex&gt; 2 = x</span><br><span class="line">** (MatchError) no match of right hand side value: 1</span><br></pre></td></tr></table></figure></p>
+<h3 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h3><p>Some language like Haskell, Elixir, … don’t use loop, they use recursion with performance in mind, no overflow.</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">length&apos; :: (Num b) =&gt; [a] -&gt; b  </span><br><span class="line">length&apos; [] = 0  </span><br><span class="line">length&apos; (_:xs) = 1 + length&apos; xs</span><br></pre></td></tr></table></figure></p>
+<h3 id="Laziness"><a href="#Laziness" class="headerlink" title="Laziness"></a>Laziness</h3><p>Some languages support infinite collection, thanks to their laziness.</p>
+<p>Haskell is lazy, if you map something over a list several times and filter it several times, it will only pass over the list once</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">largestDivisible :: (Integral a) =&gt; a  </span><br><span class="line">largestDivisible = head (filter p [100000,99999..])  </span><br><span class="line">    where p x = x `mod` 3829 == 0</span><br></pre></td></tr></table></figure></p>
+<p>Elixir defines the concept of <code>Eager</code> with <code>Enum</code> and <code>Lazy</code> with <code>Stream</code></p>
+<p><code>Elixir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1..100_000 |&gt; Enum.map(&amp;(&amp;1 * 3)) |&gt; Enum.filter(odd?) |&gt; Enum.sum</span><br></pre></td></tr></table></figure></p>
+<h3 id="Custom-operator"><a href="#Custom-operator" class="headerlink" title="Custom operator"></a>Custom operator</h3><p>Elixir is famous for its <code>pipe |&gt;</code> operator</p>
+<blockquote>
+<p>The |&gt; symbol used in the snippet above is the pipe operator: it simply takes the output from the expression on its left side and passes it as the first argument to the function call on its right side</p>
+</blockquote>
+<p><code>Elixir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1..100_000 |&gt; Enum.map(&amp;(&amp;1 * 3)) |&gt; Enum.filter(odd?) |&gt; Enum.sum</span><br></pre></td></tr></table></figure></p>
+<p>Haskell often takes advantage of this custom <code>-:</code> operator<br><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x -: f = f x  </span><br><span class="line"></span><br><span class="line">(0,0) -: landLeft 1 -: landRight 1 -: landLeft 2</span><br></pre></td></tr></table></figure></p>
+<h3 id="Functor-Applicative-Functor-Monoid-Monad"><a href="#Functor-Applicative-Functor-Monoid-Monad" class="headerlink" title="Functor, Applicative Functor, Monoid, Monad"></a>Functor, Applicative Functor, Monoid, Monad</h3><p>I really like enjoy Haskell because of these typeclasses. It realizes common pattern (map, apply, join, bind, …) with comptutational context. It really enlightens me when I  find that <code>function</code> is a Monad as well (you should read the <code>Reader monad</code>)</p>
+<p><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">instance Monad Maybe where  </span><br><span class="line">    return x = Just x  </span><br><span class="line">    Nothing &gt;&gt;= f = Nothing  </span><br><span class="line">    Just x &gt;&gt;= f  = f x  </span><br><span class="line">    fail _ = Nothing  </span><br><span class="line"></span><br><span class="line">landLeft :: Birds -&gt; Pole -&gt; Maybe Pole  </span><br><span class="line">landLeft n (left,right)  </span><br><span class="line">    | abs ((left + n) - right) &lt; 4 = Just (left + n, right)  </span><br><span class="line">    | otherwise                    = Nothing  </span><br><span class="line"></span><br><span class="line">landRight :: Birds -&gt; Pole -&gt; Maybe Pole  </span><br><span class="line">landRight n (left,right)  </span><br><span class="line">    | abs (left - (right + n)) &lt; 4 = Just (left, right + n)  </span><br><span class="line">    | otherwise                    = Nothing</span><br><span class="line"></span><br><span class="line">ghci&gt; return (0,0) &gt;&gt;= landLeft 1 &gt;&gt;= banana &gt;&gt;= landRight 1  </span><br><span class="line">Nothing</span><br></pre></td></tr></table></figure></p>
+<p>List comprehension in Haskell is just syntactic sugar for using lis as Monad<br><code>Haskell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ghci&gt; [ (n,ch) | n &lt;- [1,2], ch &lt;- [&apos;a&apos;,&apos;b&apos;] ]  </span><br><span class="line">[(1,&apos;a&apos;),(1,&apos;b&apos;),(2,&apos;a&apos;),(2,&apos;b&apos;)]</span><br></pre></td></tr></table></figure></p>
+<p><code>Swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">enum Result&lt;T&gt; &#123;</span><br><span class="line">    case Value(T)</span><br><span class="line">    case Error(NSError)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Result &#123;</span><br><span class="line">    func map&lt;U&gt;(f: T -&gt; U) -&gt; Result&lt;U&gt; &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">            case let .Value(value):</span><br><span class="line">                return Result&lt;U&gt;.Value(f(value))</span><br><span class="line">            case let .Error(error):</span><br><span class="line">                return Result&lt;U&gt;.Error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Result &#123;</span><br><span class="line">    static func flatten&lt;T&gt;(result: Result&lt;Result&lt;T&gt;&gt;) -&gt; Result&lt;T&gt; &#123;</span><br><span class="line">        switch result &#123;</span><br><span class="line">            case let .Value(innerResult):</span><br><span class="line">                return innerResult</span><br><span class="line">            case let .Error(error):</span><br><span class="line">                return Result&lt;T&gt;.Error(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension Result &#123;</span><br><span class="line">    func flatMap&lt;U&gt;(f: T -&gt; Result&lt;U&gt;) -&gt; Result&lt;U&gt; &#123;</span><br><span class="line">        return Result.flatten(map(f))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Trait-and-mixin"><a href="#Trait-and-mixin" class="headerlink" title="Trait and mixin"></a>Trait and mixin</h3><p>Languages like Scala, … support <code>trait</code></p>
+<blockquote>
+<p>Similar to interfaces in Java, traits are used to define object types by specifying the signature of the supported methods. Unlike Java, Scala allows traits to be partially implemented; i.e. it is possible to define default implementations for some methods</p>
+</blockquote>
+<p><code>Scala</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">trait Similarity &#123;</span><br><span class="line">  def isSimilar(x: Any): Boolean</span><br><span class="line">  def isNotSimilar(x: Any): Boolean = !isSimilar(x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Point(xc: Int, yc: Int) extends Similarity &#123;</span><br><span class="line">  var x: Int = xc</span><br><span class="line">  var y: Int = yc</span><br><span class="line">  def isSimilar(obj: Any) =</span><br><span class="line">    obj.isInstanceOf[Point] &amp;&amp;</span><br><span class="line">    obj.asInstanceOf[Point].x == x</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Swift can uses <code>Protocol Extension</code> to <a href="http://matthijshollemans.com/2015/07/22/mixins-and-traits-in-swift-2/" target="_blank" rel="external">achieve trait</a></p>
+<p><code>Swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protocol GunTrait &#123;</span><br><span class="line">    func shoot() -&gt; String &#123;</span><br><span class="line">        return &quot;Shoot&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol RenderTrait &#123;</span><br><span class="line">    func render() -&gt; String &#123;</span><br><span class="line">        return &quot;Render&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Player: GameObject, AITrait, GunTrait, RenderTrait, HealthTrait &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Ruby supports <code>Mixin</code> via <code>Module</code></p>
+<p><code>Ruby</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">module Greetings</span><br><span class="line">  def hello</span><br><span class="line">    puts &quot;Hello!&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def bonjour</span><br><span class="line">    puts &quot;Bonjour!&quot;</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  def hola</span><br><span class="line">    puts &quot;Hola!&quot;</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">class User</span><br><span class="line">  include Greetings</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<h3 id="Many-more-things"><a href="#Many-more-things" class="headerlink" title="Many more things"></a>Many more things</h3><p>There are many more interesting things as well</p>
+<ul>
+<li>Swift initialization rule make it explicit when using initializer</li>
+<li>Go goroutine and channel for concurrent code</li>
+<li>Elixir process for easy concurrent and message communication. You’ll be amazed by how process encpsulates state</li>
+<li>Haskell data type encourages immutability and thread safe code</li>
+<li>Elixir macro for great extension of the language</li>
+<li>Elixir protocol vs behaviour. Scala trait. Haskell typeclass</li>
+<li>Swift generic. Haskell type constraint</li>
+<li>Elixir sigil</li>
+<li>C# async and await</li>
+<li>Javascript generator</li>
+<li>C# lambda</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://www.riedquat.de/prog/style" target="_blank" rel="external">Programming with Style</a></li>
+<li><a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/" target="_blank" rel="external">Swift pattern matching in detail</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/programming/">programming</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2015/09/18/language-features/" data-title="Language features | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/09/23/type-casting-in-swift/" title="Type casting in Swift 2">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Type casting in Swift 2</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/07/15/xvim/"  title="XVim">
+ <strong>下一篇：</strong><br/> 
+ <span>XVim
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Curly-braces"><span class="toc-number">1.</span> <span class="toc-text">Curly braces</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Named-parameter"><span class="toc-number">2.</span> <span class="toc-text">Named parameter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Explicit-type"><span class="toc-number">3.</span> <span class="toc-text">Explicit type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List-comprehension"><span class="toc-number">4.</span> <span class="toc-text">List comprehension</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#First-class-function"><span class="toc-number">5.</span> <span class="toc-text">First class function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Curry"><span class="toc-number">6.</span> <span class="toc-text">Curry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pattern-matching"><span class="toc-number">7.</span> <span class="toc-text">Pattern matching</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Recursion"><span class="toc-number">8.</span> <span class="toc-text">Recursion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Laziness"><span class="toc-number">9.</span> <span class="toc-text">Laziness</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-operator"><span class="toc-number">10.</span> <span class="toc-text">Custom operator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Functor-Applicative-Functor-Monoid-Monad"><span class="toc-number">11.</span> <span class="toc-text">Functor, Applicative Functor, Monoid, Monad</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Trait-and-mixin"><span class="toc-number">12.</span> <span class="toc-text">Trait and mixin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Many-more-things"><span class="toc-number">13.</span> <span class="toc-text">Many more things</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number"></span> <span class="toc-text">Reference</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

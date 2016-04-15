@@ -1,0 +1,662 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>A simple resolver for Swift | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="The Marvel worldAnt ManWe know Ant Man is Hank Pym
+1234567891011121314struct AntManSuit &amp;#123;    let name: String&amp;#125;struct HankPym &amp;#123;    let suit = AntManSuit(name: &quot;Ant Man ID #101&quot;)    func">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A simple resolver for Swift">
+<meta property="og:url" content="http://www.fantageek.com/blog/2015/12/18/a-simple-resolver-for-swift/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="The Marvel worldAnt ManWe know Ant Man is Hank Pym
+1234567891011121314struct AntManSuit &amp;#123;    let name: String&amp;#125;struct HankPym &amp;#123;    let suit = AntManSuit(name: &quot;Ant Man ID #101&quot;)    func">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A simple resolver for Swift">
+<meta name="twitter:description" content="The Marvel worldAnt ManWe know Ant Man is Hank Pym
+1234567891011121314struct AntManSuit &amp;#123;    let name: String&amp;#125;struct HankPym &amp;#123;    let suit = AntManSuit(name: &quot;Ant Man ID #101&quot;)    func">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/12/18/a-simple-resolver-for-swift/" title="A simple resolver for Swift" itemprop="url">A simple resolver for Swift</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-18T05:06:07.000Z" itemprop="datePublished"> Published 2015-12-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Marvel-world"><span class="toc-number">1.</span> <span class="toc-text">The Marvel world</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ant-Man"><span class="toc-number">1.1.</span> <span class="toc-text">Ant Man</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#More-suits"><span class="toc-number">1.2.</span> <span class="toc-text">More suits</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dependency-Injection"><span class="toc-number">2.</span> <span class="toc-text">Dependency Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dependency-Inversion-Principle"><span class="toc-number">3.</span> <span class="toc-text">Dependency Inversion Principle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inversion-of-Control-Container"><span class="toc-number">4.</span> <span class="toc-text">Inversion of Control Container</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Framework-vs-library"><span class="toc-number">4.1.</span> <span class="toc-text">Framework vs library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Command-line-vs-GUI"><span class="toc-number">4.2.</span> <span class="toc-text">Command line vs GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IoC-container"><span class="toc-number">4.3.</span> <span class="toc-text">IoC container</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Features"><span class="toc-number">5.</span> <span class="toc-text">Features</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Swinject"><span class="toc-number">5.1.</span> <span class="toc-text">Swinject</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dip"><span class="toc-number">5.2.</span> <span class="toc-text">Dip</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-your-own-simple-IoC-container"><span class="toc-number">6.</span> <span class="toc-text">Build your own simple IoC container</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="The-Marvel-world"><a href="#The-Marvel-world" class="headerlink" title="The Marvel world"></a>The Marvel world</h2><h3 id="Ant-Man"><a href="#Ant-Man" class="headerlink" title="Ant Man"></a>Ant Man</h3><p>We know Ant Man is Hank Pym</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AntManSuit</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HankPym</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> suit = <span class="type">AntManSuit</span>(name: <span class="string">"Ant Man ID #101"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fight</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fighting with the suit named "</span> + suit.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> hankPym = <span class="type">HankPym</span>()</span><br><span class="line">hankPym.fight()</span><br></pre></td></tr></table></figure>
+<p>Everytime HankPym is created, he always uses the Ant Man suit. This time he is so coupled to the role Ant Man</p>
+<h3 id="More-suits"><a href="#More-suits" class="headerlink" title="More suits"></a>More suits</h3><p>Well, he does not have to be too dependent on the Ant Man suit. We know Hank Pym is a genius scientist, he has more suits to use. Let’s make it decoupled</p>
+<p>Using Dependency Injection</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Suit</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AntManSuit</span>: <span class="title">Suit</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">YellowJacketSuit</span>: <span class="title">Suit</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">HankPym</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> suit: <span class="type">Suit</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fight</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fighting with the suit named "</span> + suit.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> suit = <span class="type">YellowJacketSuit</span>(name: <span class="string">"Yellow Jacket ID #33"</span>)</span><br><span class="line"><span class="keyword">let</span> hankPym = <span class="type">HankPym</span>(suit: suit)</span><br><span class="line">hankPym.fight()</span><br></pre></td></tr></table></figure>
+<p>Now Hank Pym can be more flexible on which suit to use.</p>
+<h2 id="Dependency-Injection"><a href="#Dependency-Injection" class="headerlink" title="Dependency Injection"></a>Dependency Injection</h2><p>The technique we just saw is called <code>Dependency Injection</code>, in which Hank Pym does not need to create the Suit, it will be provided through constructor or property.</p>
+<h2 id="Dependency-Inversion-Principle"><a href="#Dependency-Inversion-Principle" class="headerlink" title="Dependency Inversion Principle"></a>Dependency Inversion Principle</h2><p>In the first example, Hank Pym is dependent on the concrete implementation of the Suit</p>
+<p>In the second example, both Hank Pym and the suits are dependent on the Suit protocol. This way Hank Pym only knows about the Suit protocol, and future suits must be crafted to that it conforms to the Suit protocol</p>
+<p>This way the dependency is inverted</p>
+<blockquote>
+<p>High level modules should not depend upon low level modules. Both should depend upon abstractions.</p>
+<p>What is the high level policy? It is the abstractions that underlie the application, the<br>truths that do not vary when the details are changed</p>
+</blockquote>
+<h2 id="Inversion-of-Control-Container"><a href="#Inversion-of-Control-Container" class="headerlink" title="Inversion of Control Container"></a>Inversion of Control Container</h2><p>You may ask yourself <a href="http://programmers.stackexchange.com/questions/205681/why-is-inversion-of-control-named-that-way" target="_blank" rel="external">Why is Inversion of Control named that way?</a></p>
+<h3 id="Framework-vs-library"><a href="#Framework-vs-library" class="headerlink" title="Framework vs library"></a>Framework vs library</h3><p>People said “the framework calls you but you call the library”</p>
+<h3 id="Command-line-vs-GUI"><a href="#Command-line-vs-GUI" class="headerlink" title="Command line vs GUI"></a>Command line vs GUI</h3><p>See <a href="http://stackoverflow.com/a/3108/1418457" target="_blank" rel="external">What is Inversion of Control?</a></p>
+<p>For example, in an old school menu, you might have:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print &quot;enter your name&quot;</span><br><span class="line">read name</span><br><span class="line">print &quot;enter your address&quot;</span><br><span class="line">read address</span><br><span class="line">etc...</span><br><span class="line">store in database</span><br></pre></td></tr></table></figure>
+<p>thereby controlling the flow of user interaction.</p>
+<p>In a GUI program or some such, instead we say</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">when the user types in field a, store it in NAME</span><br><span class="line">when the user types in field b, store it in ADDRESS</span><br><span class="line">when the user clicks the save button, call StoreInDatabase</span><br></pre></td></tr></table></figure>
+<p>You how have a brief understanding of how IoC means</p>
+<h3 id="IoC-container"><a href="#IoC-container" class="headerlink" title="IoC container"></a>IoC container</h3><p>In the 2nd example of the Suit protocol, you can see how there is a inversion of control. What if there is a container that contains all the Suit conformances?</p>
+<p>Let’s use my <a href="https://github.com/onmyway133/Resolver" target="_blank" rel="external">Resolver</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> resolver = <span class="type">Resolver</span>()</span><br><span class="line">resolver.register &#123;</span><br><span class="line">    <span class="type">YellowJacketSuit</span>(name: <span class="string">"YellowJacket ID #404"</span>) <span class="keyword">as</span> <span class="type">Suit</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> suit = <span class="keyword">try</span>! resolver.resolve() <span class="keyword">as</span> <span class="type">Suit</span></span><br><span class="line"><span class="keyword">let</span> hankPym = <span class="type">HankPym</span>(suit: suit)</span><br></pre></td></tr></table></figure>
+<p>Quite helpful, right? :]</p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><p>Actually, IoC container helps you more than that.</p>
+<ul>
+<li>Circular Dependency Injection</li>
+<li>Auto Injection</li>
+<li>Object Scope</li>
+<li>…</li>
+</ul>
+<p>There are some IoC containers in Swift</p>
+<h3 id="Swinject"><a href="#Swinject" class="headerlink" title="Swinject"></a><a href="https://github.com/Swinject/Swinject" target="_blank" rel="external">Swinject</a></h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> container = <span class="type">Container</span>()</span><br><span class="line">container.register(<span class="type">AnimalType</span>.<span class="keyword">self</span>) &#123; <span class="number">_</span> <span class="keyword">in</span> <span class="type">Cat</span>(name: <span class="string">"Mimi"</span>) &#125;</span><br><span class="line">container.register(<span class="type">PersonType</span>.<span class="keyword">self</span>) &#123; r <span class="keyword">in</span></span><br><span class="line">     <span class="type">PetOwner</span>(pet: r.resolve(<span class="type">AnimalType</span>.<span class="keyword">self</span>)!)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Swinject requires explicit type declaration. It has SwinjectStoryboard, which helps configuring the dependency for your view controller</p>
+<h3 id="Dip"><a href="#Dip" class="headerlink" title="Dip"></a><a href="https://github.com/AliSoftware/Dip" target="_blank" rel="external">Dip</a></h3><p>Dip leverages generic and encourage protocols</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">container.register &#123; <span class="type">ServiceImp</span>() <span class="keyword">as</span> <span class="type">Service</span> &#125;</span><br><span class="line"><span class="keyword">let</span> service = <span class="keyword">try</span>! container.resolve() <span class="keyword">as</span> <span class="type">Service</span></span><br></pre></td></tr></table></figure>
+<p>You ‘ll learn a lot just by reading Dip source code, on how factory and factory type are stored and checked using generic</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">resolve</span>&lt;T, F&gt;<span class="params">(tag tag: Tag? = <span class="literal">nil</span>, builder: F-&gt;T)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">T</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> key = <span class="type">DefinitionKey</span>(protocolType: <span class="type">T</span>.<span class="keyword">self</span>, factoryType: <span class="type">F</span>.<span class="keyword">self</span>, associatedTag: tag)</span><br><span class="line">    <span class="keyword">let</span> nilTagKey = tag.<span class="built_in">map</span> &#123; <span class="number">_</span> <span class="keyword">in</span> <span class="type">DefinitionKey</span>(protocolType: <span class="type">T</span>.<span class="keyword">self</span>, factoryType: <span class="type">F</span>.<span class="keyword">self</span>, associatedTag: <span class="literal">nil</span>) &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> definition = (<span class="keyword">self</span>.definitions[key] ?? <span class="keyword">self</span>.definitions[nilTagKey]) <span class="keyword">as</span>? <span class="type">DefinitionOf</span>&lt;<span class="type">T</span>, <span class="type">F</span>&gt; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="type">DipError</span>.<span class="type">DefinitionNotFound</span>(key)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> usingKey: <span class="type">DefinitionKey</span>? = definition.scope == .<span class="type">ObjectGraph</span> ? key : <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">return</span> _resolve(tag, key: usingKey, definition: definition, builder: builder)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Build-your-own-simple-IoC-container"><a href="#Build-your-own-simple-IoC-container" class="headerlink" title="Build your own simple IoC container"></a>Build your own simple IoC container</h2><p>You may have discovered, that the idea of all those framework is to use closure as factory method</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> factory = &#123;</span><br><span class="line">    <span class="type">YellowJacketSuit</span>(name: <span class="string">"YellowJacket ID #007"</span>) <span class="keyword">as</span> <span class="type">Suit</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> suit = factory()</span><br></pre></td></tr></table></figure>
+<p>All we have to do is to store these factories closure</p>
+<p>Take a look at my gist <a href="https://gist.github.com/onmyway133/3244cde1eaf8f2cd2ecb" target="_blank" rel="external">SimpleResolver.swift</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleResolver</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> factories = [<span class="type">String</span>: <span class="type">Any</span>]()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">factory</span>&lt;T&gt;<span class="params">(factory: <span class="params">()</span></span></span> -&gt; <span class="type">T</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> key = <span class="type">String</span>(<span class="type">T</span>.<span class="keyword">self</span>)</span><br><span class="line">        factories[key] = factory</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">resolve</span>&lt;T&gt;<span class="params">()</span></span> -&gt; <span class="type">T</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> key = <span class="type">String</span>(<span class="type">T</span>.<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> factory = factories[key] <span class="keyword">as</span>? () -&gt; <span class="type">T</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> factory()</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"Registration not found"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolver = <span class="type">SimpleResolver</span>()</span><br><span class="line"></span><br><span class="line">resolver.factory &#123;</span><br><span class="line">    <span class="type">YellowJacketSuit</span>(name: <span class="string">"YellowJacket IS #009"</span>) <span class="keyword">as</span> <span class="type">Suit</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> suit = resolver.resolve() <span class="keyword">as</span> <span class="type">Suit</span></span><br><span class="line"><span class="built_in">print</span>(suit.name)</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://yoichitgy.github.io/post/dependency-injection-framework-for-swift-introduction-to-swinject/" target="_blank" rel="external">Dependency Injection Framework for Swift - Introduction to Swinject</a></li>
+<li><a href="http://ilya.puchka.me/ioc-container-in-swift/" target="_blank" rel="external">IoC container in Swift</a></li>
+<li><a href="https://github.com/chakrit/swift-ioc" target="_blank" rel="external">swift-ioc</a></li>
+<li><a href="https://github.com/AliSoftware/Dip" target="_blank" rel="external">Dip</a></li>
+<li><a href="http://typhoonframework.org/" target="_blank" rel="external">Typhoon</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2015/12/18/a-simple-resolver-for-swift/" data-title="A simple resolver for Swift | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/12/20/xmas/" title="Xmas">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Xmas</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/12/18/a-dive-into-swift-2/"  title="A dive into Swift 2">
+ <strong>下一篇：</strong><br/> 
+ <span>A dive into Swift 2
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Marvel-world"><span class="toc-number">1.</span> <span class="toc-text">The Marvel world</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ant-Man"><span class="toc-number">1.1.</span> <span class="toc-text">Ant Man</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#More-suits"><span class="toc-number">1.2.</span> <span class="toc-text">More suits</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dependency-Injection"><span class="toc-number">2.</span> <span class="toc-text">Dependency Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dependency-Inversion-Principle"><span class="toc-number">3.</span> <span class="toc-text">Dependency Inversion Principle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Inversion-of-Control-Container"><span class="toc-number">4.</span> <span class="toc-text">Inversion of Control Container</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Framework-vs-library"><span class="toc-number">4.1.</span> <span class="toc-text">Framework vs library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Command-line-vs-GUI"><span class="toc-number">4.2.</span> <span class="toc-text">Command line vs GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IoC-container"><span class="toc-number">4.3.</span> <span class="toc-text">IoC container</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Features"><span class="toc-number">5.</span> <span class="toc-text">Features</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Swinject"><span class="toc-number">5.1.</span> <span class="toc-text">Swinject</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dip"><span class="toc-number">5.2.</span> <span class="toc-text">Dip</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-your-own-simple-IoC-container"><span class="toc-number">6.</span> <span class="toc-text">Build your own simple IoC container</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,656 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>AVFoundation vs MediaPlayer | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="No offsense, but I think most developer are just library users now. Some genius have made great libraries for us to use. It ‘s just the usage difficulty that matters. So if we don’t know how to use it">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVFoundation vs MediaPlayer">
+<meta property="og:url" content="http://www.fantageek.com/blog/2014/09/07/avfoundation-vs-mediaplayer/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="No offsense, but I think most developer are just library users now. Some genius have made great libraries for us to use. It ‘s just the usage difficulty that matters. So if we don’t know how to use it">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AVFoundation vs MediaPlayer">
+<meta name="twitter:description" content="No offsense, but I think most developer are just library users now. Some genius have made great libraries for us to use. It ‘s just the usage difficulty that matters. So if we don’t know how to use it">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/09/07/avfoundation-vs-mediaplayer/" title="AVFoundation vs MediaPlayer" itemprop="url">AVFoundation vs MediaPlayer</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-09-07T02:33:40.000Z" itemprop="datePublished"> Published 2014-09-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPMoviePlayerController-vs-AVPlayer"><span class="toc-number">1.</span> <span class="toc-text">MPMoviePlayerController vs AVPlayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-controls"><span class="toc-number">2.</span> <span class="toc-text">Custom controls</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController"><span class="toc-number">2.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer"><span class="toc-number">2.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">3.</span> <span class="toc-text">Notification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-1"><span class="toc-number">3.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-1"><span class="toc-number">3.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seek"><span class="toc-number">4.</span> <span class="toc-text">Seek</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-2"><span class="toc-number">4.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-2"><span class="toc-number">4.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Subtitle"><span class="toc-number">5.</span> <span class="toc-text">Subtitle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-3"><span class="toc-number">5.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-3"><span class="toc-number">5.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Time-scale"><span class="toc-number">6.</span> <span class="toc-text">Time scale</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Volume"><span class="toc-number">7.</span> <span class="toc-text">Volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Playable-duration"><span class="toc-number">8.</span> <span class="toc-text">Playable duration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-4"><span class="toc-number">8.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-4"><span class="toc-number">8.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-screen"><span class="toc-number">9.</span> <span class="toc-text">Full screen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Movie-Source-Type"><span class="toc-number">10.</span> <span class="toc-text">Movie Source Type</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-5"><span class="toc-number">10.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-5"><span class="toc-number">10.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVAsset"><span class="toc-number">11.</span> <span class="toc-text">AVAsset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Allow-a-range-within-a-video-to-be-playable"><span class="toc-number">12.</span> <span class="toc-text">Allow a range within a video to be playable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time"><span class="toc-number">13.</span> <span class="toc-text">You can have many instances of AVPlayer playing at the same time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">14.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<p>No offsense, but I think most developer are just library users now. Some genius have made great libraries for us to use. It ‘s just the usage difficulty that matters. So if we don’t know how to use it, it’s a shame. We ‘re engineers, right?</p>
+<p>Today talk is about MPMoviePlayerController and AVPlayer.</p>
+<a id="more"></a>
+<h3 id="MPMoviePlayerController-vs-AVPlayer"><a href="#MPMoviePlayerController-vs-AVPlayer" class="headerlink" title="MPMoviePlayerController vs AVPlayer"></a>MPMoviePlayerController vs AVPlayer</h3><p>At first, I use MPMoviePlayerController because it is very simple, in fact, it is a wrapper around AVPlayer. It offers a lot of useful notifications and properties.</p>
+<p>But when my requirements change, a lot more features are needed, I need to change to AVPlayer to have more control. And that is the wisest decision I’ve ever made</p>
+<p>You should use AVPlayer as soon as possible. Using it cost you just a little longer time than MPMoviePlayerController, but you have a lot of control.</p>
+<h3 id="Custom-controls"><a href="#Custom-controls" class="headerlink" title="Custom controls"></a>Custom controls</h3><p>When building your own player, the built in controls of MPMoviePlayerController may not satisfy your need. I see many questions on SO are about custom controls.</p>
+<h4 id="MPMoviePlayerController"><a href="#MPMoviePlayerController" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>You have to set controlStyle to MPMovieControlStyleNone, set up Timer because currentPlaybackTime is not KVO compliance</p>
+<h4 id="AVPlayer"><a href="#AVPlayer" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>AVPlayer has no built in controls, but it has addPeriodicTimeObserverForInterval:queue:usingBlock: that makes handling the current time easily. The nicer thing about periodTimeObserver is that “The block is also invoked whenever time jumps and whenever playback starts or stops”</p>
+<h3 id="Notification"><a href="#Notification" class="headerlink" title="Notification"></a>Notification</h3><h4 id="MPMoviePlayerController-1"><a href="#MPMoviePlayerController-1" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>It has a lot of useful notifications, like MPMoviePlayerNowPlayingMovieDidChangeNotification, MPMoviePlayerLoadStateDidChangeNotification, MPMovieDurationAvailableNotification, …</p>
+<h4 id="AVPlayer-1"><a href="#AVPlayer-1" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>The AVPlayerItem has some notifications AVPlayerItemDidPlayToEndTimeNotification, AVPlayerItemPlaybackStalledNotification, …<br>If you want to have those same notifications as MPMoviePlayerController, you have to KVO some properties of AVPlayer like currentItem, currentTime, duration, … You have to read documents to make sure which property is KVO compliance</p>
+<h3 id="Seek"><a href="#Seek" class="headerlink" title="Seek"></a>Seek</h3><p>### </p>
+<h4 id="MPMoviePlayerController-2"><a href="#MPMoviePlayerController-2" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>You can change the currentPlaybackTime to seek, but it results in jumping, because of efficiency and buffer status. I have to manually disable slider during seeking</p>
+<h4 id="AVPlayer-2"><a href="#AVPlayer-2" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>AVPlayer has this <strong>seekToTime:toleranceBefore:toleranceAfter:completionHandler:</strong> which allows you to specify the tolerance. Very nice</p>
+<h3 id="Subtitle"><a href="#Subtitle" class="headerlink" title="Subtitle"></a>Subtitle</h3><h4 id="MPMoviePlayerController-3"><a href="#MPMoviePlayerController-3" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>I have to schedule a timer that “wake” and “sleep” at the beginning and end time of a certain subtitle marker, respectively.</p>
+<h4 id="AVPlayer-3"><a href="#AVPlayer-3" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>AVPlayer has this <strong>addBoundaryTimeObserverForTimes:queue:usingBlock:</strong> that perfectly suits my need. I setup 2 boundary time observers, 1 for the beginning times, 1 for the end times. The beginning times is an array containing all beginning timestamps that a subtitle marker appears.</p>
+<h3 id="Time-scale"><a href="#Time-scale" class="headerlink" title="Time scale"></a>Time scale</h3><p>AVPlayer uses CMTime that offers timescale, which is a more comfortable way to specify more accurate time</p>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p>AVPlayer has <strong>volume</strong> property (relative to system volume) that allows me to programmatically changes the player volume</p>
+<h3 id="Playable-duration"><a href="#Playable-duration" class="headerlink" title="Playable duration"></a>Playable duration</h3><h4 id="MPMoviePlayerController-4"><a href="#MPMoviePlayerController-4" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>It has playableDuration property</p>
+<h4 id="AVPlayer-4"><a href="#AVPlayer-4" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>You have to compute yourself. See <a href="http://stackoverflow.com/a/12260669/1418457" target="_blank" rel="external">http://stackoverflow.com/questions/6815316/how-can-i-get-the-playable-duration-of-avplayer</a></p>
+<h3 id="Full-screen"><a href="#Full-screen" class="headerlink" title="Full screen"></a>Full screen</h3><p>MPMoviePlayerController achieves full screen mode by creating another UIWindow, you learn from this to support full screen using AVPlayer, too</p>
+<h3 id="Movie-Source-Type"><a href="#Movie-Source-Type" class="headerlink" title="Movie Source Type"></a>Movie Source Type</h3><h4 id="MPMoviePlayerController-5"><a href="#MPMoviePlayerController-5" class="headerlink" title="MPMoviePlayerController"></a>MPMoviePlayerController</h4><p>It has movieSourceType that provides clues to the playback system, hence improving load time</p>
+<p>“ If you know the source type of the movie, setting the value of this property before playback begins can improve the load times for the movie content.”</p>
+<h4 id="AVPlayer-5"><a href="#AVPlayer-5" class="headerlink" title="AVPlayer"></a>AVPlayer</h4><p>Read <strong>Handling Different Types of Asset</strong> on <a href="https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html" target="_blank" rel="external">AV Foundation Programming Guide</a></p>
+<p>“To create and prepare an HTTP live stream for playback. Initialize an instance of AVPlayerItem using the URL. (You cannot directly create an AVAsset instance to represent the media in an HTTP Live Stream.)”</p>
+<h3 id="AVAsset"><a href="#AVAsset" class="headerlink" title="AVAsset"></a>AVAsset</h3><p>AVPlayer allows you to access AVAsset, which provides you more information about the playback and load state</p>
+<h3 id="Allow-a-range-within-a-video-to-be-playable"><a href="#Allow-a-range-within-a-video-to-be-playable" class="headerlink" title="Allow a range within a video to be playable"></a>Allow a range within a video to be playable</h3><p>AVPlayerItem has <strong>forwardPlaybackEndTime</strong> and <strong>reversePlaybackEndTime</strong> that is used to specify a range that the player can play. When forwardPlaybackEndTime is specified and the playhead passes this points, AVPlayerItem will trigger AVPlayerItemDidPlayToEndTimeNotification</p>
+<p>But it doesn’t work in my case <a href="http://stackoverflow.com/questions/25717819/forwardplaybackendtime-does-not-work" target="_blank" rel="external">forwardPlaybackEndTime does not work</a></p>
+<h3 id="You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time"><a href="#You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time" class="headerlink" title="You can have many instances of AVPlayer playing at the same time"></a>You can have many instances of AVPlayer playing at the same time</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="https://developer.apple.com/library/mac/documentation/AudioVideo/Conceptual/AVFoundationPG/Articles/02_Playback.html" target="_blank" rel="external">AV Foundation Programming Guide</a></li>
+<li><a href="https://developer.apple.com/videos/wwdc/2011/" target="_blank" rel="external">WWDC 2011 Session 405 Exploring AV Foundation</a></li>
+<li><a href="https://developer.apple.com/videos/wwdc/2011/" target="_blank" rel="external">WWDC 2011 Session 415 Working With Media In AV Foundation</a></li>
+<li><a href="https://developer.apple.com/videos/wwdc/2014/" target="_blank" rel="external">WWDC 2014 Session 503 Mastering Modern Media Playback</a></li>
+<li><a href="https://developer.apple.com/videos/wwdc/2011/" target="_blank" rel="external">WWDC 2011 Session 406 AirPlay and External Displays in iOS apps</a></li>
+<li><a href="https://developer.apple.com/library/ios/samplecode/AVPlayerDemo/Introduction/Intro.html" target="_blank" rel="external">AVPlayerDemo</a></li>
+<li><a href="https://github.com/viki-org/VKVideoPlayer" target="_blank" rel="external">VKVideoPlayer</a></li>
+<li><a href="https://github.com/alobi/ALMoviePlayerController" target="_blank" rel="external">ALMoviePlayerController</a></li>
+<li><a href="http://mobiliture.com/ios/tutorials/av-foundation-playing-videos/" target="_blank" rel="external">AV Foundation Playing Videos</a></li>
+<li><a href="http://stackoverflow.com/questions/8146942/avplayer-and-mpmovieplayercontroller-differences" target="_blank" rel="external">AVPlayer and MPMoviePlayerController differences</a></li>
+<li><a href="http://jomnius.blogspot.com/2011/04/mpmovieplayer-tips.html" target="_blank" rel="external">MPMoviePlayer Tips</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/avfoundation/">avfoundation</a><a href="/tags/avkit/">avkit</a><a href="/tags/avplayer/">avplayer</a><a href="/tags/mediaplayer/">mediaplayer</a><a href="/tags/mpmovieplayercontroller/">mpmovieplayercontroller</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2014/09/07/avfoundation-vs-mediaplayer/" data-title="AVFoundation vs MediaPlayer | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/09/07/pet-arena/" title="Pet Arena">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Pet Arena</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2014/08/31/dsl-in-objective-c/"  title="DSL in Objective C">
+ <strong>下一篇：</strong><br/> 
+ <span>DSL in Objective C
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPMoviePlayerController-vs-AVPlayer"><span class="toc-number">1.</span> <span class="toc-text">MPMoviePlayerController vs AVPlayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-controls"><span class="toc-number">2.</span> <span class="toc-text">Custom controls</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController"><span class="toc-number">2.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer"><span class="toc-number">2.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">3.</span> <span class="toc-text">Notification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-1"><span class="toc-number">3.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-1"><span class="toc-number">3.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seek"><span class="toc-number">4.</span> <span class="toc-text">Seek</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-2"><span class="toc-number">4.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-2"><span class="toc-number">4.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Subtitle"><span class="toc-number">5.</span> <span class="toc-text">Subtitle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-3"><span class="toc-number">5.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-3"><span class="toc-number">5.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Time-scale"><span class="toc-number">6.</span> <span class="toc-text">Time scale</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Volume"><span class="toc-number">7.</span> <span class="toc-text">Volume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Playable-duration"><span class="toc-number">8.</span> <span class="toc-text">Playable duration</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-4"><span class="toc-number">8.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-4"><span class="toc-number">8.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Full-screen"><span class="toc-number">9.</span> <span class="toc-text">Full screen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Movie-Source-Type"><span class="toc-number">10.</span> <span class="toc-text">Movie Source Type</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MPMoviePlayerController-5"><span class="toc-number">10.1.</span> <span class="toc-text">MPMoviePlayerController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AVPlayer-5"><span class="toc-number">10.2.</span> <span class="toc-text">AVPlayer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AVAsset"><span class="toc-number">11.</span> <span class="toc-text">AVAsset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Allow-a-range-within-a-video-to-be-playable"><span class="toc-number">12.</span> <span class="toc-text">Allow a range within a video to be playable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#You-can-have-many-instances-of-AVPlayer-playing-at-the-same-time"><span class="toc-number">13.</span> <span class="toc-text">You can have many instances of AVPlayer playing at the same time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">14.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

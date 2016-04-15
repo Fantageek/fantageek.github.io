@@ -1,0 +1,751 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS dynamic table view cells with varying row height and Autolayout | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="This post tries to explain how to achieve varying cell height with Autolayout simply and with few steps as possible. Although the title says Table View, it works for Collection View also. This works f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS dynamic table view cells with varying row height and Autolayout">
+<meta property="og:url" content="http://www.fantageek.com/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="This post tries to explain how to achieve varying cell height with Autolayout simply and with few steps as possible. Although the title says Table View, it works for Collection View also. This works f">
+<meta property="og:image" content="http://i57.tinypic.com/wmkqch.png">
+<meta property="og:image" content="http://i58.tinypic.com/2mphr1c.png">
+<meta property="og:image" content="http://i60.tinypic.com/rw0xhk.png">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS dynamic table view cells with varying row height and Autolayout">
+<meta name="twitter:description" content="This post tries to explain how to achieve varying cell height with Autolayout simply and with few steps as possible. Although the title says Table View, it works for Collection View also. This works f">
+<meta name="twitter:image" content="http://i57.tinypic.com/wmkqch.png">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/" title="iOS dynamic table view cells with varying row height and Autolayout" itemprop="url">iOS dynamic table view cells with varying row height and Autolayout</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-11-22T08:51:55.000Z" itemprop="datePublished"> Published 2014-11-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#preferredMaxLayoutWidth"><span class="toc-number">1.</span> <span class="toc-text">preferredMaxLayoutWidth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#User-Interface"><span class="toc-number">2.</span> <span class="toc-text">User Interface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cell"><span class="toc-number">3.</span> <span class="toc-text">Cell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ViewController"><span class="toc-number">4.</span> <span class="toc-text">ViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<p>This post tries to explain how to achieve varying cell height with Autolayout simply and with few steps as possible. Although the title says <code>Table View</code>, it works for <code>Collection View</code> also. This works for both iOS 7 and iOS 8</p>
+<p>The Github repo for the demo is <a href="https://github.com/onmyway133/DynamicTableViewCellHeight" target="_blank" rel="external">DynamicTableViewCellHeight</a></p>
+<p>The demo display a list of famous quotes, it looks like this</p>
+<p><img src="http://i57.tinypic.com/wmkqch.png" alt=""></p>
+<h2 id="preferredMaxLayoutWidth"><a href="#preferredMaxLayoutWidth" class="headerlink" title="preferredMaxLayoutWidth"></a>preferredMaxLayoutWidth</h2><p>The trick to all this come from <code>preferredMaxLayoutWidth</code>. For more advanced use case, see <a href="http://devetc.org/code/2014/07/07/auto-layout-and-views-that-wrap.html" target="_blank" rel="external">Auto Layout and Views that Wrap</a></p>
+<h2 id="User-Interface"><a href="#User-Interface" class="headerlink" title="User Interface"></a>User Interface</h2><p>I use Storyboard, but you can use xib or create from code. For how to use code, please take a look <a href="http://derpturkey.com/autosize-uitableviewcell-height-programmatically/" target="_blank" rel="external">AutoSize UITableViewCell height programmatically</a></p>
+<p><img src="http://i58.tinypic.com/2mphr1c.png" alt=""></p>
+<p><img src="http://i60.tinypic.com/rw0xhk.png" alt=""></p>
+<p>Here the quote label is multiple lines (Set Lines to 0). Because we have 2 labels, Autolayout does not know which will expand, which will stay the same when the cell changes size. In this case, we want the quote label to expand, so decrease its Verticle Hugging Priority and increase its Content Compression Resistance Priority</p>
+<a id="more"></a>
+<p>See <a href="http://stackoverflow.com/a/23203345/1418457" target="_blank" rel="external">Cocoa Autolayout: content hugging vs content compression resistance priority</a></p>
+<p>Note 1: This post <a href="http://www.raywenderlich.com/73602/dynamic-table-view-cell-height-auto-layout" target="_blank" rel="external">Dynamic Table View Cell Height and Auto Layout</a> tells that we should give the labels its intrinsic content priority to 1000 and set Intrinsic Size to Placeholder. I see that it is not needed</p>
+<p>Note 2: You must add constraint to the TableViewCell <code>contentView</code><br>Note 3: For the CollectionViewCell in Interface Builder, you won’t see the contentView, but you are really interacting with the contentView. See</p>
+<h2 id="Cell"><a href="#Cell" class="headerlink" title="Cell"></a>Cell</h2><p><code>QuoteTableViewCell.h</code><br>[code language=”objc”]<br>@interface QuoteTableViewCell : UITableViewCell<br>@property (weak, nonatomic) IBOutlet UILabel <em>numberLabel;<br>@property (weak, nonatomic) IBOutlet UILabel </em>quoteLabel;</p>
+<p>@end<br>[/code]</p>
+<p><code>QuoteTableViewCell.m</code><br>[code language=”objc”]<br>@implementation QuoteTableViewCell</p>
+<p>// (1)</p>
+<ul>
+<li><p>(void)setBounds:(CGRect)bounds<br>{<br>  [super setBounds:bounds];</p>
+<p>  self.contentView.frame = self.bounds;<br>}</p>
+</li>
+<li><p>(void)layoutSubviews<br>{<br>  [super layoutSubviews];</p>
+<p>  // (2)<br>  [self.contentView updateConstraintsIfNeeded];<br>  [self.contentView layoutIfNeeded];</p>
+<p>  // (3)<br>  self.quoteLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.quoteLabel.frame);<br>}</p>
+</li>
+</ul>
+<p>@end<br>[/code]</p>
+<p>(1) It is because of <a href="http://stackoverflow.com/questions/25804588/auto-layout-in-uicollectionviewcell-not-working" target="_blank" rel="external">Auto Layout in UICollectionViewCell not working</a></p>
+<p>(2, 3) As explained <a href="http://derpturkey.com/autosize-uitableviewcell-height-programmatically/" target="_blank" rel="external">AutoSize UITableViewCell height programmatically</a></p>
+<blockquote><br>  Make sure the contentView does a layout pass here so that its subviews have their frames set, which we need to use to set the preferredMaxLayoutWidth below.<br><br>  Set the preferredMaxLayoutWidth of the mutli-line bodyLabel based on the evaluated width of the label’s frame, as this will allow the text to wrap correctly, and as a result allow the label to take on the correct height.<br></blockquote>
+
+
+
+<p>Note 1: You only need to call <code>[self.contentView layoutIfNeeded]</code>.<br>Note 2: If there are some reasons that you make changes to some constraint (for example, make the quote label bottom constraint to 5), you need to call <code>[self.contentView updateConstraintsIfNeeded]</code><br>Note 3: If there is <code>[self.contentView updateConstraintsIfNeeded]</code>, it must be called before <code>[self.contentView layoutIfNeeded]</code><br>Note 3: There is no needs for <code>[self.contentView setsNeedLayout]</code> or <code>[self.contentView setsNeedUpdateConstraints]</code></p>
+<p>Take a look at these<br><a href="http://stackoverflow.com/questions/20609206/setneedslayout-vs-setneedsupdateconstraints-and-layoutifneeded-vs-updateconstra" target="_blank" rel="external">setNeedsLayout vs. setNeedsUpdateConstraints and layoutIfNeeded vs updateConstraintsIfNeeded</a><br><a href="http://stackoverflow.com/questions/20305654/what-is-the-difference-between-all-these-auto-layout-update-methods-are-all-nec" target="_blank" rel="external">What is the difference between all these Auto Layout update methods? Are all necessary?</a></p>
+<h2 id="ViewController"><a href="#ViewController" class="headerlink" title="ViewController"></a>ViewController</h2><p><code>ViewController.m</code><br>[code language=”objc”]</p>
+<p>#define SYSTEM_VERSION                              ([[UIDevice currentDevice] systemVersion])</p>
+<p>#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([SYSTEM_VERSION compare:v options:NSNumericSearch] != NSOrderedAscending)</p>
+<p>#define IS_IOS8_OR_ABOVE                            (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@”8.0”))</p>
+<p>@interface ViewController () <uitableviewdatasource, uitableviewdelegate=""></uitableviewdatasource,></p>
+<p>@property (weak, nonatomic) IBOutlet UITableView <em>tableView;<br>@property (nonatomic, strong) NSArray </em>items;<br>@property (nonatomic, strong) QuoteTableViewCell *prototypeCell;</p>
+<p>@end</p>
+<p>@implementation ViewController</p>
+<ul>
+<li><p>(void)viewDidLoad {<br>  [super viewDidLoad];</p>
+<p>  [self setupTableView];<br>  [self loadData];<br>}</p>
+</li>
+<li><p>(void)didReceiveMemoryWarning {<br>  [super didReceiveMemoryWarning];<br>  // Dispose of any resources that can be recreated.<br>}</p>
+</li>
+</ul>
+<p>#pragma mark - Setup</p>
+<ul>
+<li>(void)setupTableView<br>{<br>  self.tableView.dataSource = self;<br>  self.tableView.delegate = self;<br>}</li>
+</ul>
+<p>#pragma mark - Data</p>
+<ul>
+<li><p>(void)loadData<br>{<br>  NSString *plistPath = [[NSBundle mainBundle] pathForResource:@”quotes” ofType:@”plist”];<br>  self.items = [[NSArray alloc] initWithContentsOfFile:plistPath];</p>
+<p>  [self.tableView reloadData];<br>}</p>
+</li>
+</ul>
+<p>#pragma mark - PrototypeCell<br>// (4)</p>
+<ul>
+<li><p>(QuoteTableViewCell *)prototypeCell<br>{<br>  if (!_prototypeCell) {</p>
+<pre><code>_prototypeCell = [self.tableView dequeueReusableCellWithIdentifier:NSStringFromClass([QuoteTableViewCell class])];
+</code></pre><p>  }</p>
+<p>  return _prototypeCell;<br>}</p>
+</li>
+</ul>
+<p>#pragma mark - Configure</p>
+<ul>
+<li><p>(void)configureCell:(QuoteTableViewCell <em>)cell forRowAtIndexPath:(NSIndexPath </em>)indexPath<br>{<br>  NSString *quote = self.items[indexPath.row];</p>
+<p>  cell.numberLabel.text = [NSString stringWithFormat:@”Quote %ld”, (long)indexPath.row];<br>  cell.quoteLabel.text = quote;<br>}</p>
+</li>
+</ul>
+<p>#pragma mark - UITableViewDataSouce</p>
+<ul>
+<li><p>(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView<br>{<br>  return 1;<br>}</p>
+</li>
+<li><p>(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section<br>{<br>  return self.items.count;<br>}</p>
+</li>
+<li><p>(UITableViewCell <em>)tableView:(UITableView </em>)tableView cellForRowAtIndexPath:(NSIndexPath <em>)indexPath<br>{<br>  QuoteTableViewCell </em>cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([QuoteTableViewCell class])];</p>
+<p>  [self configureCell:cell forRowAtIndexPath:indexPath];</p>
+<p>  return cell;<br>}</p>
+</li>
+</ul>
+<p>#pragma mark - UITableViewDelegate<br>// (5)</p>
+<ul>
+<li><p>(CGFloat)tableView:(UITableView <em>)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath </em>)indexPath<br>{<br>  return UITableViewAutomaticDimension;<br>}</p>
+</li>
+<li><p>(CGFloat)tableView:(UITableView <em>)tableView heightForRowAtIndexPath:(NSIndexPath </em>)indexPath<br>{<br>  // (6)<br>  if (IS_IOS8_OR_ABOVE) {</p>
+<pre><code>return UITableViewAutomaticDimension;
+</code></pre><p>  }</p>
+<p>  // (7)<br>  //self.prototypeCell.bounds = CGRectMake(0, 0, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.prototypeCell.bounds));</p>
+<p>  [self configureCell:self.prototypeCell forRowAtIndexPath:indexPath];</p>
+<p>  // (8)<br>  [self.prototypeCell updateConstraintsIfNeeded];<br>  [self.prototypeCell layoutIfNeeded];</p>
+<p>  // (9)<br>  return [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;</p>
+</li>
+</ul>
+<p>}</p>
+<p>@end<br>[/code]</p>
+<p>(4) The prototype cell is never displayed, it is used to layout a cell and determine the required height</p>
+<p>(5) You can use UITableViewAutomaticDimension or specify a reasonable estimated height</p>
+<p>(6) iOS 8 Auto sizing cell feature needs UITableViewAutomaticDimension</p>
+<p>(7) I have met a case when the I dequeue the cell, the cell size is always zero!!! So if that is the case, we needs to set the bounds for the cell (or more precisely, the width) so that the layout and update constraints steps will work. It also helps in orientation situation. See <a href="http://useyourloaf.com/blog/2014/02/14/table-view-cells-with-varying-row-heights.html" target="_blank" rel="external">Table View Cells With Varying Row Heights</a> for Issue With Device Orientation Changes (Updated 17 March 2014)</p>
+<p>(8) Same as (2), but for the cell</p>
+<blockquote><br>  Do the layout pass on the cell, which will calculate the frames for all the views based on the constraints (Note that the preferredMaxLayoutWidth is set on multi-line UILabels inside the -<code>layoutSubviews</code> method in the UITableViewCell subclass<br></blockquote>
+
+
+
+<p>(9) You must call it on the <code>contentView</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://useyourloaf.com/blog/2014/02/14/table-view-cells-with-varying-row-heights.html" target="_blank" rel="external">Table View Cells With Varying Row Heights</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/19132908/auto-layout-constraints-issue-on-ios7-in-uitableviewcell" target="_blank" rel="external">Auto layout constraints issue on iOS7 in UITableViewCell</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/18746929/using-auto-layout-in-uitableview-for-dynamic-cell-layouts-variable-row-heights" target="_blank" rel="external">Table View Cells With Varying Row Heights</a></li>
+</ol>
+<ol>
+<li><a href="http://derpturkey.com/autosize-uitableviewcell-height-programmatically/" target="_blank" rel="external">AutoSize UITableViewCell height programmatically</a></li>
+</ol>
+<ol>
+<li><a href="http://useyourloaf.com/blog/2014/08/07/self-sizing-table-view-cells.html" target="_blank" rel="external">Self Sizing Table View Cells</a></li>
+</ol>
+<ol>
+<li><a href="http://www.raywenderlich.com/73602/dynamic-table-view-cell-height-auto-layout" target="_blank" rel="external">Dynamic Table View Cell Height and Auto Layout</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/a/25820173/1418457" target="_blank" rel="external">Auto Layout in UICollectionViewCell not working</a></li>
+</ol>
+<ol>
+<li><a href="http://www.shinobicontrols.com/blog/posts/2014/07/24/ios8-day-by-day-day-5-auto-sizing-table-view-cells" target="_blank" rel="external">iOS8 Day-by-Day :: Day 5 :: Auto-sizing table view cells</a></li>
+</ol>
+<ol>
+<li><a href="http://www.shinobicontrols.com/blog/posts/2014/10/28/ios8-day-by-day-day-37-autosizing-collection-view-cells" target="_blank" rel="external">iOS8 Day-by-Day :: Day 37 :: Autosizing Collection View Cells</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/" data-title="iOS dynamic table view cells with varying row height and Autolayout | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2014/11/22/there-are-many-ios-conferences/" title="There are many iOS conferences and groups">
+  <strong>上一篇：</strong><br/>
+  <span>
+  There are many iOS conferences and groups</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2014/10/11/fun-with-objective-c/"  title="Fun with Objective C">
+ <strong>下一篇：</strong><br/> 
+ <span>Fun with Objective C
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#preferredMaxLayoutWidth"><span class="toc-number">1.</span> <span class="toc-text">preferredMaxLayoutWidth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#User-Interface"><span class="toc-number">2.</span> <span class="toc-text">User Interface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cell"><span class="toc-number">3.</span> <span class="toc-text">Cell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ViewController"><span class="toc-number">4.</span> <span class="toc-text">ViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

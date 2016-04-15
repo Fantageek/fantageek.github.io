@@ -1,0 +1,671 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>NSNotificationCenter in iOS | Fantageek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Khoa Pham">
+    
+
+    
+    <meta name="description" content="NSNotificationCenter is like central hub where notifications are posted and received by any parts of the app
+RegisteringRegistering for notification n times, you get notified n times
+debugDescriptionA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSNotificationCenter in iOS">
+<meta property="og:url" content="http://www.fantageek.com/blog/2015/12/27/nsnotificationcenter-in-ios/index.html">
+<meta property="og:site_name" content="Fantageek">
+<meta property="og:description" content="NSNotificationCenter is like central hub where notifications are posted and received by any parts of the app
+RegisteringRegistering for notification n times, you get notified n times
+debugDescriptionA">
+<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NSNotificationCenter in iOS">
+<meta name="twitter:description" content="NSNotificationCenter is like central hub where notifications are posted and received by any parts of the app
+RegisteringRegistering for notification n times, you get notified n times
+debugDescriptionA">
+<meta name="twitter:creator" content="@onmyway133">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Fantageek" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fantageek" title="Fantageek"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fantageek">Fantageek</a></h1>
+				<h2 class="blog-motto">Simple apps that make sense</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.fantageek.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/12/27/nsnotificationcenter-in-ios/" title="NSNotificationCenter in iOS" itemprop="url">NSNotificationCenter in iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-27T09:42:17.000Z" itemprop="datePublished"> Published 2015-12-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Registering"><span class="toc-number">1.</span> <span class="toc-text">Registering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#debugDescription"><span class="toc-number">2.</span> <span class="toc-text">debugDescription</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observer"><span class="toc-number">3.</span> <span class="toc-text">Observer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#addObserver-selector-name-object"><span class="toc-number">3.1.</span> <span class="toc-text">addObserver(_:selector:name:object:)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#addObserverForName-object-queue-usingBlock"><span class="toc-number">3.2.</span> <span class="toc-text">addObserverForName(_:object:queue:usingBlock:)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-unregister"><span class="toc-number">4.</span> <span class="toc-text">When to unregister ?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS-9"><span class="toc-number">4.1.</span> <span class="toc-text">iOS 9+</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Synchrony"><span class="toc-number">5.</span> <span class="toc-text">Synchrony</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSNotificationQueue"><span class="toc-number">6.</span> <span class="toc-text">NSNotificationQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
+		
+		</div>
+		
+		<p><code>NSNotificationCenter</code> is like central hub where notifications are posted and received by any parts of the app</p>
+<h2 id="Registering"><a href="#Registering" class="headerlink" title="Registering"></a>Registering</h2><p>Registering for notification n times, you get notified n times</p>
+<h2 id="debugDescription"><a href="#debugDescription" class="headerlink" title="debugDescription"></a>debugDescription</h2><p>As of iOS 9+,</p>
+<blockquote>
+<p>NSNotificationCenter and NSDistributedNotificationCenter will now provide a debug description when printing from the debugger that will list all registered observers including references that have been zeroed out for aiding in debugging notification registrations. This data is only valid per the duration of the breakpoint since the underlying store must account for multithreaded environments. Wildcard registrations for notifications where the name or object that was passed to the addObserver method family was null will be printed in the debug description as *.</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="type">NSNotificationCenter</span>.defaultCenter().debugDescription)</span><br></pre></td></tr></table></figure>
+<h2 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h2><h3 id="addObserver-selector-name-object"><a href="#addObserver-selector-name-object" class="headerlink" title="addObserver(_:selector:name:object:)"></a>addObserver(_:selector:name:object:)</h3><blockquote>
+<p>Adds an entry to the receiver’s dispatch table with an observer, a notification selector and optional criteria: notification name and sender.</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">    <span class="type">NSNotificationCenter</span>.defaultCenter().addObserver(<span class="keyword">self</span>, selector: <span class="string">"playerDidReachEndNotificationHandler:"</span>, name: <span class="type">AVPlayerItemDidPlayToEndTimeNotification</span>, object: player.currentItem)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">playerDidReachEndNotificationHandler</span><span class="params">(notification: NSNotification)</span></span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> playerItem = notification.object <span class="keyword">as</span>? <span class="type">AVPlayerItem</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    playerItem.seekToTime(kCMTimeZero)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>NSNotificationCenter holds weak reference to its observer</li>
+<li>Regular notification centers deliver notifications on the thread in which the notification was posted</li>
+</ul>
+<h3 id="addObserverForName-object-queue-usingBlock"><a href="#addObserverForName-object-queue-usingBlock" class="headerlink" title="addObserverForName(_:object:queue:usingBlock:)"></a>addObserverForName(_:object:queue:usingBlock:)</h3><blockquote>
+<p>Adds an entry to the receiver’s dispatch table with a notification queue and a block to add to the queue, and optional criteria: notification name and sender.</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">observer = <span class="type">NSNotificationCenter</span>.defaultCenter().addObserverForName(<span class="type">AVPlayerItemDidPlayToEndTimeNotification</span>, object: player.currentItem, queue: <span class="type">NSOperationQueue</span>.mainQueue()) &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] notification <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">self</span>?.playerDidReachEndNotificationHandler(notification)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The returned of this method is an opaque object to act as the observer, and <code>NSNotificationCenter</code> holds a strong reference to this object</li>
+<li>Avoid strongly capturing objects in the block. See <a href="http://sealedabstract.com/code/nsnotificationcenter-with-blocks-considered-harmful/" target="_blank" rel="external">NSNotificationCenter with blocks considered harmful</a></li>
+</ul>
+<h2 id="When-to-unregister"><a href="#When-to-unregister" class="headerlink" title="When to unregister ?"></a>When to unregister ?</h2><p>The idea is to unregister as soon as we don’t need to receive notifications. Most of the time, it is our <code>deinit</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> &#123;</span><br><span class="line">    <span class="type">NSNotificationCenter</span>.defaultCenter().removeObserver(<span class="keyword">self</span>)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>See <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Notifications/Articles/Registering.html#//apple_ref/doc/uid/20000723-CEGCCFID" target="_blank" rel="external">Unregistering an Observer</a></p>
+<blockquote>
+<p>Before an object that is observing notifications is deallocated, it must tell the notification center to stop sending it notifications. Otherwise, the next notification gets sent to a nonexistent object and the program crashes</p>
+</blockquote>
+<h3 id="iOS-9"><a href="#iOS-9" class="headerlink" title="iOS 9+"></a>iOS 9+</h3><p>See <a href="https://developer.apple.com/library/mac/releasenotes/Foundation/RN-Foundation/index.html#10_11NotificationCenter" target="_blank" rel="external">OS X 10.11 and iOS 9 Release Notes<br>Cocoa Foundation Framework</a></p>
+<blockquote>
+<p>In OS X 10.11 and iOS 9.0 NSNotificationCenter and NSDistributedNotificationCenter will no longer send notifications to registered observers that may be deallocated</p>
+<p>This means that observers are not required to un-register in their deallocation method</p>
+</blockquote>
+<p>However,</p>
+<blockquote>
+<p>Block based observers via the -[NSNotificationCenter addObserverForName:object:queue:usingBlock] method still need to be un-registered when no longer in use since the system still holds a strong reference to these observers</p>
+</blockquote>
+<p>So we must call <code>removeObserver</code> on the returned <code>observer</code> object<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">deinit</span> &#123;</span><br><span class="line">    <span class="type">NSNotificationCenter</span>.defaultCenter().removeObserver(observer)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Synchrony"><a href="#Synchrony" class="headerlink" title="Synchrony"></a>Synchrony</h2><blockquote>
+<p>A notification center delivers notifications to observers synchronously. In other words, when posting a notification, control does not return to the poster until all observers have received and processed the notification</p>
+</blockquote>
+<p>If you have performance problem of posting notifications to large number of observers, consider using</p>
+<ul>
+<li>dispatch_after</li>
+<li>Many <code>NSNotificationCenter</code></li>
+<li><code>NSNotificationQueue</code></li>
+</ul>
+<h2 id="NSNotificationQueue"><a href="#NSNotificationQueue" class="headerlink" title="NSNotificationQueue"></a>NSNotificationQueue</h2><ul>
+<li>Enqueuing methods return immediately</li>
+<li>Associated with the run loop modes</li>
+<li>There ‘s <code>defaultQueue</code> for the current thread</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> queue = <span class="type">NSNotificationQueue</span>(notificationCenter: <span class="type">NSNotificationCenter</span>.defaultCenter())</span><br><span class="line">    <span class="keyword">let</span> notification = <span class="type">NSNotification</span>(name: <span class="string">"CacheDidUpdateNotification"</span>, object: <span class="keyword">self</span>)</span><br><span class="line">    queue.enqueueNotification(notification, postingStyle: .<span class="type">PostASAP</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Notifications/Introduction/introNotifications.html#//apple_ref/doc/uid/10000043-SW1" target="_blank" rel="external">Notification Programming Topics</a></li>
+<li><a href="http://sealedabstract.com/code/nsnotificationcenter-with-blocks-considered-harmful/" target="_blank" rel="external">NSNotificationCenter with blocks considered harmful</a></li>
+<li><a href="http://useyourloaf.com/blog/delegation-or-notification.html" target="_blank" rel="external">Delegation or Notification</a></li>
+<li><a href="https://mikeash.com/pyblog/friday-qa-2010-01-08-nsnotificationqueue.html" target="_blank" rel="external">Friday Q&amp;A 2010-01-08: NSNotificationQueue</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.fantageek.com/blog/2015/12/27/nsnotificationcenter-in-ios/" data-title="NSNotificationCenter in iOS | Fantageek" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2016/01/02/curry-in-swift/" title="Curry in Swift">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Curry in Swift</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/12/20/xmas/"  title="Xmas">
+ <strong>下一篇：</strong><br/> 
+ <span>Xmas
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Registering"><span class="toc-number">1.</span> <span class="toc-text">Registering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#debugDescription"><span class="toc-number">2.</span> <span class="toc-text">debugDescription</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observer"><span class="toc-number">3.</span> <span class="toc-text">Observer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#addObserver-selector-name-object"><span class="toc-number">3.1.</span> <span class="toc-text">addObserver(_:selector:name:object:)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#addObserverForName-object-queue-usingBlock"><span class="toc-number">3.2.</span> <span class="toc-text">addObserverForName(_:object:queue:usingBlock:)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-unregister"><span class="toc-number">4.</span> <span class="toc-text">When to unregister ?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS-9"><span class="toc-number">4.1.</span> <span class="toc-text">iOS 9+</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Synchrony"><span class="toc-number">5.</span> <span class="toc-text">Synchrony</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSNotificationQueue"><span class="toc-number">6.</span> <span class="toc-text">NSNotificationQueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="onmyway133" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Android/" title="Android">Android<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java-Script/" title="Java Script">Java Script<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Life/" title="Life">Life<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Miscellaneous/" title="Miscellaneous">Miscellaneous<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Mobile-Labs/" title="Mobile Labs">Mobile Labs<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/" title="Others">Others<sup>26</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Programming/" title="Programming">Programming<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Others/Windows-8/" title="Windows 8">Windows 8<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/" title="Windows 8">Windows 8<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-Phone/" title="Windows Phone">Windows Phone<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Windows-8/Windows-Phone/" title="Windows Phone">Windows Phone<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/programming/" title="programming">programming<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp7/" title="wp7">wp7<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> A dream is not a dream anymore when you don&#39;t have time for it <br/>
+			What you don&#39;t know is what you haven&#39;t learned</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/onmyway133" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/1418457/onmyway133" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/onmyway133" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:onmyway133@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Khoa Pham">Khoa Pham</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'fantageek';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-40119591-1', 'fantageek.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
