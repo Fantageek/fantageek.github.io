@@ -11,31 +11,31 @@
     
 
     
-    <meta name="description" content="Here are my notes for working with Push Notification
+    <meta name="description" content="Here are my notes for working with Push Notification, updated for iOS 9
 How to register
 Register to receive push notification
 
 registerForRemoteNotificationTypes is deprecated in iOS 8+
-1UIApplication.sharedApplication(">
+1UIApplication">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Push Notification in practice">
 <meta property="og:url" content="http://www.fantageek.com/2014/05/31/push-notification-in-practice/index.html">
 <meta property="og:site_name" content="Fantageek">
-<meta property="og:description" content="Here are my notes for working with Push Notification
+<meta property="og:description" content="Here are my notes for working with Push Notification, updated for iOS 9
 How to register
 Register to receive push notification
 
 registerForRemoteNotificationTypes is deprecated in iOS 8+
-1UIApplication.sharedApplication(">
-<meta property="og:updated_time" content="2016-04-14T22:47:46.000Z">
+1UIApplication">
+<meta property="og:updated_time" content="2016-04-15T20:02:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Push Notification in practice">
-<meta name="twitter:description" content="Here are my notes for working with Push Notification
+<meta name="twitter:description" content="Here are my notes for working with Push Notification, updated for iOS 9
 How to register
 Register to receive push notification
 
 registerForRemoteNotificationTypes is deprecated in iOS 8+
-1UIApplication.sharedApplication(">
+1UIApplication">
 <meta name="twitter:creator" content="@onmyway133">
 
     
@@ -112,11 +112,11 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-register"><span class="toc-number">1.</span> <span class="toc-text">How to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-register"><span class="toc-number">2.</span> <span class="toc-text">When to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#didReceiveRemoteNotification"><span class="toc-number">3.</span> <span class="toc-text">didReceiveRemoteNotification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-handle"><span class="toc-number">4.</span> <span class="toc-text">How to handle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-1-Foreground"><span class="toc-number">4.0.1.</span> <span class="toc-text">Case 1: Foreground</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-2-Background"><span class="toc-number">4.0.2.</span> <span class="toc-text">Case 2: Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-3-Terminated"><span class="toc-number">4.0.3.</span> <span class="toc-text">Case 3: Terminated</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-register"><span class="toc-number">1.</span> <span class="toc-text">How to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-register"><span class="toc-number">2.</span> <span class="toc-text">When to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#didReceiveRemoteNotification"><span class="toc-number">3.</span> <span class="toc-text">didReceiveRemoteNotification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-handle"><span class="toc-number">4.</span> <span class="toc-text">How to handle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-1-Foreground"><span class="toc-number">4.0.1.</span> <span class="toc-text">Case 1: Foreground</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-2-Background"><span class="toc-number">4.0.2.</span> <span class="toc-text">Case 2: Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-3-Terminated"><span class="toc-number">4.0.3.</span> <span class="toc-text">Case 3: Terminated</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-alert"><span class="toc-number">5.</span> <span class="toc-text">System alert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Silent-push-payload"><span class="toc-number">6.</span> <span class="toc-text">Silent push payload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
 		
 		</div>
 		
-		<p>Here are my notes for working with Push Notification</p>
+		<p>Here are my notes for working with Push Notification, updated for iOS 9</p>
 <h2 id="How-to-register"><a href="#How-to-register" class="headerlink" title="How to register"></a>How to register</h2><ul>
 <li>Register to receive push notification</li>
 </ul>
@@ -171,25 +171,33 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 <li>System alert</li>
 <li>No method called</li>
 <li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and nothing is called</li>
 </ul>
 <p>Silent push</p>
 <ul>
 <li>System alert</li>
 <li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app is suspended, its state changed to <code>UIApplicationStateBackground</code></li>
 <li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and nothing is called</li>
 </ul>
 <h4 id="Case-3-Terminated"><a href="#Case-3-Terminated" class="headerlink" title="Case 3: Terminated"></a>Case 3: Terminated</h4><p>Loud push</p>
 <ul>
 <li>System alert</li>
 <li>No method called</li>
-<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code> with <code>launchOptions</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and <code>application:didFinishLaunchingWithOptions:</code> is called with <code>launchOptions</code> set to nil</li>
 </ul>
 <p>Silent push</p>
 <ul>
 <li>System alert</li>
 <li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app was not killed by user, it is woke up and state changed to <code>UIApplicationStateInactive</code>.</li>
-<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code> with <code>launchOptions</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and <code>application:didFinishLaunchingWithOptions:</code> is called with <code>launchOptions</code> set to nil</li>
 </ul>
+<h2 id="System-alert"><a href="#System-alert" class="headerlink" title="System alert"></a>System alert</h2><p>System alert only show if the payload contains “alert”</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"aps"</span> : &#123;</span><br><span class="line">        <span class="attr">"alert"</span> : &#123;</span><br><span class="line">            <span class="attr">"title"</span> : <span class="string">"Game Request"</span>,</span><br><span class="line">            <span class="attr">"body"</span> : <span class="string">"Bob wants to play poker"</span>,</span><br><span class="line">            <span class="attr">"action-loc-key"</span> : <span class="string">"PLAY"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"badge"</span> : <span class="number">5</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"param1"</span> : <span class="string">"bar"</span>,</span><br><span class="line">    <span class="attr">"param2"</span> : [ <span class="string">"bang"</span>,  <span class="string">"whiz"</span> ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Silent-push-payload"><a href="#Silent-push-payload" class="headerlink" title="Silent push payload"></a>Silent push payload</h2><p>For now I see that silent push must contain “sound” for <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> to be called when app is in background</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">"aps"</span>: &#123;</span><br><span class="line">   <span class="attr">"content-available"</span>: <span class="number">1</span>,</span><br><span class="line">   <span class="attr">"alert"</span>: <span class="string">"hello"</span> // include this if we want to show alert</span><br><span class="line">   <span class="string">"sound"</span>: <span class="string">""</span> // this does the trick</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"param1"</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"param2"</span>: <span class="string">"text"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html" target="_blank" rel="external">Scheduling, Registering, and Handling Notifications</a></li>
 <li><a href="http://www.abdus.me/ios-programming-tips/handle-push-notifications-when-arrived-ios/" target="_blank" rel="external">Handle push notifications when arrived in ios application</a></li>
@@ -266,7 +274,7 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-register"><span class="toc-number">1.</span> <span class="toc-text">How to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-register"><span class="toc-number">2.</span> <span class="toc-text">When to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#didReceiveRemoteNotification"><span class="toc-number">3.</span> <span class="toc-text">didReceiveRemoteNotification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-handle"><span class="toc-number">4.</span> <span class="toc-text">How to handle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-1-Foreground"><span class="toc-number">4.0.1.</span> <span class="toc-text">Case 1: Foreground</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-2-Background"><span class="toc-number">4.0.2.</span> <span class="toc-text">Case 2: Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-3-Terminated"><span class="toc-number">4.0.3.</span> <span class="toc-text">Case 3: Terminated</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-register"><span class="toc-number">1.</span> <span class="toc-text">How to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#When-to-register"><span class="toc-number">2.</span> <span class="toc-text">When to register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#didReceiveRemoteNotification"><span class="toc-number">3.</span> <span class="toc-text">didReceiveRemoteNotification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-handle"><span class="toc-number">4.</span> <span class="toc-text">How to handle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-1-Foreground"><span class="toc-number">4.0.1.</span> <span class="toc-text">Case 1: Foreground</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-2-Background"><span class="toc-number">4.0.2.</span> <span class="toc-text">Case 2: Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-3-Terminated"><span class="toc-number">4.0.3.</span> <span class="toc-text">Case 3: Terminated</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-alert"><span class="toc-number">5.</span> <span class="toc-text">System alert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Silent-push-payload"><span class="toc-number">6.</span> <span class="toc-text">Silent push payload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
  
   </div>
 
@@ -359,19 +367,11 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
@@ -387,7 +387,27 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -395,7 +415,15 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
@@ -407,27 +435,7 @@ registerForRemoteNotificationTypes is deprecated in iOS 8+
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 		</ul>
