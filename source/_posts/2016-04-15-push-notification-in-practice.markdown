@@ -15,7 +15,7 @@ tags:
 - push
 ---
 
-Here are my notes for working with Push Notification
+Here are my notes for working with Push Notification, updated for iOS 9
 
 ## How to register
 
@@ -108,12 +108,14 @@ Loud push
 - System alert
 - No method called
 - Tap notification and `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap on App Icon and nothing is called
 
 Silent push
 
 - System alert
 - `application:didReceiveRemoteNotification:fetchCompletionHandler:` called. If app is suspended, its state changed to `UIApplicationStateBackground`
 - Tap notification and `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap on App Icon and nothing is called
 
 #### Case 3: Terminated
 
@@ -121,13 +123,50 @@ Loud push
 
 - System alert
 - No method called
-- Tap notification and `application:didFinishLaunchingWithOptions:`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap notification and `application:didFinishLaunchingWithOptions:` with `launchOptions`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap on App Icon and `application:didFinishLaunchingWithOptions:` is called with `launchOptions` set to nil
 
 Silent push
 
 - System alert
 - `application:didReceiveRemoteNotification:fetchCompletionHandler:` called. If app was not killed by user, it is woke up and state changed to `UIApplicationStateInactive`.
-- Tap notification and `application:didFinishLaunchingWithOptions:`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap notification and `application:didFinishLaunchingWithOptions:` with `launchOptions`,  `application:didReceiveRemoteNotification:fetchCompletionHandler:` called
+- Tap on App Icon and `application:didFinishLaunchingWithOptions:` is called with `launchOptions` set to nil
+
+## System alert
+
+System alert only show if the payload contains "alert"
+
+```json
+{
+    "aps" : {
+        "alert" : {
+            "title" : "Game Request",
+            "body" : "Bob wants to play poker",
+            "action-loc-key" : "PLAY"
+        },
+        "badge" : 5
+    },
+    "param1" : "bar",
+    "param2" : [ "bang",  "whiz" ]
+}
+```
+
+## Silent push payload
+
+For now I see that silent push must contain "sound" for `application:didReceiveRemoteNotification:fetchCompletionHandler:` to be called when app is in background
+
+```json
+{
+ "aps": {
+   "content-available": 1,
+   "alert": "hello" // include this if we want to show alert
+   "sound": "" // this does the trick
+  },
+  "param1": 1,
+  "param2": "text"
+}
+```
 
 ## Reference
 
