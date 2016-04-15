@@ -82,6 +82,276 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/06/18/understanding-mantle-value-transformer/" title="Understanding Mantle - Value Transformer" itemprop="url">Understanding Mantle - Value Transformer</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-18T14:34:53.000Z" itemprop="datePublished"> Published 2015-06-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Mantle is my number 1 choice for the model class. It has a lot of predefined value transformers, you can take a look at NSValueTransformer+MTLInversionAdditions and NSValueTransformer+MTLPredefinedTransformerAdditions.</p>
+<h3 id="Predefined-value-transformer"><a href="#Predefined-value-transformer" class="headerlink" title="Predefined value transformer"></a>Predefined value transformer</h3><p>Currently Mantle 1.5 supports these value transformers</p>
+<p>mtl_invertedTransformer<br>mtl_JSONDictionaryTransformerWithModelClass<br>mtl_JSONArrayTransformerWithModelClass<br>mtl_valueMappingTransformerWithDictionary<br>URLValueTransformer<br>booleanValueTransformer</p>
+<p>The transformer without parameters (like URLValueTransformer and booleanValueTransformer are registered with NSValueTransformer in the “load” method</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(void)load {<br>  @autoreleasepool {</p>
+<pre><code>MTLValueTransformer *URLValueTransformer = [MTLValueTransformer
+    reversibleTransformerWithForwardBlock:^ id (NSString *str) {
+        if (![str isKindOfClass:NSString.class]) return nil;
+        return [NSURL URLWithString:str];
+    }
+    reverseBlock:^ id (NSURL *URL) {
+        if (![URL isKindOfClass:NSURL.class]) return nil;
+        return URL.absoluteString;
+    }];
+
+[NSValueTransformer setValueTransformer:URLValueTransformer forName:MTLURLValueTransformerName];
+
+MTLValueTransformer *booleanValueTransformer = [MTLValueTransformer
+    reversibleTransformerWithBlock:^ id (NSNumber *boolean) {
+        if (![boolean isKindOfClass:NSNumber.class]) return nil;
+        return (NSNumber *)(boolean.boolValue ? kCFBooleanTrue : kCFBooleanFalse);
+    }];
+
+[NSValueTransformer setValueTransformer:booleanValueTransformer forName:MTLBooleanValueTransformerName];
+</code></pre><p>  }<br>}<br>[/code]</p>
+</li>
+</ul>
+<p>But eventually, those transformers end up calling reversibleTransformerWithForwardBlock:reverseBlock: and the real converter is the MTLJSONAdapter</p>
+<h3 id="Custom-value-transformer"><a href="#Custom-value-transformer" class="headerlink" title="Custom value transformer"></a>Custom value transformer</h3><p>If those value transformer do not suit your need. You can learn from what Mantle already does, and build your own value transformer</p>
+<p>For example, this is a custom value transformer from my FTGValueTransformer that converts the first object in a JSON array to a model</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(NSValueTransformer <em>)ftg_JSONFirstObjectInArrayTransformerWithModelClass:(Class)modelClass {<br>  NSValueTransformer </em>dictionaryTransformer = [self mtl_JSONDictionaryTransformerWithModelClass:modelClass];</p>
+<p>  return [MTLValueTransformer</p>
+<pre><code>reversibleTransformerWithForwardBlock:^ id (NSArray *dictionaries) {
+    if (dictionaries == nil || dictionaries.count == 0) {
+        return nil;
+    }
+
+    NSAssert([dictionaries isKindOfClass:NSArray.class], @&quot;Expected a array of dictionaries, got: %@&quot;, dictionaries);
+
+    NSDictionary *firstDictionary = [dictionaries firstObject];
+
+    NSAssert([firstDictionary isKindOfClass:NSDictionary.class], @&quot;Expected a dictionary or an NSNull, got: %@&quot;, firstDictionary);
+
+    id model = [dictionaryTransformer transformedValue:firstDictionary];
+
+    return model;
+}
+reverseBlock:^ id (id model) {
+    if (model == nil) {
+        return nil;
+    }
+
+    NSAssert([model isKindOfClass:MTLModel.class], @&quot;Expected an MTLModel or an NSNull, got: %@&quot;, model);
+
+    NSDictionary *dict = [dictionaryTransformer reverseTransformedValue:model];
+
+    if (dict) {
+        return @[ dict ];
+    }
+
+    return @[];
+}];
+</code></pre><p>}<br>[/code]</p>
+</li>
+</ul>
+<h3 id="reversibleTransformerWithForwardBlock-reverseBlock"><a href="#reversibleTransformerWithForwardBlock-reverseBlock" class="headerlink" title="reversibleTransformerWithForwardBlock:reverseBlock:"></a>reversibleTransformerWithForwardBlock:reverseBlock:</h3><p>The reversibleTransformerWithForwardBlock is called to convert from JSON to model, and reverseBlock is called to convert model back to JSON</p>
+<p>Take a look at this example, it is a value transformer that convert NSNumber to NSString</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(NSValueTransformer <em>)ftg_stringValueTransformer {<br>  NSValueTransformer </em>stringValueTransformer = [MTLValueTransformer</p>
+<pre><code>reversibleTransformerWithBlock:^ id (NSNumber *number) {
+    if (![number isKindOfClass:NSNumber.class]) {
+        return  nil;
+    }
+
+    return number.stringValue;
+}];
+</code></pre><p>  return stringValueTransformer;<br>}<br>[/code]</p>
+</li>
+</ul>
+<p>In the reversibleTransformerWithBlock, the parameter is of kind NSNumber (in JSON dictionary) and the return value is of kind NSString (the property you declare on your model)</p>
+<h4 id="transformerWithBlock"><a href="#transformerWithBlock" class="headerlink" title="transformerWithBlock:"></a>transformerWithBlock:</h4><p>If you just need to convert from JSON to model, you can just use transformerWithBlock, which just hav reverseBlock set to nil</p>
+<h3 id="How-to-hook-into-Mantle"><a href="#How-to-hook-into-Mantle" class="headerlink" title="How to hook into Mantle"></a>How to hook into Mantle</h3><p>If for some reason, you don’t want to use those value transformer, you can override initWithDictionary method (remember to call super).</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(instancetype)initWithDictionary:(NSDictionary <em>)dictionaryValue error:(NSError *</em>)error {<br>  self = [super initWithDictionary:dictionaryValue error:error];<br>  if (self == nil) return nil;</p>
+<p>  // Store a value that needs to be determined locally upon initialization.<br>  _retrievedAt = [NSDate date];</p>
+<p>  return self;<br>}<br>[/code]</p>
+</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
+<li><a href="https://github.com/Mantle/Mantle" target="_blank" rel="external">Mantle</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/Mantle/Mantle/issues/350" target="_blank" rel="external">Possible to access first object in nested array ?</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/onmyway133/FTGValueTransformer" target="_blank" rel="external">FTGValueTransformer</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/23237352/how-to-hook-into-mantle" target="_blank" rel="external">How to hook into Mantle</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/06/18/understanding-mantle-value-transformer/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/06/18/understanding-sdwebimage-decompression/" title="Understanding SDWebImage - Decompression" itemprop="url">Understanding SDWebImage - Decompression</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-18T14:34:06.000Z" itemprop="datePublished"> Published 2015-06-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="How-does-UIImage-decompression-happen"><a href="#How-does-UIImage-decompression-happen" class="headerlink" title="How does UIImage decompression happen"></a>How does UIImage decompression happen</h2><p>This is a very good blog post explaining how UIImage decompression work <a href="http://www.cocoanetics.com/2011/10/avoiding-image-decompression-sickness/" target="_blank" rel="external">Avoiding Image Decompression Sickness</a></p>
+<blockquote>
+<p>This delay results from the fact that images need to be decompressed from their file incarnation to be rendered on screen. Unfortunately UIImage does this decompression at the very latest possible moment, i.e. when it is to be displayed.</p>
+</blockquote>
+<p>Basically, there are 3 steps</p>
+<ul>
+<li>Get compressed image data from server (PNG, JPEG, …)</li>
+<li>Initialize UIImage with that compressed image data</li>
+<li>When that UIImage is about to be shown onto UIImageView, that image data from the UIImage will be decompressed. And that decompressed data is what is displayed on UIImageView</li>
+</ul>
+<blockquote>
+<p>Then there’s the question of “How fast can I get these pixels on screen?”. The answer to this is comprised of 3 main time intervals:</p>
+<ul>
+<li>time to alloc/init the UIImage with data on disk</li>
+<li>time to decompress the bits into an uncompressed format</li>
+<li>time to transfer the uncompressed bits to a CGContext, potentially resizing, blending, anti-aliasing it</li>
+</ul>
+</blockquote>
+<h2 id="shouldDecompressImages"><a href="#shouldDecompressImages" class="headerlink" title="shouldDecompressImages"></a>shouldDecompressImages</h2><blockquote>
+<p>  Decompressing images that are downloaded and cached can improve performance but can consume lot of memory. Defaults to YES. Set this to NO if you are experiencing a crash due to excessive memory consumption.</p>
+</blockquote>
+<p>SDWebImage will decompress UIImage when received data from network, or when loaded from disk</p>
+<h3 id="SDWebImageDownloaderOperation"><a href="#SDWebImageDownloaderOperation" class="headerlink" title="SDWebImageDownloaderOperation"></a>SDWebImageDownloaderOperation</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)connection:(<span class="built_in">NSURLConnection</span> *)connection didReceiveData:(<span class="built_in">NSData</span> *)data &#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="keyword">if</span> (partialImageRef) &#123;</span><br><span class="line">                <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> imageWith<span class="built_in">CGImage</span>:partialImageRef scale:<span class="number">1</span> orientation:orientation];</span><br><span class="line">                <span class="built_in">NSString</span> *key = [[SDWebImageManager sharedManager] cacheKeyForURL:<span class="keyword">self</span>.request.URL];</span><br><span class="line">                <span class="built_in">UIImage</span> *scaledImage = [<span class="keyword">self</span> scaledImageForKey:key image:image];</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">self</span>.shouldDecompressImages) &#123;</span><br><span class="line">                    image = [<span class="built_in">UIImage</span> decodedImageWithImage:scaledImage];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    image = scaledImage;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">CGImageRelease</span>(partialImageRef);</span><br><span class="line">                dispatch_main_sync_safe(^&#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">self</span>.completedBlock) &#123;</span><br><span class="line">                        <span class="keyword">self</span>.completedBlock(image, <span class="literal">nil</span>, <span class="literal">nil</span>, <span class="literal">NO</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="SDImageCache"><a href="#SDImageCache" class="headerlink" title="SDImageCache"></a>SDImageCache</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIImage</span> *)diskImageForKey:(<span class="built_in">NSString</span> *)key &#123;</span><br><span class="line">    <span class="built_in">NSData</span> *data = [<span class="keyword">self</span> diskImageDataBySearchingAllPathsForKey:key];</span><br><span class="line">    <span class="keyword">if</span> (data) &#123;</span><br><span class="line">        <span class="built_in">UIImage</span> *image = [<span class="built_in">UIImage</span> sd_imageWithData:data];</span><br><span class="line">        image = [<span class="keyword">self</span> scaledImageForKey:key image:image];</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.shouldDecompressImages) &#123;</span><br><span class="line">            image = [<span class="built_in">UIImage</span> decodedImageWithImage:image];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> image;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Decompression"><a href="#Decompression" class="headerlink" title="Decompression"></a>Decompression</h2><p>The simplest way is to tell UIImage to draw<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)decompressImage:(<span class="built_in">UIImage</span> *)image</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">UIGraphicsBeginImageContext</span>(<span class="built_in">CGSizeMake</span>(<span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line">	[image drawAtPoint:<span class="built_in">CGPointZero</span>];</span><br><span class="line">	<span class="built_in">UIGraphicsEndImageContext</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>For a more fine tuned approach, see <code>SDWebImageDecoder</code></p>
+<h2 id="Where-are-the-decompressed-images"><a href="#Where-are-the-decompressed-images" class="headerlink" title="Where are the decompressed images"></a>Where are the decompressed images</h2><h3 id="UIImage-imageNamed"><a href="#UIImage-imageNamed" class="headerlink" title="[UIImage imageNamed]"></a>[UIImage imageNamed]</h3><blockquote><br>  The biggest thing that +imageNamed: does is decode the image data from the source file, which almost always significantly inflates the data size (for example, a screen sized PNG file might consume a few dozen KBs when compressed, but consumes over half a MB decompressed - width <em> height </em> 4). By contrast +imageWithContentsOfFile: will decompress that image everytime the image data is needed.<br></blockquote>
+
+
+
+
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://stackoverflow.com/questions/316236/difference-between-uiimage-imagenamed-and-uiimage-imagewithdata" target="_blank" rel="external">Difference between [UIImage imageNamed…] and [UIImage imageWithData…]?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/10149165/uiimage-decompression-causing-scrolling-lag" target="_blank" rel="external">UIImage decompression causing scrolling lag</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/rs/SDWebImage/wiki/How-is-SDWebImage-better-than-X%3F" target="_blank" rel="external">How is SDWebImage better than X?</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/rs/SDWebImage/issues/1173" target="_blank" rel="external">What does SDWebImageDecoder do?</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/rs/SDWebImage/issues/755" target="_blank" rel="external">Why the image file size is big</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/924740/dispelling-the-uiimage-imagenamed-fud" target="_blank" rel="external">Dispelling the UIImage imageNamed: FUD</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/06/18/understanding-sdwebimage-decompression/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/06/18/understanding-afnetworking-error/" title="Understanding AFNetworking - Error" itemprop="url">Understanding AFNetworking - Error</a>
   </h1>
   <p class="article-author">By
@@ -814,169 +1084,6 @@ self.kittens = fetchedKittens;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/03/09/recommended-books-for-developers/" title="Recommended books for developers" itemprop="url">Recommended books for developers</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-03-09T15:02:29.000Z" itemprop="datePublished"> Published 2015-03-09</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <ul>
-<li><a href="http://www.amazon.com/Pragmatic-Programmer-Journeyman-Master/dp/020161622X/" target="_blank" rel="external">The Pragmatic Programmer: From Journeyman to Master</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Things-Every-Programmer-Should-Know-ebook/dp/B0039OVIAK/ref=pd_sim_b_1?ie=UTF8&amp;refRID=1RQQNDCAT8RC85SCK3XR" target="_blank" rel="external">97 Things Every Programmer Should Know: Collective Wisdom from the Experts</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM/" target="_blank" rel="external">Clean Code: A Handbook of Agile Software Craftsmanship</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Clean-Coder-Conduct-Professional-Programmers-ebook/dp/B0050JLC9Y/" target="_blank" rel="external">The Clean Coder: A Code of Conduct for Professional Programmers</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Code-Complete-Developer-Best-Practices-ebook/dp/B00JDMPOSY/" target="_blank" rel="external">Code Complete</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Refactoring-Improving-Existing-Addison-Wesley-Technology-ebook/dp/B007WTFWJ6/" target="_blank" rel="external">Refactoring: Improving the Design of Existing Code</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Refactoring-Patterns-Addison-Wesley-Signature-Kerievsky-ebook/dp/B001TKD4RQ/" target="_blank" rel="external">Refactoring to Patterns</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented-ebook/dp/B000SEIBB8/" target="_blank" rel="external">Design Patterns: Elements of Reusable Object-Oriented Software</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Working-Effectively-Legacy-Robert-Martin-ebook/dp/B005OYHF0A" target="_blank" rel="external">Working Effectively with Legacy Code</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Agile-Principles-Patterns-Practices-C-ebook/dp/B0051TM4GI/" target="_blank" rel="external">Agile Principles, Patterns, and Practices in C#</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Growing-Object-Oriented-Software-Addison-Wesley-Signature-ebook/dp/B002TIOYVW/" target="_blank" rel="external">Growing Object-Oriented Software, Guided by Tests</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Art-Unit-Testing-examples/dp/1617290890/" target="_blank" rel="external">The Art of Unit Testing</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Enterprise-Application-Architecture-Addison-Wesley-Signature-ebook/dp/B008OHVDFM/" target="_blank" rel="external">Patterns of Enterprise Application Architecture</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Mythical-Man-Month-Anniversary-Software-Engineering-ebook/dp/B00B8USS14" target="_blank" rel="external">The Mythical Man-Month, Anniversary Edition: Essays On Software Engineering</a></li>
-</ul>
-<ul>
-<li><a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215" target="_blank" rel="external">Domain-Driven Design: Tackling Complexity in the Heart of Software</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Programming/">Programming</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/03/09/recommended-books-for-developers/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/02/28/stupid-interview-questions/" title="Stupid Interview Questions" itemprop="url">Stupid Interview Questions</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-02-28T16:56:50.000Z" itemprop="datePublished"> Published 2015-02-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>The original is <a href="http://exold.com/article/stupid-interview-questions" target="_blank" rel="external">http://exold.com/article/stupid-interview-questions</a> but it seems the site if off, so I made a copy here as a reference for myself and those who need</p>
-<p>I was reading a blog post on some guy’s programming interview, where he complained about being asked to write a file copy function. Now, while it’s quite possible to take umbrage at this, if I were in that situation, I’d see it as a chance for some free entertainment <em>cool</em>.</p>
-<p>Q. What do you mean by “copy”?<br>A. Ummm…copy the contents of the file to a new file.<br>Q. What about the date/time stamps?<br>A. No, those don’t need to be copied.<br>Q. Does the result file have to have the same name?<br>A. No.<br>Q. Can it have the same name?<br>A. Umm…no.<br>Q. Do I have to worry about name spoofing? What about the Turkish I?<br>A. Don’t worry about that.<br>Q. Does it have to be in the same location? Note that if it is in the same location, it (probably) can’t have the same name. Unless you copy it to itself (another question…).<br>A. Yes.<br>Q. What about the attributes?<br>A. Make the attributes the same.<br>Q. Should I modify the attributes of the source file? If this file copy is part of a backup or archive operation, it’d probably be a mistake to leave the ‘Archive’ attribute on.<br>A. No, leave them as-is.<br>Q. What if the source file has the Archive attribute off? If I make it off on the new file as well, it could screw up the user’s backup software.<br>A. Just make it the same. I don’t care about the user’s backup software.<br>Q. Well, I’m not sure that’s the best approach to take when thinking about designing software FOR users, but if you say so.<br>A. …<br>Q. What about compression? It’s a file attribute, but the copy destination may not support compression.<br>A. Don’t compress the copy.<br>Q. Even if the source is compressed, and the destination supports compression?<br>A. YES.<br>Q. What about encryption? What if the source file is encrypted, but the destination does not support encryption?<br>A. Don’t encrypt the copy if the destination doesn’t support it.<br>Q. Mmmmm, sorry, don’t mean to digress, but…that could be a serious security hole. Especially if wherever this file copy function ends up supports arbitrary parameters (directly or indirectly).<br>A. Look, just copy the damn file.<br>Q. What about the file creator?<br>A. Don’t care.<br>Q. What about the file owner?<br>A. Don’t care.<br>Q. What about file permissions? Is there a separate way we should handle inherited permissions and assigned permissions?<br>A. Forget the permissions.<br>Q. What operating system will this function be required to run on?<br>A. Windows XP.<br>Q. Home, or Pro, or Media Center, or one or more?<br>A. Pro.<br>Q. What service pack level are we aiming for?<br>A. Service Pack 2.<br>Q. Does that mean we don’t have to support any other SP level?<br>A. Yes, fine.<br>Q. How will the source file name be supplied?<br>A. As a parameter.<br>Q. Is it going to be supplied as a null-terminated string, a counted string, or an object?<br>A. Null-terminated string.<br>Q. Is it possible that a NULL pointer will be passed in?<br>A. No.<br>Q. Is it possible that an empty string will be passed in?<br>A. No.<br>Q. Is it possible that a malformed string will be passed in (e.g., no NULL terminator)?<br>A. No.<br>Q. What encoding will the filename be in?<br>A. Unicode.<br>Q. Sorry, umm…Unicode is not an encoding, really. If we’re using Unicode data, it has to have a specific encoding, like UTF-8, UCS-2, UTF-16, etc.<br>A. Fine. Make it UTF-8.<br>Q. OK. I’d like to note at this point that it’s a bit of a pain to have to transcode UTF-8 to UTF-16 in order to be able to supply it to Windows API calls.<br>A. Fine! UTF-16!<br>Q. Big-endian or little-endian?<br>A. ARGH. Whichever you want!<br>Q. Should we accept relative paths, or only fully-specified paths?<br>A. Only full paths.<br>Q. Are there any characteristics of the paths we are supposed to accept that I can screen the parameters on?<br>A. No. The caller will do all screening of paths and file names.<br>Q. How will the destination file name be generated or supplied?<br>…<br>Q. Am I required to support (or allow) an asynchronous copy operation?<br>A. No.<br>Q. How should I report errors? Exceptions? Error codes?<br>A. Whatever.<br>Q. Should I try and handle exceptions from called functions internally, or let them pass through to the caller?<br>A. Err…let them pass through.<br>Q. What if the destination file already exists?<br>A. It won’t.<br>Q. So the caller ensures that?<br>A. Right, sure.<br>Q. So if it does exist, I can just terminate the program, then? Obviously this would be a violation of preconditions, and who knows WHAT is going on.<br>A. Sure, whatever you want.<br>Q. What about alternate data streams?<br>A. Do whatever you want!<br>Q. Look, I’m sorry if you feel put-upon here, please don’t get hostile. I’m just trying to get a clear picture of the specs I need here. Obviously if I’m going to write a file copy method, instead of using one of the many extant file copy routines in various libraries and frameworks, it’s going to be fulfilling a specialized set of requirements, and I’m going to need to have good answers for these questions. If you want, I can hack something together in a minute, but I’d have to note that there were many unresolved issues as to requirements and purposes.<br>A. AIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</p>
-<p>Mission accomplished. wink</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Programming/">Programming</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/02/28/stupid-interview-questions/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
@@ -1049,7 +1156,7 @@ self.kittens = fetchedKittens;
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -1066,7 +1173,7 @@ self.kittens = fetchedKittens;
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -1102,7 +1209,7 @@ self.kittens = fetchedKittens;
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1114,11 +1221,11 @@ self.kittens = fetchedKittens;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1127,6 +1234,10 @@ self.kittens = fetchedKittens;
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1139,10 +1250,6 @@ self.kittens = fetchedKittens;
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>

@@ -82,6 +82,186 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/01/14/name-it-right/" title="Name it right" itemprop="url">Name it right</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-14T15:17:03.000Z" itemprop="datePublished"> Published 2015-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Just as how iOS <a href="http://nshipster.com/the-death-of-cocoa/" target="_blank" rel="external">shows us how to adopt best coding practices and standards</a>, it shows us how to name things right and consistently as well.</p>
+<p>I take examples from UIKIt and Foundation to demonstrate, in no particular order. Also, we should avoid grammar and spelling mistakes.</p>
+<h4 id="performSelector-onThread-withObject-waitUntilDone-modes"><a href="#performSelector-onThread-withObject-waitUntilDone-modes" class="headerlink" title="performSelector:onThread:withObject:waitUntilDone:modes:"></a>performSelector:onThread:withObject:waitUntilDone:modes:</h4><p>We can write <code>performSelector::::</code> but here correct name parameters help us understand what each parameter requires</p>
+<h4 id="showAlertViewForTaskWithErrorOnCompletion-delegate"><a href="#showAlertViewForTaskWithErrorOnCompletion-delegate" class="headerlink" title="showAlertViewForTaskWithErrorOnCompletion:delegate"></a>showAlertViewForTaskWithErrorOnCompletion:delegate</h4><p>Method which has no return begins with a verb</p>
+<h4 id="filteredArrayUsingPredicate"><a href="#filteredArrayUsingPredicate" class="headerlink" title="filteredArrayUsingPredicate:"></a>filteredArrayUsingPredicate:</h4><p>Method which returns value start with a noun, notice how <code>filtered</code> is. We can prefix noun with past participle and adjective.</p>
+<h4 id="imageNamed"><a href="#imageNamed" class="headerlink" title="imageNamed:"></a>imageNamed:</h4><p>Notice <code>Named</code>, not <code>Name</code>. This is shorthand of <code>imageWhichIsNamed</code><br>Read <a href="http://random-idea-english.blogspot.com/2012/02/reduced-relative-clauses-lesson-and.html" target="_blank" rel="external">Reduced relative clauses</a></p>
+<h4 id="deselectRowAtIndexPath-animated"><a href="#deselectRowAtIndexPath-animated" class="headerlink" title="deselectRowAtIndexPath:animated:"></a>deselectRowAtIndexPath:animated:</h4><p>Notice <code>animated</code>, not <code>animate</code>. <code>animated</code> is is used to present a state</p>
+<h4 id="UIView"><a href="#UIView" class="headerlink" title="UIView"></a>UIView</h4><p>Object is a noun, in single form</p>
+<h4 id="superview"><a href="#superview" class="headerlink" title="superview"></a>superview</h4><p>Getter does not look like this <code>getSuperview</code></p>
+<h4 id="isUserInteractionEnabled"><a href="#isUserInteractionEnabled" class="headerlink" title="isUserInteractionEnabled"></a>isUserInteractionEnabled</h4><p>Getter for boolean is normally prefixed with <code>is</code> when appropriated</p>
+<h4 id="NSEnumerator"><a href="#NSEnumerator" class="headerlink" title="NSEnumerator"></a>NSEnumerator</h4><p>An object should be named so that people understand its main and only job</p>
+<h4 id="NSApplicationDidBecomeActiveNotification"><a href="#NSApplicationDidBecomeActiveNotification" class="headerlink" title="NSApplicationDidBecomeActiveNotification"></a>NSApplicationDidBecomeActiveNotification</h4><p>If it is a notification, it should have <code>notification</code> in its name</p>
+<h4 id="contentsOfDirectoryAtURL-includingPropertiesForKeys-options-error"><a href="#contentsOfDirectoryAtURL-includingPropertiesForKeys-options-error" class="headerlink" title="contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:"></a>contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:</h4><p>Notice <code>including...</code>, not <code>include</code></p>
+<h4 id="respondsToSelector"><a href="#respondsToSelector" class="headerlink" title="respondsToSelector:"></a>respondsToSelector:</h4><p>Notice <code>responds</code>, not <code>respond</code>. Objective-C allows us to read code like English sentence, so there must be agreement between subject and verb</p>
+<h4 id="viewWithTag"><a href="#viewWithTag" class="headerlink" title="viewWithTag:"></a>viewWithTag:</h4><p>Don’t use taggedView, because <code>viewWithTag</code> allows us to specify the tag parameter more naturally.</p>
+<h4 id="runModalForDirectory-file-types"><a href="#runModalForDirectory-file-types" class="headerlink" title="runModalForDirectory:file:types:"></a>runModalForDirectory:file:types:</h4><p>Notice now we name <code>file</code>, not <code>andFile</code>. <code>and</code> keyword is needless</p>
+<h4 id="presentationControllerForPresentedViewController-presentingViewController-sourceViewController"><a href="#presentationControllerForPresentedViewController-presentingViewController-sourceViewController" class="headerlink" title="presentationControllerForPresentedViewController:presentingViewController:sourceViewController:"></a>presentationControllerForPresentedViewController:presentingViewController:sourceViewController:</h4><p>Long method name are more expressive</p>
+<h4 id="NSArray-array"><a href="#NSArray-array" class="headerlink" title="[NSArray array]"></a>[NSArray array]</h4><p>Creates and returns an empty array.</p>
+<h4 id="alloc"><a href="#alloc" class="headerlink" title="alloc"></a>alloc</h4><p>This is an abbreviation for <code>allocate</code>. Use abbreviations consistently</p>
+<p>#### </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html#//apple_ref/doc/uid/10000146-SW1" target="_blank" rel="external">Introduction to Coding Guidelines for Cocoa</a></li>
+</ol>
+<ol>
+<li><a href="https://www.englishclub.com/grammar/parts-of-speech-table.htm" target="_blank" rel="external">English Part of Speech</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/13639535/what-are-the-naming-conventions-of-functions-that-return-boolean" target="_blank" rel="external">What are the naming conventions of functions that return boolean?</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/raywenderlich/objective-c-style-guide" target="_blank" rel="external">objective-c-style-guide by Raywenderlich team</a></li>
+</ol>
+<ol>
+<li><a href="http://www.binpress.com/tutorial/learn-objectivec-cocoa-naming-conventions/88" target="_blank" rel="external">Learn Objective-C: Cocoa Naming Conventions</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/8410602/objective-c-method-naming-convention" target="_blank" rel="external">Objective C method naming convention</a></li>
+</ol>
+<ol>
+<li><a href="http://www.slideshare.net/pirhilton/how-to-name-things-the-hardest-problem-in-programming" target="_blank" rel="external">How to name things: the hardest problem in programming</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/01/14/name-it-right/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/01/12/ios-interview-questions/" title="iOS interview questions" itemprop="url">iOS interview questions</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-12T02:30:17.000Z" itemprop="datePublished"> Published 2015-01-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I found those interview questions very interesting, time to review :]</p>
+<ol>
+<li><a href="http://blackpixel.com/blog/2013/04/interview-questions-for-ios-and-mac-developers-1.html" target="_blank" rel="external">Interview Questions for iOS and Mac Developers by Daniel</a></li>
+</ol>
+<ol>
+<li><a href="http://www.raywenderlich.com/53962/ios-interview-questions" target="_blank" rel="external">iOS Interview Questions by Kyle</a> and <a href="http://www.raywenderlich.com/53628/how-to-apply-for-an-ios-developer-job" target="_blank" rel="external">How to Apply for an iOS Developer Job</a></li>
+</ol>
+<ol>
+<li><a href="http://news.dice.com/2013/11/14/technical-interview-questions-ios-developers/" target="_blank" rel="external">Tech Interview Questions for iOS Developers Leslie</a></li>
+</ol>
+<ol>
+<li><a href="http://www.geekinterview.com/Interview-Questions/iOS" target="_blank" rel="external">iOS Interview Questions and Answers By GeekInterview</a></li>
+</ol>
+<ol>
+<li><a href="http://www.toptal.com/ios/interview-questions" target="_blank" rel="external">6 Great iOS Interview Questions by Toptal</a></li>
+</ol>
+<ol>
+<li><a href="http://chetansway.blogspot.com/2014/06/ios-interview-questions-and-answers.html" target="_blank" rel="external">iOS Interview Questions and Answers by Chetan</a></li>
+</ol>
+<ol>
+<li><a href="http://macoscope.com/blog/so-you-have-a-technical-interview-at-macoscope/" target="_blank" rel="external">So You Have a Technical Interview at Macoscope</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/CameronBanga/iOS-Developer-and-Designer-Interview-Questions" target="_blank" rel="external">iOS-Developer-and-Designer-Interview-Questions</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/01/12/ios-interview-questions/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/01/12/the-importance-of-types/" title="The importance of types" itemprop="url">The importance of types</a>
   </h1>
   <p class="article-author">By
@@ -788,200 +968,6 @@ return pfObject;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/10/09/objective-c-has-that-named-parameter/" title="Objective-C has that named parameter" itemprop="url">Objective-C has that named parameter</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-10-09T14:43:14.000Z" itemprop="datePublished"> Published 2014-10-09</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Swift supports named parameter. Objective-C in fact has that feature long ago</p>
-<h4 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h4><blockquote><br>  When encapsulated in a class (or struct or enum), the first parameter name of a method is not included externally, while all following parameter names are included externally when the method is called<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>class Person {<br>    func performThing1(thing1 :String, thing2 :String) {<br>        println(“thing1 (thing1) thing2 (thing2)”)<br>    }</p>
-<pre><code>func performThing3(thing3 :String, _ thing4 :String) {
-    println(&quot;thing3 \(thing3) thing4 \(thing4)&quot;)
-}
-</code></pre><p>}</p>
-<p>let person = Person()<br>person.performThing1(“one”, thing2: “two”)<br>person.performThing3(“three”, “four”)<br>[/code]</p>
-<h4 id="Objective-C"><a href="#Objective-C" class="headerlink" title="Objective C"></a>Objective C</h4><blockquote><br>  Methods can also take parameters, also called arguments. A message with a single argument affixes a colon (:) to the selector name and puts the parameter right after the colon. This construct is called a keyword; a keyword ends with a colon, and a parameter follows the colon. A method that takes multiple parameters has multiple keywords, each followed by a colon.<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>@implementation FTGPerson</p>
-<ul>
-<li>(void)performThing1:(NSString <em>)thing1 thing2:(NSString </em>)thing2<br>{<br>  NSLog(@”thing1 %@ thing 2 %@”, thing1, thing2);<br>}</li>
-</ul>
-<p>// Note how the 2nd external parameter name is discarded</p>
-<ul>
-<li>(void)performThing3:(NSString <em>)thing3 :(NSString </em>)thing4<br>{<br>  NSLog(@”thing3 %@ thing 4 %@”, thing3, thing4);<br>}</li>
-</ul>
-<p>@end</p>
-<p>FTGPerson *person = [FTGPerson new];<br>[person performThing1:@”one” thing2:@”two”];<br>[person performThing3:@”three” :@”four”];</p>
-<p>[/code]</p>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
-<li><a href="http://oleb.net/blog/2010/12/method-names-in-objective-c/" target="_blank" rel="external">Method names in Objective-C</a></li>
-</ol>
-<ol>
-<li><a href="http://www.tomdalling.com/blog/coding-styleconventions/for-those-who-have-never-used-objective-c/" target="_blank" rel="external">For Those Who Have Never Used Objective-C</a></li>
-</ol>
-<ol>
-<li><a href="http://www.objc.io/issue-16/swift-functions.html" target="_blank" rel="external">The Many Faces of Swift Functions</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/4479967/why-must-the-last-part-of-an-objective-c-method-name-take-an-argument-when-ther" target="_blank" rel="external">Why must the last part of an Objective-C method name take an argument (when there is more than one part)?</a></li>
-</ol>
-<ol>
-<li><a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/DevPedia-CocoaCore/Message.html" target="_blank" rel="external">Message</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/10/09/objective-c-has-that-named-parameter/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/10/08/cocoapods-gotcha/" title="Understanding CocoaPods" itemprop="url">Understanding CocoaPods</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-10-08T14:19:05.000Z" itemprop="datePublished"> Published 2014-10-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Hi, in this post, I ‘ll share things I learn about Cocoapods</p>
-<h3 id="What-goes-into-your-gitignore-if-you’re-using-Cocoapods"><a href="#What-goes-into-your-gitignore-if-you’re-using-Cocoapods" class="headerlink" title="What goes into your .gitignore if you’re using Cocoapods"></a>What goes into your .gitignore if you’re using Cocoapods</h3><p>This question raises <a href="http://stackoverflow.com/questions/9446644/what-goes-into-your-gitignore-if-youre-using-cocoapods" target="_blank" rel="external">debate on SO</a>, but I would recommend only track the Podfile and Podfile.lock. The Pods folder, .xcworkspace should go into .gitignore</p>
-<p>Read more about the pros and cons <a href="http://twobitlabs.com/2013/12/not-cuckoo-for-cocoapods/" target="_blank" rel="external">Not Cuckoo for CocoaPods</a></p>
-<h3 id="pod-install-vs-pod-update"><a href="#pod-install-vs-pod-update" class="headerlink" title="pod install vs pod update"></a>pod install vs pod update</h3><p><code>pod install</code></p>
-<blockquote><br>  Every time the pod install command is run and it downloads and install new pods, it writes the version that it has installed, for each pods, in the Podfile.lock file. This file is intended to keep track of the installed version of each pod and to lock those versions<br></blockquote>
-
-
-
-<p><code>pod update</code></p>
-<blockquote><br>  When you run pod update SomePodName, CocoaPods will try to find an updated version of the pod SomePodName, without taking into account the version listed in Podfile.lock. It will update the pod to the latest version possible (as long as it matches the version restrictions in your Podfile).<br></blockquote>
-
-
-
-<p>Read more <a href="https://github.com/CocoaPods/CocoaPods/issues/760#issuecomment-46300500" target="_blank" rel="external">Detailed presentation of the commands</a>, <a href="http://nshipster.com/cocoapods/" target="_blank" rel="external">Cocoa​Pods on NSHipster</a></p>
-<h3 id="You-can-edit-the-source-of-the-Pod"><a href="#You-can-edit-the-source-of-the-Pod" class="headerlink" title="You can edit the source of the Pod"></a>You can edit the source of the Pod</h3><p>Yes, you can edit the source of the Pod, and your change will be overriden by the next <code>pod update</code>, unless you use <code>:path</code>. See this <a href="https://twitter.com/onmyway133/status/518376385434243073" target="_blank" rel="external">reply by @orta</a></p>
-<h3 id="Your-xcodeproj-remains-unchanged"><a href="#Your-xcodeproj-remains-unchanged" class="headerlink" title="Your .xcodeproj remains unchanged"></a>Your .xcodeproj remains unchanged</h3><p>Actually, it remains unchanged after the first <code>pod install</code><br>As pointed out <a href="http://nshipster.com/cocoapods/" target="_blank" rel="external">Cocoapods</a></p>
-<blockquote><br>  CocoaPods will create a new Xcode project that creates static library targets for each dependency, and then links them all together into a libPods.a target. This static library becomes a dependency for your original application target. An xcworkspace file is created, and should be used from that point onward. This allows the original xcodeproj file to remain unchanged.<br></blockquote>
-
-
-
-
-
-<h3 id="The-sandbox-is-not-in-sync-with-the-Podfile-lock"><a href="#The-sandbox-is-not-in-sync-with-the-Podfile-lock" class="headerlink" title="The sandbox is not in sync with the Podfile.lock"></a>The sandbox is not in sync with the Podfile.lock</h3><p>It’s because of the <a href="http://www.objc.io/issue-6/cocoapods-under-the-hood.html" target="_blank" rel="external">Manifest.lock</a></p>
-<blockquote><br>  This is a copy of the Podfile.lock that gets created every time you run pod install. If you’ve ever seen the error The sandbox is not in sync with the Podfile.lock, it’s because this file is no longer the same as the Podfile.lock. Since the Pods directory is not always under version control, this is a way of making sure that developers update their pods before running, as otherwise the app would crash, or the build would fail in another, less visible, way.<br></blockquote>
-
-
-
-
-
-<h3 id="Where-are-the-Specs-stored-locally"><a href="#Where-are-the-Specs-stored-locally" class="headerlink" title="Where are the Specs stored locally"></a>Where are the Specs stored locally</h3><p>The Specs repo is pulled into <code>./cocoapods/repos/master/Specs</code></p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ol>
-<li><a href="https://www.youtube.com/watch?v=wgq2nFJoab0" target="_blank" rel="external">February 2014 Tech Talk: CocoaPods</a></li>
-</ol>
-<ol>
-<li><a href="https://www.youtube.com/watch?v=TDAKOYQ7B-4" target="_blank" rel="external">UIKonf 2014 – Orta Therox: CocoaPods</a></li>
-</ol>
-<ol>
-<li><a href="https://www.youtube.com/watch?v=xN5-nDZpuBU" target="_blank" rel="external">MCE 2014: Orta Therox - CocoaPods and the road to 1.0</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/10/08/cocoapods-gotcha/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/7/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/9/">Next<span></span></a>
@@ -1054,7 +1040,7 @@ return pfObject;
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -1071,7 +1057,7 @@ return pfObject;
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -1107,7 +1093,7 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1119,11 +1105,11 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1132,6 +1118,10 @@ return pfObject;
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1144,10 +1134,6 @@ return pfObject;
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>

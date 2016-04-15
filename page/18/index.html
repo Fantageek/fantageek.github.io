@@ -82,6 +82,262 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/02/24/what-is-the-joel-test/" title="What is The Joel Test ?" itemprop="url">What is The Joel Test ?</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-24T07:27:49.000Z" itemprop="datePublished"> Published 2013-02-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>The Joel Test</p>
+<p> is a well known test for determining how good your team is.</p>
+<ol>
+<li>Do you use source control?</li>
+</ol>
+<ol>
+<li>Can you make a build in one step?</li>
+</ol>
+<ol>
+<li>Do you make daily builds?</li>
+</ol>
+<ol>
+<li>Do you have a bug database?</li>
+</ol>
+<ol>
+<li>Do you fix bugs before writing new code?</li>
+</ol>
+<ol>
+<li>Do you have an up-to-date schedule?</li>
+</ol>
+<ol>
+<li>Do you have a spec?</li>
+</ol>
+<ol>
+<li>Do programmers have quiet working conditions?</li>
+</ol>
+<ol>
+<li>Do you use the best tools money can buy?</li>
+</ol>
+<ol>
+<li>Do you have testers?</li>
+</ol>
+<ol>
+<li>Do new candidates write code during their interview?</li>
+</ol>
+<ol>
+<li>Do you do hallway usability testing?</li>
+</ol>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><a href="http://www.joelonsoftware.com/articles/fog0000000043.html" target="_blank" rel="external">http://www.joelonsoftware.com</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/joel-test/">joel test</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/02/24/what-is-the-joel-test/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/02/22/svn-git-mercurial-and-cvs/" title="Compare subversion system SVN, Git, Mercurial, and CVS" itemprop="url">Compare subversion system SVN, Git, Mercurial, and CVS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-21T23:56:01.000Z" itemprop="datePublished"> Published 2013-02-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><strong>What is Subversion</strong>  </p>
+<p>Subversion is a free/open source version control system . That is, Subversion manages files and directories, and the changes made to them, over time. This allows you to recover older versions of your data or examine the history of how your data changed. In this regard, many people think of a version control system as a sort of “time machine.”</p>
+<p><a href="http://www.fantageek.com/245/svn-git-mercurial-and-cvs/images/#main"><img src="http://www.fantageek.com/wp-content/uploads/2013/02/images.jpg" alt="images"></a></p>
+<p>Some version control systems are also software configuration management (SCM) systems. These systems are specifically tailored to manage trees of source code and have many features that are specific to software development—such as natively understanding programming languages, or supplying tools for building software.</p>
+<p><strong>Which version control is right for your project?</strong>  </p>
+<p>The main difference between version control systems is whether they are server based or peer-to-peer. Beyond that, you will also want to consider speed, functionality, and the learning curve associated with the system.</p>
+<p><strong>Concurrent Versions System (CVS)</strong>  </p>
+<p>CVS (<a href="http://www.nongnu.org/cvs/" target="_blank" rel="external">http://www.nongnu.org/cvs/</a>) has been around since the 80s, and has been very popular with both commercial and open source developers. It is released under the GNU license, and uses a system to let users “check out” the code they are going to work on and “check in” their changes. Originally, CVS handled conflicts between two programmers by only allowing for the latest version of the code to be worked on and updated. As such, it was a first come, first serve system where the user must publish changes quickly to ensure that other users haven’t beat them to the punch</p>
+<ul>
+<li>Has been in use for many years and is considered mature technology  </li>
+</ul>
+<ul>
+<li><p>Moving or renaming files does not include a version update  </p>
+</li>
+<li><p>Security risks from symbolic links to files  </p>
+</li>
+<li><p>No atomic operation support, leading to source corruption  </p>
+</li>
+<li><p>Branch operations are expensive as it is not designed for long-term branching</p>
+</li>
+</ul>
+<p><strong>Apache Subversion (SVN)</strong>  </p>
+<p>SVN <a href="(http://subversion.apache.org/">(http://subversion.apache.org/</a>) was created as an alternative to CVS that would fix some bugs in the CVS system while maintaining high compatibility with it.  </p>
+<p>SVN is currently the king of server-based version control. It has all of the good features of CVS and improves upon them</p>
+<ul>
+<li><p>Newer system based on CVS  </p>
+</li>
+<li><p>Includes atomic operations  </p>
+</li>
+<li><p>Cheaper branch operations  </p>
+</li>
+<li><p>Wide variety of plug-ins for IDEs  </p>
+</li>
+</ul>
+<p>+/- Does not use peer-to-peer model  </p>
+<ul>
+<li><p>Still contains bugs relating to renaming files and directories  </p>
+</li>
+<li><p>Insufficient repository management commands  </p>
+</li>
+<li><p>Slower comparative speed</p>
+</li>
+</ul>
+<p><strong>Git</strong>  </p>
+<p>First developed by Linus Torvalds of Linux fame, Git (<a href="http://git-scm.com/" target="_blank" rel="external">http://git-scm.com/</a>) takes a radical approach that differs greatly from CVS and SVN. The original concepts for Git were to make a faster, distributed revision control system that would openly defy conventions and practices used in CVS  </p>
+<p>Git has a clear speed improvement over its competitors, and for projects that lend themselves to distributed systems, it is a clear improvement. The primary downside cited for Git is that it can be at times difficult to explain to others, and there is likely to be a slow down in production as programmers adapt to it. Once it is learned, however, the speed increases and better branch management will reclaim that time and more</p>
+<ul>
+<li><p>Great for those who hate CVS/SVN  </p>
+</li>
+<li><p>Dramatic increase in operation speed  </p>
+</li>
+<li><p>Cheap branch operations  </p>
+</li>
+<li><p>Full history tree available offline  </p>
+</li>
+</ul>
+<p>+/- Distributed, peer-to-peer model  </p>
+<ul>
+<li><p>Learning curve for those used to SVN  </p>
+</li>
+<li><p>Not optimal for single developers  </p>
+</li>
+<li><p>Limited Windows support compared to Linux</p>
+</li>
+</ul>
+<p><strong>Mecurial</strong>  </p>
+<p>Mecurial (<a href="http://mercurial.selenic.com/" target="_blank" rel="external">http://mercurial.selenic.com/</a>) began close to the same time as Git and is   also a distributed revision control tool. It was originally made to compete with Git for Linux kernel development, and as Git was selected, Mecurial has seen less success in that area.  </p>
+<p>It’s different from other revision control systems in that Mecurial is primarily implemented in Python as opposed to C</p>
+<ul>
+<li><p>Easier to learn than Git  </p>
+</li>
+<li><p>Better documentation  </p>
+</li>
+</ul>
+<p>+/- Distributed model  </p>
+<ul>
+<li><p>No merging of two parents  </p>
+</li>
+<li><p>Extension-based rather than scriptability  </p>
+</li>
+<li><p>Less out of the box power</p>
+</li>
+</ul>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><p><a href="http://svnbook.red-bean.com/en/1.7/svn.intro.whatis.html" target="_blank" rel="external">http://svnbook.red-bean.com</a>  </p>
+</li>
+<li><p><a href="http://biz30.timedoctor.com/git-mecurial-and-cvs-comparison-of-svn-software/" target="_blank" rel="external">http://biz30.timedoctor.com</a></p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/svn/">svn</a><a href="/tags/cvs/">cvs</a><a href="/tags/git/">git</a><a href="/tags/mercurial/">mercurial</a><a href="/tags/version-control/">version control</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/02/22/svn-git-mercurial-and-cvs/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/02/21/difference-between-debug-build-and-release-build/" title="Difference between Debug build and Release build" itemprop="url">Difference between Debug build and Release build</a>
   </h1>
   <p class="article-author">By
@@ -672,171 +928,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/30/some-useful-functions-when-you-work-with-string-in-javascript/" title="Some useful functions when you work with string in javascript " itemprop="url">Some useful functions when you work with string in javascript </a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-30T03:19:20.000Z" itemprop="datePublished"> Published 2012-12-30</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><a href="http://www.fantageek.com/?attachment_id=180"><img src="http://www.fantageek.com/wp-content/uploads/2012/12/jsstring-300x262.png" alt="jsstring"></a></p>
-<p>There are some useful functions when you work with string in javascript</p>
-<h1 id="1-Replace"><a href="#1-Replace" class="headerlink" title="1. Replace:"></a>1. Replace:</h1><h2 id="a-Formal"><a href="#a-Formal" class="headerlink" title="a/ Formal"></a>a/ Formal</h2><pre><code>var str=&quot;Hello World&quot;;
-var n=str.replace(&quot;World&quot;,&quot;Fantageek&quot;);
-
---&gt; n = Hello Fantageek
-</code></pre><h2 id="b-Replace-all-special-characters"><a href="#b-Replace-all-special-characters" class="headerlink" title="b/ Replace all special characters"></a>b/ Replace all special characters</h2><pre><code>var desiredString = stringToReplace.replace(/[^\w\s]/gi, &apos;&apos;)
-</code></pre><p>It’s easier to do this as a whitelist - replace the characters which <em>aren’t</em> in your safelist.</p>
-<ul>
-<li>The (^) character is the negation of the set […],</li>
-</ul>
-<ul>
-<li>gi say global and case-insensitive (the latter is a bit redundant but I wanted to mention it)</li>
-</ul>
-<ul>
-<li>the safelist in this example is digits, word characters,underscores (\w) and whitespace (\s).</li>
-</ul>
-<h1 id="2-Trim"><a href="#2-Trim" class="headerlink" title="2.Trim"></a>2.Trim</h1><pre><code>var originalString = &quot;   foo   &quot;;
-var desiredString = originalString.trim();
-</code></pre><p>Running the following code before any other code will create String.trim if it’s not natively available.</p>
-<pre><code>if(!String.prototype.trim) {
-        String.prototype.trim = function () {
-        return this.replace(/^\s+|\s+$/g,&apos;&apos;);
-    };
-}
-</code></pre><p>If not again:</p>
-<p>With IE 7</p>
-<pre><code>String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, &apos;&apos;);};
-
-String.prototype.ltrim=function(){return this.replace(/^\s+/,&apos;&apos;);};
-
-String.prototype.rtrim=function(){return this.replace(/\s+$/,&apos;&apos;);};
-
-String.prototype.fulltrim=function(){return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g,&apos;&apos;).replace(/\s+/g,&apos; &apos;);};
-</code></pre><h1 id="3-Split"><a href="#3-Split" class="headerlink" title="3. Split"></a>3. Split</h1><pre><code>var str=&quot;How are you?&quot;;
-var n=str.split(&quot; &quot;);
-----------
-n[0] = How
-n[1] = are
-n[2] = you?
-</code></pre><h1 id="4-Some-other-function"><a href="#4-Some-other-function" class="headerlink" title="4. Some other function:"></a>4. Some other function:</h1><h2 id="a-Lower-case"><a href="#a-Lower-case" class="headerlink" title="a/ Lower case:"></a>a/ Lower case:</h2><pre><code>var lowerStr = stringToLower.toLowerCase();
-</code></pre><h2 id="b-Upper-Case"><a href="#b-Upper-Case" class="headerlink" title="b./ Upper Case:"></a>b./ Upper Case:</h2><pre><code>var upperStr = stringToUpper.toUpperCase();
-</code></pre><p><em><strong>khoathai</strong></em></p>
-<p><em>(summary from stackoverflow.com)</em></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Java-Script/">Java Script</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/lower/">lower</a><a href="/tags/replace/">replace</a><a href="/tags/special-characters/">special characters</a><a href="/tags/split/">split</a><a href="/tags/string/">string</a><a href="/tags/trim/">trim</a><a href="/tags/upper/">upper</a><a href="/tags/useful/">useful</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/30/some-useful-functions-when-you-work-with-string-in-javascript/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/25/useful-tools-to-work-with-database-on-android/" title="Useful tools to work with database on Android" itemprop="url">Useful tools to work with database on Android</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-25T14:48:17.000Z" itemprop="datePublished"> Published 2012-12-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>For those who has ever created an Android app using data storage with SQLite database, you must have some tools help you create, insert, update the data table.</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2012/12/25/useful-tools-to-work-with-database-on-android/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Android/">Android</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/25/useful-tools-to-work-with-database-on-android/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/17/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/19/">Next<span></span></a>
@@ -909,7 +1000,7 @@ n[2] = you?
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -926,7 +1017,7 @@ n[2] = you?
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -962,7 +1053,7 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -974,11 +1065,11 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -987,6 +1078,10 @@ n[2] = you?
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -999,10 +1094,6 @@ n[2] = you?
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>

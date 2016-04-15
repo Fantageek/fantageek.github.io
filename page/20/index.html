@@ -82,6 +82,161 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2012/12/12/wp7-how-to-create-marquee-textblock/" title="WP7 how to create marquee TextBlock" itemprop="url">WP7 how to create marquee TextBlock</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2012-12-12T09:47:14.000Z" itemprop="datePublished"> Published 2012-12-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I created this article 1 year ago and didn’t have time to write it. Now I write it but with little explanation, if you still does not understand, maybe you should read my source code<br>Last year, I was in need of a marquee TextBlock that can performs auto scrolling, I’ve found<br><a href="http://andrewbrobinson.com/2012/07/14/simple-marquees-in-windows-phone/" target="_blank" rel="external">http://andrewbrobinson.com/2012/07/14/simple-marquees-in-windows-phone/</a><br><a href="http://silverlightmarquee.codeplex.com/" target="_blank" rel="external">http://silverlightmarquee.codeplex.com/</a><br>But they didn’t seem to fit my need, so I then created my own <strong>MarqueeTextBlock</strong></p>
+<h2 id="THE-IDEA"><a href="#THE-IDEA" class="headerlink" title="THE IDEA"></a>THE IDEA</h2><ol>
+<li>Create as a UserControl so it can be reused</li>
+<li>Use Storyboard to perform translation animation because Storyboard is handled by GPU</li>
+<li>Use Canvas to clip text when it goes out of this UserControl</li>
+</ol>
+<h2 id="WHAT-WILL-WE-ACHIEVE"><a href="#WHAT-WILL-WE-ACHIEVE" class="headerlink" title="WHAT WILL WE ACHIEVE"></a>WHAT WILL WE ACHIEVE</h2><p><img src="http://fantageek.com/images/2012/12/marquee_textblock-200x140.png" alt="marquee_textblock"></p>
+<p>The source code is available on<br> <a href="https://github.com/onmyway133/MarqueeTextBlock" target="_blank" rel="external">Github</a></p>
+<h3 id="CREATING-MARQUEE-TEXBLOCK"><a href="#CREATING-MARQUEE-TEXBLOCK" class="headerlink" title="CREATING MARQUEE TEXBLOCK"></a>CREATING MARQUEE TEXBLOCK</h3><p>Right click on your project, choose Add -&gt; New Item -&gt; Windows Phone User Control and name it MarqueeTextBlock</p>
+<h2 id="DESIGNING-MarqueeTextBlock-xaml"><a href="#DESIGNING-MarqueeTextBlock-xaml" class="headerlink" title="DESIGNING MarqueeTextBlock.xaml"></a>DESIGNING MarqueeTextBlock.xaml</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Grid</span> <span class="attr">x:Name</span>=<span class="string">"LayoutRoot"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Canvas</span> <span class="attr">x:Name</span>=<span class="string">"canvas"</span> <span class="attr">Background</span>=<span class="string">"Transparent"</span> <span class="attr">Width</span>=<span class="string">"&#123;Binding Width&#125;"</span> <span class="attr">Height</span>=<span class="string">"&#123;Binding Height&#125;"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Canvas.Clip</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">RectangleGeometry</span> <span class="attr">RadiusX</span>=<span class="string">"5"</span> <span class="attr">RadiusY</span>=<span class="string">"5"</span> <span class="attr">Rect</span>=<span class="string">"0, 0, 200, 100"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Canvas.Clip</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">x:Name</span>=<span class="string">"textBlock1"</span></span><br><span class="line">                       <span class="attr">Height</span>=<span class="string">"&#123;Binding Height&#125;"</span></span><br><span class="line">                       <span class="attr">Width</span>=<span class="string">"Auto"</span></span><br><span class="line">                       <span class="attr">TextWrapping</span>=<span class="string">"NoWrap"</span></span><br><span class="line">                       <span class="attr">Foreground</span>=<span class="string">"&#123;Binding Foreground&#125;"</span></span><br><span class="line">                       <span class="attr">Text</span>=<span class="string">"&#123;Binding Text&#125;"</span>     </span><br><span class="line">                       <span class="attr">FontSize</span>=<span class="string">"&#123;Binding MFontSize&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Grid</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Here we use Canvas and RectangleGeometry to define the clipping area dynamically. For more info, see <a href="http://stackoverflow.com/questions/3732396/dynamic-clipping-width-in-silverlight-within-canvas" target="_blank" rel="external">Dynamic Clipping Width in Silverlight Within Canvas</a><br>The MFontSize is an additional dependency property that allows user to specify font size<br>Remember to set TextWrapping to NoWrap</p>
+<h3 id="WORKING-WITH-MarqueeTextBlock-xaml-cs"><a href="#WORKING-WITH-MarqueeTextBlock-xaml-cs" class="headerlink" title="WORKING WITH MarqueeTextBlock.xaml.cs"></a>WORKING WITH MarqueeTextBlock.xaml.cs</h3><p>We have isLoaded to keep track of whether our control is loaded or not. We can’t do marquee until control is fully loaded. To achieve this, we handle 2 events</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MarqueeTextBlock_Unloaded</span>(<span class="params"><span class="keyword">object</span> sender, RoutedEventArgs e</span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="comment">// stop marquee when control is unloaded</span></span><br><span class="line">            StopMarquee();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>We simply stop marquee then the control is unloaded :)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">void MarqueeTextBlock_Loaded(object sender, RoutedEventArgs e)</span><br><span class="line">        &#123;</span><br><span class="line">            if (!isLoaded)</span><br><span class="line">            &#123;</span><br><span class="line">                // control is loaded</span><br><span class="line">                isLoaded = true;</span><br><span class="line">                LayoutRoot.DataContext = this;</span><br><span class="line">                // resize the clipping</span><br><span class="line">                Rect rect = new Rect(0, 0, canvas.ActualWidth, canvas.ActualHeight);</span><br><span class="line">                RectangleGeometry reo = new RectangleGeometry();</span><br><span class="line">                reo.Rect = rect;</span><br><span class="line">                this.canvas.Clip = reo;</span><br><span class="line">                // always vertical alignment</span><br><span class="line">                ChangeOffsetTop();</span><br><span class="line">                // this is OK for marquee to start</span><br><span class="line">                StartMarquee();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                // just run it, after user come to this page again</span><br><span class="line">                StartMarquee();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>We set the text and font size by setting the DataContext. We then resize clipping area according to canvas ‘s size. We use ChangeOffsetTop to let the text centers vertically inside our control. If all goes well, the control “should” start marquee.<br>I say “should” because we only need to marquee if our text is longer than the available view</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ShouldStartMarquee</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> textBlock1.ActualWidth &gt; LayoutRoot.ActualWidth;</span><br><span class="line">        &#125;</span><br><span class="line">[/code]</span><br><span class="line">Finally, <span class="function">the core method <span class="keyword">is</span> <span class="title">StartMarquee</span>(<span class="params"></span>)</span><br><span class="line">[code language</span>=<span class="string">"csharp"</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">StartMarquee</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="comment">// first stop all marquee</span></span><br><span class="line">            StopMarquee();</span><br><span class="line">            <span class="keyword">if</span> (ShouldStartMarquee())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// change offset</span></span><br><span class="line">                ChangeOffsetLeft(<span class="literal">true</span>);</span><br><span class="line">                DoAnimationFirst();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// change offset</span></span><br><span class="line">                ChangeOffsetLeft(<span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>We ought to stop marquee before starting again. And in order to achieve better visual effect, we call ChangeOffetLeft to set the text initial left position. You can change this through the offset and defaultOffset variables. Thanks for the post <a href="http://stackoverflow.com/questions/4342743/unable-to-position-rectangle-in-canvas-in-silverlight-4" target="_blank" rel="external">Unable to position Rectangle in Canvas in Silverlight 4</a></p>
+<p>The animation is done using Storyboard via 2 methods<br>The DoAnimationFirst() is used to translate the text from the initial position to the far left, then the DoAnimationAfter() is used to translate the text from the far right to the right edge of the canvas, so that the text can be translated to the left again. This loops forever until the control is unloaded or user explicitly calls StopMarquee()</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DoAnimationFirst</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            storyboard = <span class="keyword">new</span> Storyboard();</span><br><span class="line">            TranslateTransform trans = <span class="keyword">new</span> TranslateTransform() &#123; X = <span class="number">5.0</span>, Y = <span class="number">1.0</span> &#125;;</span><br><span class="line">            textBlock1.RenderTransformOrigin = <span class="keyword">new</span> Point(<span class="number">0.5</span>, <span class="number">0.5</span>);</span><br><span class="line">            textBlock1.RenderTransform = trans;</span><br><span class="line">            <span class="comment">// we must calculate the Duration</span></span><br><span class="line">            DoubleAnimation moveAnim = <span class="keyword">new</span> DoubleAnimation();</span><br><span class="line">            <span class="keyword">int</span> durationFirst = CalculateDurationFirst();</span><br><span class="line">            moveAnim.Duration = TimeSpan.FromMilliseconds(durationFirst);</span><br><span class="line">            moveAnim.From = <span class="number">0</span>;</span><br><span class="line">            moveAnim.To = -textBlock1.ActualWidth - offset;</span><br><span class="line">            Storyboard.SetTarget(moveAnim, textBlock1);</span><br><span class="line">            Storyboard.SetTargetProperty(moveAnim, <span class="keyword">new</span> PropertyPath(<span class="string">"(UIElement.RenderTransform).(TranslateTransform.X)"</span>));</span><br><span class="line">            <span class="comment">// subscribe to Completed event</span></span><br><span class="line">            storyboard.Completed += <span class="keyword">new</span> EventHandler(storyboard_Completed);</span><br><span class="line">            storyboard.Children.Add(moveAnim);</span><br><span class="line">            storyboard.FillBehavior = FillBehavior.HoldEnd;</span><br><span class="line">            storyboard.Begin();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DoAnimationAfter</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            storyboard = <span class="keyword">new</span> Storyboard();</span><br><span class="line">            TranslateTransform trans = <span class="keyword">new</span> TranslateTransform() &#123; X = <span class="number">5.0</span>, Y = <span class="number">1.0</span> &#125;;</span><br><span class="line">            textBlock1.RenderTransformOrigin = <span class="keyword">new</span> Point(<span class="number">0.5</span>, <span class="number">0.5</span>);</span><br><span class="line">            textBlock1.RenderTransform = trans;</span><br><span class="line">            <span class="comment">// we must calculate the Duration</span></span><br><span class="line">            DoubleAnimation moveAnim = <span class="keyword">new</span> DoubleAnimation();</span><br><span class="line">            <span class="keyword">int</span> durationAfter = CalculateDurationAfter();</span><br><span class="line">            moveAnim.Duration = TimeSpan.FromMilliseconds(durationAfter);</span><br><span class="line">            moveAnim.From = canvas.ActualWidth;</span><br><span class="line">            moveAnim.To = -textBlock1.ActualWidth - offset;</span><br><span class="line">            Storyboard.SetTarget(moveAnim, textBlock1);</span><br><span class="line">            Storyboard.SetTargetProperty(moveAnim, <span class="keyword">new</span> PropertyPath(<span class="string">"(UIElement.RenderTransform).(TranslateTransform.X)"</span>));</span><br><span class="line">            storyboard.Children.Add(moveAnim);</span><br><span class="line">            storyboard.RepeatBehavior = RepeatBehavior.Forever;</span><br><span class="line">            storyboard.FillBehavior = FillBehavior.HoldEnd;</span><br><span class="line">            storyboard.Begin();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>I left the CalculateDurationFirst() and CalculateDurationAfter() so you can tweak it to your own desire<br>Stopping marquee is just a step with stopping the Storyboard</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">StopMarquee</span>(<span class="params"></span>)</span><br><span class="line">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (storyboard != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                storyboard.Stop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="USING-MARQUEE-TEXTBLOCK"><a href="#USING-MARQUEE-TEXTBLOCK" class="headerlink" title="USING MARQUEE TEXTBLOCK"></a>USING MARQUEE TEXTBLOCK</h2><p>You can declare MarqueeTextBlock in your xaml like this</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">entropy:MarqueeTextBlock</span> <span class="attr">x:Name</span>=<span class="string">"marquee1"</span></span><br><span class="line">                                          <span class="attr">Text</span>=<span class="string">"This is a very long text"</span></span><br><span class="line">                                          <span class="attr">MFontSize</span>=<span class="string">"30"</span></span><br><span class="line">                                          <span class="attr">Width</span>=<span class="string">"230"</span></span><br><span class="line">                                          <span class="attr">Height</span>=<span class="string">"80"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>with xmlns:entropy=”clr-namespace:DemoMarqueeTextBlock” is a custom xmlns that targets your application namespace<br>Then call StartMarquee() or StopMarquee() to toggle marquee</p>
+<p>P/S: I haven’t tried this on Windows Phone 8, I think it should run fine, too :)</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-Phone/">Windows Phone</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/canvas/">canvas</a><a href="/tags/marquee/">marquee</a><a href="/tags/storyboard/">storyboard</a><a href="/tags/textblock/">textblock</a><a href="/tags/windows-phone/">windows phone</a><a href="/tags/wp8/">wp8</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2012/12/12/wp7-how-to-create-marquee-textblock/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2012/12/12/wp7-how-to-perform-real-time-filter-on-listbox/" title="WP7 how to perform real time filter on ListBox" itemprop="url">WP7 how to perform real time filter on ListBox</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2012-12-12T02:02:30.000Z" itemprop="datePublished"> Published 2012-12-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Coming soon  …</p>
+<p>set items source in batch</p>
+<p>thread lock</p>
+<p>sleep properly</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-Phone/">Windows Phone</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/filter/">filter</a><a href="/tags/real-time/">real time</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2012/12/12/wp7-how-to-perform-real-time-filter-on-listbox/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2012/12/11/wp7-listbox-performance-tips/" title="WP7 ListBox performance tips" itemprop="url">WP7 ListBox performance tips</a>
   </h1>
   <p class="article-author">By
@@ -177,7 +332,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/data-source/">data source</a><a href="/tags/listbox/">listbox</a>
+  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/listbox/">listbox</a><a href="/tags/data-source/">data source</a>
   </div>
 
 </div>
@@ -525,7 +680,7 @@
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -542,7 +697,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -578,7 +733,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -590,11 +745,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -603,6 +758,10 @@
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -615,10 +774,6 @@
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>

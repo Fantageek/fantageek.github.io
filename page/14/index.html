@@ -82,6 +82,141 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/" title="Convert CMSampleBufferRef to UIImage" itemprop="url">Convert CMSampleBufferRef to UIImage</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-10-13T06:42:15.000Z" itemprop="datePublished"> Published 2013-10-13</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Converting CMSamppleBufferRef to UIImage is a common job we have to do when working with AVCaptureSession and AVCaptureVideoDataOutput. These snippets below acts as a reference for me and those who are interested :)</p>
+<p>Here I convert to CGImageRef first. Converting CGImageRef to UIImage is simple with this line</p>
+<p>[code language=”objc”]<br /><br /><br>UIImage *image = [UIImage imageWithCGImage:cgImageRef];<br /><br /><br>[/code]  </p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/convert/">convert</a><a href="/tags/avcapture/">avcapture</a><a href="/tags/avcapturesession/">avcapturesession</a><a href="/tags/cgimagebuffer/">cgimagebuffer</a><a href="/tags/cmsamplebuffer/">cmsamplebuffer</a><a href="/tags/uiimage/">uiimage</a><a href="/tags/videodataoutput/">videodataoutput</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-2/" title="Make your own sliding menu on Android tutorial – Part 2" itemprop="url">Make your own sliding menu on Android tutorial – Part 2</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-09-24T16:26:47.000Z" itemprop="datePublished"> Published 2013-09-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This is the part 2 of the tutorial. If you forget, here is the link to <a href="http://www.fantageek.com/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-1/">part 1</a>.</p>
+<p>Link to <a href="https://github.com/onmyway133/slidingmenu">Github</a></p>
+<p>In the first part, we learn about the idea, the structure of the project and how MainActivity uses the MainLayout. Now we learn how to actually implement the MainLayout</p>
+<h2 id="DISPLAY-MENU-AND-CONTENT-VIEW"><a href="#DISPLAY-MENU-AND-CONTENT-VIEW" class="headerlink" title="DISPLAY MENU AND CONTENT VIEW"></a>DISPLAY MENU AND CONTENT VIEW</h2><p>First we have MainLayout as a subclass of LinearLayout</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainLayout</span> <span class="keyword">extends</span> <span class="title">LinearLayout</span></span></span><br></pre></td></tr></table></figure>
+<p>We then need declare the constructors<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-2/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Android/">Android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android/">android</a><a href="/tags/facebook/">facebook</a><a href="/tags/tutorial/">tutorial</a><a href="/tags/menu/">menu</a><a href="/tags/sliding/">sliding</a><a href="/tags/fly-out/">fly out</a><a href="/tags/fragment/">fragment</a><a href="/tags/framelayout/">framelayout</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-2/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/09/24/make-your-own-sliding-menu-on-android-tutorial-part-1/" title="Make your own sliding menu on Android tutorial - Part 1" itemprop="url">Make your own sliding menu on Android tutorial - Part 1</a>
   </h1>
   <p class="article-author">By
@@ -701,166 +836,6 @@ ARCHS=&quot;armv7&quot;</code></p>
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/07/14/wp8-json-net-tutorial/" title="WP8 Json.NET tutorial" itemprop="url">WP8 Json.NET tutorial</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-07-14T11:18:04.000Z" itemprop="datePublished"> Published 2013-07-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><a href="http://json.codeplex.com/" target="_blank" rel="external">Json.NET</a> maybe the best open source Json library for the .NET world. It is built as a Portable Class Library that is easy to be consumed by Xbox, Windows Store and Windows Phone 8 applications.</p>
-<p><strong>Get Json.NET</strong><br>There are different libraries when you download Json.NET<br>-Net45: .NET latest (4.5)<br>-Net40: .NET 4.0<br>-Net35: .NET 3.5<br>-Net20: .NET 2.0<br>-WinRT: Windows 8 Store<br>-Portable: .NET 4.5, Windows Phone 8, Windows 8 Store<br>-Portable40: .NET 4.0, Windows Phone 7, Windows 8 Store, Silverlight 4</p>
-<p><em>Portable</em> is the folder we need for Windows Phone 8. Add that library as a reference to your WP8 application.</p>
-<p><strong>Sample json data</strong><br>We’ll use <a href="http://www.geonames.org/" target="_blank" rel="external">GeoNames</a> because it contains many good json data. For example, we’ll use this link <a href="http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&amp;country=AT&amp;username=demo" target="_blank" rel="external">http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country;=AT&username;=demo</a><br>Note: This is the demo link, which will not exist for long. In real application, you need to register for a GeoNames account.</p>
-<p><strong>Generate C# classes according to this json</strong><br>For easy, we use an online service to do that. Go to <a href="http://json2csharp.com" target="_blank" rel="external">http://json2csharp.com</a> and paste that json. Click generate and you’ll receive the C# classes<br>[code language=”csharp”]<br>public class Postalcode<br>    {<br>        public string adminCode3 { get; set; }<br>        public string adminName2 { get; set; }<br>        public string adminName3 { get; set; }<br>        public string adminCode2 { get; set; }<br>        public string postalcode { get; set; }<br>        public string adminCode1 { get; set; }<br>        public string countryCode { get; set; }<br>        public double lng { get; set; }<br>        public string placeName { get; set; }<br>        public double lat { get; set; }<br>        public string adminName1 { get; set; }<br>    }</p>
-<pre><code>public class PostalcodeList
-{
-    public List&lt;Postalcode&gt; postalcodes { get; set; }
-}
-</code></pre><p>[/code]</p>
-<p><strong>Get that Json online and parse to C# class</strong><br>We’ll use WebClient to get the Json online and JsonConvert to parse to C# classes<br>[code language=”csharp”]<br>public static void GetJsonOnline()<br>        {<br>            WebClient webClient = new WebClient();<br>            webClient.DownloadStringCompleted += webClient_DownloadStringCompleted;<br>            webClient.DownloadStringAsync(new Uri(“<a href="http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&amp;country=AT&amp;username=demo" target="_blank" rel="external">http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&amp;country=AT&amp;username=demo</a>“));<br>        }</p>
-<pre><code>static void webClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-{
-    string json = e.Result;
-    if (!string.IsNullOrEmpty(json))
-    {
-        PostalcodeList results = JsonConvert.DeserializeObject&lt;PostalcodeList&gt;(json);
-    }
-}
-</code></pre><p>[/code]</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>►<a class="article-category-link" href="/categories/Windows-8/Windows-Phone/">Windows Phone</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/wp8/">wp8</a><a href="/tags/windows-phone-8/">windows phone 8</a><a href="/tags/convert/">convert</a><a href="/tags/net/">.net</a><a href="/tags/csharp/">csharp</a><a href="/tags/geonames/">geonames</a><a href="/tags/json/">json</a><a href="/tags/json-net/">json.net</a><a href="/tags/parse/">parse</a><a href="/tags/pcl/">pcl</a><a href="/tags/portable/">portable</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/07/14/wp8-json-net-tutorial/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/07/13/how-to-programmatically-set-initial-view-controller-using-storyboard/" title="How to programmatically set initial view controller using Storyboard" itemprop="url">How to programmatically set initial view controller using Storyboard</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-07-13T07:04:13.000Z" itemprop="datePublished"> Published 2013-07-13</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>If for some reasons, you don’t want to use the Automatic setting initial view control feature of Storyboard, here is the solution</p>
-<p>Step 1: Make sure that view controller (the view controller you want to make it initial) has StoryboardID<br><a href="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-3.58.21-PM.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-3.58.21-PM.png" alt="StoryboardID"></a></p>
-<p>Step 2: Disable that view controller ‘s Is Initial View Controller<br><a href="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-4.03.22-PM.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-4.03.22-PM.png" alt="Initial view controller option"></a></p>
-<p>Step 3: Remove Main storyboard file base name value in app Target Info<br><a href="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-3.59.12-PM.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/07/Screen-Shot-2013-07-13-at-3.59.12-PM.png" alt="Main storyboard file base name"></a></p>
-<p>Step 4: Some code in AppDelegate.m</p>
-<p>[code language=”objc”]</p>
-<ul>
-<li><p>(BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>)launchOptions<br>{<br>  UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@”MainStoryboard_iPhone”</p>
-<pre><code>bundle: nil];
-</code></pre><p>  MainViewController <em>mainViewController = (MainViewController</em>)[mainStoryboard</p>
-<pre><code>instantiateViewControllerWithIdentifier: @&quot;SBMainViewController&quot;];
-</code></pre><p>  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];</p>
-<p>  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];<br>  [self.window setRootViewController:navigationController];<br>  [self.window setBackgroundColor:[UIColor whiteColor]];<br>  [self.window makeKeyAndVisible];</p>
-<p>  return YES;<br>}<br>[/code]</p>
-</li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/storyboard/">storyboard</a><a href="/tags/ios/">ios</a><a href="/tags/app/">app</a><a href="/tags/initial/">initial</a><a href="/tags/main-view-controller/">main view controller</a><a href="/tags/navigation/">navigation</a><a href="/tags/view-controller/">view controller</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/07/13/how-to-programmatically-set-initial-view-controller-using-storyboard/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/13/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/15/">Next<span></span></a>
@@ -933,7 +908,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -950,7 +925,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -986,7 +961,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -998,11 +973,11 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1011,6 +986,10 @@ ARCHS=&quot;armv7&quot;</code></p>
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1023,10 +1002,6 @@ ARCHS=&quot;armv7&quot;</code></p>
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>

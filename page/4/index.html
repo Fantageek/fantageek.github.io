@@ -82,6 +82,141 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/11/01/ios-stretchy-header-with-auto-layout/" title="iOS Stretchy Header with Auto Layout" itemprop="url">iOS Stretchy Header with Auto Layout</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-01T17:11:17.000Z" itemprop="datePublished"> Published 2015-11-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Stretchy header is cool. People are familiar with changing frames to achieve this, like <a href="http://blog.matthewcheok.com/design-teardown-stretchy-headers/" target="_blank" rel="external">Design Teardown: Stretchy Headers</a>. But with Auto Layout, we can achieve this with much nicer declarative constraints</p>
+<p>The demo project is <a href="https://github.com/onmyway133/StretchyHeader" target="_blank" rel="external">StretchyHeader</a></p>
+<p><img src="https://github.com/onmyway133/StretchyHeader/raw/master/Assets/Demo.gif" alt=""></p>
+<p>I use <a href="https://github.com/SnapKit/SnapKit" target="_blank" rel="external">SnapKit</a> to make it clear what constraints we need</p>
+<h2 id="scrollView"><a href="#scrollView" class="headerlink" title="scrollView"></a>scrollView</h2><p>The <code>scrollView</code> should pin its 4 edges to the <code>ViewController &#39;s view</code><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">        scrollView = <span class="type">UIScrollView</span>()</span><br><span class="line">        scrollView.delegate = <span class="keyword">self</span></span><br><span class="line"></span><br><span class="line">        view.addSubview(scrollView)</span><br><span class="line">        scrollView.snp_makeConstraints &#123; make <span class="keyword">in</span></span><br><span class="line">            make.edges.equalTo(view)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="scrollViewContentView"><a href="#scrollViewContentView" class="headerlink" title="scrollViewContentView"></a>scrollViewContentView</h2><p>The <code>scrollViewContentView</code> must pin its 4 edges to the <code>scrollView</code> to help determine <code>scrollView</code> <code>contentSize</code></p>
+<p>The height of <code>scrollViewContentView</code> is determined by its subviews. The subviews inside must pin their <code>top</code> and <code>bottom</code> to the <code>scrollViewContentView</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupScrollViewContentView</span><span class="params">()</span></span> &#123;</span><br><span class="line">        scrollViewContentView = <span class="type">UIView</span>()</span><br><span class="line"></span><br><span class="line">        scrollView.addSubview(scrollViewContentView)</span><br><span class="line">        scrollViewContentView.snp_makeConstraints &#123; make <span class="keyword">in</span></span><br><span class="line">            make.edges.equalTo(scrollView)</span><br><span class="line">            make.width.equalTo(view.snp_width)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="header"><a href="#header" class="headerlink" title="header"></a>header</h2><p>The <code>header</code> must pin its top to the <code>scrollView</code> parent, which is the <code>ViewController &#39;s view</code></p>
+<p>Read the <code>title</code> section, you ‘ll see that in order to make <code>header</code> stretchy, it must be pinned top and bottom</p>
+<p>But if we scroll up, there will be a constraint conflict between these pinned <code>top</code> and <code>bottom</code> constraints</p>
+<p>So we must declare <code>headerTopConstraint</code> priority as 999, and <code>headerLessThanTopConstraint</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupHeader</span><span class="params">()</span></span> &#123;</span><br><span class="line">        header = <span class="type">UIImageView</span>()</span><br><span class="line">        header.image = <span class="type">UIImage</span>(named: <span class="string">"onepiece"</span>)!</span><br><span class="line"></span><br><span class="line">        scrollViewContentView.addSubview(header)</span><br><span class="line">        header.snp_makeConstraints &#123; make <span class="keyword">in</span></span><br><span class="line">            <span class="comment">// Pin header to scrollView 's parent, which is now ViewController 's view</span></span><br><span class="line">            <span class="comment">// When header is moved up, headerTopConstraint is not enough, so make its priority 999, and add another less than or equal constraint</span></span><br><span class="line">            make.leading.trailing.equalTo(scrollViewContentView)</span><br><span class="line">            <span class="keyword">self</span>.headerTopConstraint =  make.top.equalTo(view.snp_top).priority(<span class="number">999</span>).constraint</span><br><span class="line">            <span class="keyword">self</span>.headerLessThanTopConstraint = make.top.lessThanOrEqualTo(view.snp_top).constraint</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="title"><a href="#title" class="headerlink" title="title"></a>title</h2><p>The <code>title</code> must pin its top to the <code>scrollViewContentView</code> to help determine <code>scrollViewContentView</code> height</p>
+<p>The <code>title</code> must also pin its top the <code>header</code> bottom in order to make <code>header</code> stretchy</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupTitleLabel</span><span class="params">()</span></span> &#123;</span><br><span class="line">        titleLabel = <span class="type">UILabel</span>()</span><br><span class="line">        titleLabel.numberOfLines = <span class="number">0</span></span><br><span class="line">        titleLabel.font = <span class="type">UIFont</span>.preferredFontForTextStyle(<span class="type">UIFontTextStyleTitle1</span>)</span><br><span class="line">        titleLabel.text = <span class="string">"One Piece"</span></span><br><span class="line"></span><br><span class="line">        scrollViewContentView.addSubview(titleLabel)</span><br><span class="line">        titleLabel.snp_makeConstraints &#123; make <span class="keyword">in</span></span><br><span class="line">            make.leading.equalTo(scrollViewContentView).offset(<span class="number">20</span>)</span><br><span class="line">            make.trailing.equalTo(scrollViewContentView).offset(-<span class="number">20</span>)</span><br><span class="line">            <span class="comment">// Pin to the header to make it stretchy</span></span><br><span class="line">            make.top.equalTo(header.snp_bottom).offset(<span class="number">20</span>)</span><br><span class="line">            <span class="comment">// Pin to the content view to help determine scrollView contentSize</span></span><br><span class="line">            make.top.equalTo(scrollViewContentView.snp_top).offset(headerHeight)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="scrollViewDidScroll"><a href="#scrollViewDidScroll" class="headerlink" title="scrollViewDidScroll"></a>scrollViewDidScroll</h2><p>The header is always pinned to the top, unless you adjust it, here in <code>scrollViewDidScroll</code></p>
+<p>Here I use <code>Constraint</code>, which is a class from <code>SnapKit</code>, but the idea is to change the <code>constant</code> of the <code>NSLayoutConstraint</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidScroll</span><span class="params">(scrollView: UIScrollView)</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> headerTopConstraint = headerTopConstraint,</span><br><span class="line">            headerLessThanTopConstraint = headerLessThanTopConstraint</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> y = scrollView.contentOffset.y</span><br><span class="line">        <span class="keyword">let</span> offset = y &gt; <span class="number">0</span> ? -y : <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        headerLessThanTopConstraint.updateOffset(offset)</span><br><span class="line">        headerTopConstraint.updateOffset(offset)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>By the way, did you just learn the story of One Piece :]</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://blog.domesticcat.com.au/ios/2014/03/19/creating-parallax-effect-on-uiscrollview-using-simple-constraints/" target="_blank" rel="external">Creating parallax effect on UIScrollView using constraints</a></li>
+<li><a href="https://github.com/BillCarsonFr/ScrollviewParallax" target="_blank" rel="external">ScrollviewParallax</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/11/01/ios-stretchy-header-with-auto-layout/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/11/01/optional-protocol-in-swift/" title="Optional protocol in Swift" itemprop="url">Optional protocol in Swift</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-01T02:46:36.000Z" itemprop="datePublished"> Published 2015-11-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Swift supports optional protocol via <code>@objc</code> keyword, like <a href="http://en.swifter.tips/objc-protocol/" target="_blank" rel="external">OPTIONAL PROTOCOL</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@objc</span> <span class="class"><span class="keyword">protocol</span> <span class="title">OptionalProtocol</span> </span>&#123;</span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">optionalMethod</span><span class="params">()</span></span>         <span class="comment">// Optional</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">necessaryMethod</span><span class="params">()</span></span>                 <span class="comment">// Required</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">anotherOptionalMethod</span><span class="params">()</span></span>  <span class="comment">// Optional</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If there’s Enum, Tuple (which are not available in Objective C) in your protocol methods, then this @objc trick does not work</p>
+<p>Luckily, Swift 2 supports Protocol Extension, which we can use to provide default implementation. So the conformance only has to implement the methods that it truly needs</p>
+<p>Take a look at <a href="https://github.com/onmyway133/Cine/blob/master/Pod/Classes/Helper/PlayerDelegate.swift" target="_blank" rel="external">PlayerDelegate</a> in my <a href="https://github.com/onmyway133/Cine" target="_blank" rel="external">Cine</a></p>
+<p>You need to mark your protocol extension <code>public</code> in order for your consumer to use it</p>
+<p><code>PlayerDelegate.swift</code><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">PlayerDelegate</span> : <span class="title">class</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangeStatus status: Status)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangePlaybackState state: PlaybackState)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangeLoadState state: LoadState)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didFinishWithResult: Result)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidChangeCurrentItem</span><span class="params">(player: Player)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidLoadDuration</span><span class="params">(player: Player)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidTick</span><span class="params">(player: Player)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidBeginSeeking</span><span class="params">(player: Player)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidEndSeeking</span><span class="params">(player: Player)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">extension</span> <span class="title">PlayerDelegate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangeStatus status: Status)</span></span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangePlaybackState state: PlaybackState)</span></span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didChangeLoadState state: LoadState)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(player: Player, didFinishWithResult: Result)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidChangeCurrentItem</span><span class="params">(player: Player)</span></span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidLoadDuration</span><span class="params">(player: Player)</span></span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidTick</span><span class="params">(player: Player)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidBeginSeeking</span><span class="params">(player: Player)</span></span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">playerDidEndSeeking</span><span class="params">(player: Player)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/11/01/optional-protocol-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/10/31/lighter-appdelegate/" title="Lighter AppDelegate" itemprop="url">Lighter AppDelegate</a>
   </h1>
   <p class="article-author">By
@@ -739,174 +874,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/11/debugging-auto-layout/" title="Debugging Auto Layout" itemprop="url">Debugging Auto Layout</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-11T12:05:50.000Z" itemprop="datePublished"> Published 2015-07-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="hasAmbiguousLayout"><a href="#hasAmbiguousLayout" class="headerlink" title="hasAmbiguousLayout"></a>hasAmbiguousLayout</h3><blockquote><br>  Returns whether the constraints impacting the layout of the view incompletely specify the location of the view.<br></blockquote>
-
-
-
-
-
-<h3 id="exerciseAmbiguityInLayout"><a href="#exerciseAmbiguityInLayout" class="headerlink" title="exerciseAmbiguityInLayout"></a>exerciseAmbiguityInLayout</h3><blockquote><br>  This method randomly changes the frame of a view with an ambiguous layout between its different valid values, causing the view to move in the interface. This makes it easy to visually identify what the valid frames are and may enable the developer to discern what constraints need to be added to the layout to fully specify a location for the view.<br></blockquote>
-
-
-
-
-
-<h3 id="autolayoutTrace"><a href="#autolayoutTrace" class="headerlink" title="_autolayoutTrace"></a>_autolayoutTrace</h3><blockquote><br>  This returns a string describing the whole view tree which tells you when a view has an ambiguous layout.<br></blockquote>
-
-
-
-
-
-<h3 id="NSLayoutConstraint-identifier"><a href="#NSLayoutConstraint-identifier" class="headerlink" title="NSLayoutConstraint identifier"></a>NSLayoutConstraint identifier</h3><blockquote><br>  The name that identifies the constraint.<br></blockquote>
-
-
-
-
-
-<h3 id="UIViewAlertForUnsatisfiableConstraints"><a href="#UIViewAlertForUnsatisfiableConstraints" class="headerlink" title="UIViewAlertForUnsatisfiableConstraints"></a>UIViewAlertForUnsatisfiableConstraints</h3><p><a href="http://nshint.io/blog/2015/08/17/autolayout-breakpoints/" target="_blank" rel="external">Autolayout Breakpoints</a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://www.objc.io/issues/3-views/advanced-auto-layout-toolbox/" target="_blank" rel="external">Advanced Auto Layout Toolbox</a></li>
-</ul>
-<ul>
-<li><a href="http://asciiwwdc.com/2015/sessions/219" target="_blank" rel="external">Mysteries of Auto Layout, Part 2</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/11/debugging-auto-layout/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/11/understanding-layout-guide/" title="Understanding Layout Guide" itemprop="url">Understanding Layout Guide</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-11T12:00:12.000Z" itemprop="datePublished"> Published 2015-07-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="iOS-8"><a href="#iOS-8" class="headerlink" title="iOS 8"></a>iOS 8</h2><p><code>topLayoutGuide</code> and <code>bottomLayoutGuide</code></p>
-<ul>
-<li>is a property on UIViewController</li>
-<li>inherits from UIView</li>
-<li>conforms to UILayoutSupport protocol</li>
-</ul>
-<h3 id="UILayoutSupport"><a href="#UILayoutSupport" class="headerlink" title="UILayoutSupport"></a><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UILayoutSupport_Protocol/" target="_blank" rel="external">UILayoutSupport</a></h3><blockquote><br>  In iOS 7 and later, a view controller’s view occupies the full height of the screen when there are no opaque UIKit bars (such as opaque navigation or tab bars). To keep your content within the area of a view that is not overlaid by translucent or transparent UIKit bars, employ the topLayoutGuide and bottomLayoutGuide properties in the UIViewController class and take advantage of Auto Layout. Query these properties within your implementation of the UIViewController method viewDidLayoutSubviews.<br><br>  The guides work as follows:<br>  - The top layout guide indicates the distance, in points, between the top of a view controller’s view and the bottom of the bottommost bar that overlays the view<br>  - The bottom layout guide indicates the distance, in points, between the bottom of a view controller’s view and the top the bar (such as a tab bar) that overlays the view.<br></blockquote>
-
-
-
-
-
-<h3 id="topLayoutGuide"><a href="#topLayoutGuide" class="headerlink" title="topLayoutGuide"></a><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewController_Class/#//apple_ref/occ/instp/UIViewController/topLayoutGuide" target="_blank" rel="external">topLayoutGuide</a></h3><blockquote><br>  The topLayoutGuide property comes into play when a view controller is frontmost onscreen. It indicates the highest vertical extent for content that you don’t want to appear behind a translucent or transparent UIKit bar (such as a status or navigation bar). This property implements the UILayoutSupport protocol and you can employ it as a constraint item when using the NSLayoutConstraint class.<br><br>  The value of this property is, specifically, the value of the length property of the object returned when you query this property. This value is constrained by either the view controller or by its enclosing container view controller (such as a navigation or tab bar controller), as follows:<br><br>  A view controller not within a container view controller constrains this property to indicate the bottom of the status bar, if visible, or else to indicate the top edge of the view controller’s view.<br><br>  A view controller within a container view controller does not set this property’s value. Instead, the container view controller constrains the value to indicate:<br>  - The bottom of the navigation bar, if a navigation bar is visible<br>  - The bottom of the status bar, if only a status bar is visible<br>  - The top edge of the view controller’s view, if neither a status bar nor navigation bar is visible<br><br>  If a container navigation controller’s navigation bar is visible and opaque, the navigation controller lays out the frontmost view controller’s view so its top edge abuts the bottom of the navigation bar. In this case, the value of this property is 0.<br></blockquote>
-
-
-
-
-
-<h3 id="bottomLayoutGuide"><a href="#bottomLayoutGuide" class="headerlink" title="bottomLayoutGuide"></a><a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewController_Class/#//apple_ref/occ/instp/UIViewController/topLayoutGuide" target="_blank" rel="external">bottomLayoutGuide</a></h3><h2 id="iOS-9"><a href="#iOS-9" class="headerlink" title="iOS 9"></a>iOS 9</h2><h3 id="UILayoutGuide"><a href="#UILayoutGuide" class="headerlink" title="UILayoutGuide"></a><a href="https://developer.apple.com/library/prerelease/ios/documentation/UIKit/Reference/UILayoutGuide_Class_Reference/index.html#//apple_ref/occ/cl/UILayoutGuide" target="_blank" rel="external">UILayoutGuide</a></h3><p><code>topLayoutGuide</code> and <code>bottomLayoutGuide</code> </p>
-<ul>
-<li>inherits from UILayoutGuide</li>
-</ul>
-<blockquote><br>  They do not participate in the view hierarchy. Instead, they simply define a rectangular region in their owning view’s coordinate system that can interact with Auto Layout.<br><br>  Layout guides can also act as a black box, containing a number of other views and controls. This lets you encapsulate part of your view, breaking your layout into modular chunks.<br></blockquote>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/11/understanding-layout-guide/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/3/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/5/">Next<span></span></a>
@@ -979,7 +946,7 @@
 		  
 		
 		  
-			<li><a href="/categories/iOS/" title="iOS">iOS<sup>84</sup></a></li>
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>85</sup></a></li>
 		  
 		
 		  
@@ -996,7 +963,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ios/" title="ios">ios<sup>20</sup></a></li>
+				<li><a href="/tags/ios/" title="ios">ios<sup>21</sup></a></li>
 			
 		
 			
@@ -1032,7 +999,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1044,11 +1011,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1057,6 +1024,10 @@
 		
 			
 				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1069,10 +1040,6 @@
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>
