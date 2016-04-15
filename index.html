@@ -82,6 +82,158 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/04/15/push-notification-in-practice/" title="Push Notification in practice" itemprop="url">Push Notification in practice</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-15T15:02:49.000Z" itemprop="datePublished"> Published 2016-04-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Here are my notes for working with Push Notification, updated for iOS 9</p>
+<h2 id="How-to-register"><a href="#How-to-register" class="headerlink" title="How to register"></a>How to register</h2><ul>
+<li>Register to receive push notification</li>
+</ul>
+<p><code>registerForRemoteNotificationTypes</code> is deprecated in iOS 8+</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIApplication</span>.sharedApplication().registerForRemoteNotifications()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Register to alert user through UI</li>
+</ul>
+<blockquote>
+<p>If your app displays alerts, play sounds, or badges its icon, you must call this method during your launch cycle to request permission to alert the user in these ways</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> types: <span class="type">UIUserNotificationType</span> = [.<span class="type">Badge</span>, .<span class="type">Sound</span>, .<span class="type">Alert</span>]</span><br><span class="line"><span class="keyword">let</span> categories = <span class="type">Set</span>&lt;<span class="type">UIUserNotificationCategory</span>&gt;()</span><br><span class="line"><span class="keyword">let</span> settings = <span class="type">UIUserNotificationSettings</span>(forTypes: types, categories: categories)</span><br><span class="line"></span><br><span class="line"><span class="type">UIApplication</span>.sharedApplication().registerUserNotificationSettings(settings)</span><br></pre></td></tr></table></figure>
+<p>You don’t need to wait for <code>registerUserNotificationSettings</code> to callback before calling <code>registerForRemoteNotifications</code></p>
+<h2 id="When-to-register"><a href="#When-to-register" class="headerlink" title="When to register"></a>When to register</h2><ul>
+<li><a href="https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html" target="_blank" rel="external">Registering, Scheduling, and Handling User Notifications</a></li>
+</ul>
+<blockquote>
+<p>Never cache a device token; always get the token from the system whenever you need it. If your app previously registered for remote notifications, calling the registerForRemoteNotifications method again does not incur any additional overhead, and iOS returns the existing device token to your app delegate immediately. In addition, iOS calls your delegate method any time the device token changes, not just in response to your app registering or re-registering</p>
+<p>The user can change the notification settings for your app at any time using the Settings app. Because settings can change, always call the registerUserNotificationSettings: at launch time and use the application:didRegisterUserNotificationSettings: method to get the response. If the user disallows specific notification types, avoid using those types when configuring local and remote notifications for your app.</p>
+</blockquote>
+<h2 id="didReceiveRemoteNotification"><a href="#didReceiveRemoteNotification" class="headerlink" title="didReceiveRemoteNotification"></a>didReceiveRemoteNotification</h2><p>About <code>application:didReceiveRemoteNotification:</code></p>
+<blockquote>
+<p>Implement the application:didReceiveRemoteNotification:fetchCompletionHandler: method instead of this one whenever possible. If your delegate implements both methods, the app object calls the application:didReceiveRemoteNotification:fetchCompletionHandler: method.</p>
+<p>If the app is not running when a remote notification arrives, the method launches the app and provides the appropriate information in the launch options dictionary. The app does not call this method to handle that remote notification. Instead, your implementation of the application:willFinishLaunchingWithOptions: or application:didFinishLaunchingWithOptions: method needs to get the remote notification payload data and respond appropriately.</p>
+</blockquote>
+<p>About <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code></p>
+<p>This is for silent push notification with <code>content-available</code></p>
+<blockquote>
+<p>Unlike the application:didReceiveRemoteNotification: method, which is called only when your app is running in the foreground, the system calls this method when your app is running in the foreground or background</p>
+<p>In addition, if you enabled the remote notifications background mode, the system launches your app (or wakes it from the suspended state) and puts it in the background state when a push notification arrives. However, the system does not automatically launch your app if the user has force-quit it. In that situation, the user must relaunch your app or restart the device before the system attempts to launch your app automatically again.</p>
+<p>If the user opens your app from the system-displayed alert, the system may call this method again when your app is about to enter the foreground so that you can update your user interface and display information pertaining to the notification.</p>
+</blockquote>
+<h2 id="How-to-handle"><a href="#How-to-handle" class="headerlink" title="How to handle"></a>How to handle</h2><p>Usually, the use of push notification is to display a specific article, a specific DetailViewController, … in your app. So the good practices are</p>
+<ul>
+<li>When the app is in foreground: Gently display some kind of alert view and ask the user whether he would like to go to that specific page or not</li>
+<li>When user is brought from background to foreground, or from terminated to foreground: Just navigate to that specific page. For example, if you use UINavigationController, you can set that specific page the top most ViewController, if you use UITabBarController, you can set that specific page the selected tab, something like that</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- <span class="function"><span class="keyword">func</span> <span class="title">handlePushNotification</span><span class="params">(userInfo: NSDictionary)</span></span> &#123;</span><br><span class="line">    <span class="comment">// Check applicationState</span></span><br><span class="line">	<span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateActive</span>) &#123;</span><br><span class="line">        <span class="comment">// Application is running in foreground</span></span><br><span class="line">        showAlertForPushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (applicationState == <span class="type">UIApplicationStateBackground</span> || applicationState == <span class="type">UIApplicationStateInactive</span>) &#123;</span><br><span class="line">    <span class="comment">// Application is brought from background or launched after terminated</span></span><br><span class="line">        handlePushNotification(userInfo)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here we create another method `handlePushNotification:`` to handle push notification. When you receive push notification, 3 cases can occur</p>
+<h4 id="Case-1-Foreground"><a href="#Case-1-Foreground" class="headerlink" title="Case 1: Foreground"></a>Case 1: Foreground</h4><p>Loud push</p>
+<ul>
+<li>No system alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<p>Silent push</p>
+<ul>
+<li>No system alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+</ul>
+<h4 id="Case-2-Background"><a href="#Case-2-Background" class="headerlink" title="Case 2: Background"></a>Case 2: Background</h4><p>Loud push</p>
+<ul>
+<li>System alert</li>
+<li>No method called</li>
+<li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and nothing is called</li>
+</ul>
+<p>Silent push</p>
+<ul>
+<li>System alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app is suspended, its state changed to <code>UIApplicationStateBackground</code></li>
+<li>Tap notification and <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and nothing is called</li>
+</ul>
+<h4 id="Case-3-Terminated"><a href="#Case-3-Terminated" class="headerlink" title="Case 3: Terminated"></a>Case 3: Terminated</h4><p>Loud push</p>
+<ul>
+<li>System alert</li>
+<li>No method called</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code> with <code>launchOptions</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and <code>application:didFinishLaunchingWithOptions:</code> is called with <code>launchOptions</code> set to nil</li>
+</ul>
+<p>Silent push</p>
+<ul>
+<li>System alert</li>
+<li><code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called. If app was not killed by user, it is woke up and state changed to <code>UIApplicationStateInactive</code>.</li>
+<li>Tap notification and <code>application:didFinishLaunchingWithOptions:</code> with <code>launchOptions</code>,  <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> called</li>
+<li>Tap on App Icon and <code>application:didFinishLaunchingWithOptions:</code> is called with <code>launchOptions</code> set to nil</li>
+</ul>
+<h2 id="System-alert"><a href="#System-alert" class="headerlink" title="System alert"></a>System alert</h2><p>System alert only show if the payload contains “alert”</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"aps"</span> : &#123;</span><br><span class="line">        <span class="attr">"alert"</span> : &#123;</span><br><span class="line">            <span class="attr">"title"</span> : <span class="string">"Game Request"</span>,</span><br><span class="line">            <span class="attr">"body"</span> : <span class="string">"Bob wants to play poker"</span>,</span><br><span class="line">            <span class="attr">"action-loc-key"</span> : <span class="string">"PLAY"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"badge"</span> : <span class="number">5</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"param1"</span> : <span class="string">"bar"</span>,</span><br><span class="line">    <span class="attr">"param2"</span> : [ <span class="string">"bang"</span>,  <span class="string">"whiz"</span> ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Silent-push-payload"><a href="#Silent-push-payload" class="headerlink" title="Silent push payload"></a>Silent push payload</h2><p>For now I see that silent push must contain “sound” for <code>application:didReceiveRemoteNotification:fetchCompletionHandler:</code> to be called when app is in background</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">"aps"</span>: &#123;</span><br><span class="line">   <span class="attr">"content-available"</span>: <span class="number">1</span>,</span><br><span class="line">   <span class="attr">"alert"</span>: <span class="string">"hello"</span> // include this if we want to show alert</span><br><span class="line">   <span class="string">"sound"</span>: <span class="string">""</span> // this does the trick</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"param1"</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"param2"</span>: <span class="string">"text"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html" target="_blank" rel="external">Scheduling, Registering, and Handling Notifications</a></li>
+<li><a href="http://www.abdus.me/ios-programming-tips/handle-push-notifications-when-arrived-ios/" target="_blank" rel="external">Handle push notifications when arrived in ios application</a></li>
+<li><a href="http://stackoverflow.com/questions/5099483/how-to-respond-to-push-notification-view-if-app-is-already-running-in-the-backgr" target="_blank" rel="external">How to respond to push notification view if app is already running in the background</a></li>
+<li><a href="http://stackoverflow.com/questions/5056689/didreceiveremotenotification-when-in-background" target="_blank" rel="external">didReceiveRemoteNotification when in background</a></li>
+<li><a href="http://samwize.com/2015/08/07/how-to-handle-remote-notification-with-background-mode-enabled/" target="_blank" rel="external">How to handle remote notification with background mode enabled</a></li>
+<li><a href="http://stackoverflow.com/questions/20569201/remote-notification-method-called-twice" target="_blank" rel="external">Remote notification method called twice</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/notification/">notification</a><a href="/tags/ios/">ios</a><a href="/tags/practice/">practice</a><a href="/tags/push/">push</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/04/15/push-notification-in-practice/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2016/01/26/sdk-and-deployment-target/" title="SDK and Deployment Target" itemprop="url">SDK and Deployment Target</a>
   </h1>
   <p class="article-author">By
@@ -873,134 +1025,6 @@
 	
 	  	<span></span>
 		<a href="/blog/2016/01/10/app-backed-by-website-in-ios-9/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2016/01/04/disingenuousness/" title="Disingenuousness" itemprop="url">Disingenuousness</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2016-01-04T05:37:54.000Z" itemprop="datePublished"> Published 2016-01-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>I’m very happy to be <a href="http://www.fantageek.com/blog/2015/10/31/on-open-source/">on open source</a> movement, and it ‘ll be great to hear about what people have achieved</p>
-<ul>
-<li><a href="https://code.facebook.com/posts/1236426443040107?__mref=message" target="_blank" rel="external">Open source in 2015: A year of growth</a></li>
-<li><a href="http://blog.parse.com/learn/introducing-the-open-source-hub/" target="_blank" rel="external">Introducing the Open Source Hub</a></li>
-<li><a href="https://developer.apple.com/opensource/" target="_blank" rel="external">Open Source at Apple</a></li>
-<li><a href="https://www.youtube.com/watch?v=YsUTuwpbURA" target="_blank" rel="external">Emerging Best Practices • Ash Furrow</a></li>
-</ul>
-<p>And <a href="https://twitter.com/merowing_" target="_blank" rel="external">@merowing_</a> also mentioned in <a href="http://merowing.info/2015/12/writing-xcode-plugin-in-swift/" target="_blank" rel="external">Writing Xcode plugin in Swift</a></p>
-<blockquote>
-<p>Attribution</p>
-<p>Writing this was much simpler because I was able to look at other people plugins, mostly those related to console, without them being open sourcing it would be more work to figure this stuff out with hopper.</p>
-</blockquote>
-<p>Open source helps us move forward, learn and share together</p>
-<h2 id="The-dark-side-of-the-Force"><a href="#The-dark-side-of-the-Force" class="headerlink" title="The dark side of the Force"></a>The dark side of the Force</h2><ul>
-<li><a href="http://www.imdb.com/title/tt0080684/quotes" target="_blank" rel="external">Star Wars: Episode V - The Empire Strikes Back </a></li>
-</ul>
-<blockquote>
-<p>Luke: Is the dark side stronger?</p>
-<p>Yoda: No, no, no. Quicker, easier, more seductive.</p>
-</blockquote>
-<p>It’s a pain to see plagiarism around</p>
-<ul>
-<li><a href="http://www.observationalhazard.com/2015/12/open-source-plagiarism.html" target="_blank" rel="external">Open Source Plagiarism
-</a></li>
-<li><a href="https://github.com/FancyPixel/gulps#imitation-is-the-sincerest-form-of-flattery" target="_blank" rel="external">Imitation is the sincerest form of flattery</a></li>
-<li><a href="https://github.com/Microsoft/WinObjC/issues/35" target="_blank" rel="external">Restore original licenses</a></li>
-</ul>
-<p>Open source softwares are in fact intellectual properties, and the authors should get acknowledgement for the work that they do.</p>
-<p>It’s not fair to take the credit of other’s work and not giving any attribution</p>
-<blockquote>
-<p>By its nature, open source software has a unique relationship with intellectual property rights</p>
-<p>One thing that’s not up for debate in most circles is that it’s dishonest and disingenuous to take someone else’s project, modify it slightly, and call it your own.</p>
-<p>Further, regardless of whether or not a project crosses that line, it must (by the terms of most open source licenses) acknowledge the original work/author.</p>
-</blockquote>
-<p>And the reaction</p>
-<ul>
-<li><a href="https://github.com/khoiln/RunKit/pull/7" target="_blank" rel="external">Attribute Original Author</a></li>
-<li><a href="https://twitter.com/davekopec/status/671913819673899008" target="_blank" rel="external">Open Source Plagiarism</a></li>
-<li><p><a href="https://github.com/github/dmca/blob/master/2015-12-04-Async.md" target="_blank" rel="external">DMCA takedown on repos that rip off Async</a></p>
-</li>
-<li><p><a href="https://twitter.com/theandreamazz" target="_blank" rel="external">@theandreamazz</a></p>
-</li>
-</ul>
-<blockquote>
-<p>It’s always sad to see blatant plagiarism, and I think it really hurts the community more than the author itself. It gives people a good reason to keep the sources private. </p>
-</blockquote>
-<h2 id="Being-nice"><a href="#Being-nice" class="headerlink" title="Being nice"></a>Being nice</h2><p>I often hear people say that</p>
-<blockquote>
-<p>It is easier to find good developer than developer with good attitude</p>
-</blockquote>
-<ul>
-<li><a href="https://ashfurrow.com/blog/building-online-communities/" target="_blank" rel="external">Building Online Communities</a></li>
-<li><a href="https://ashfurrow.com/blog/being-polite-in-open-source/" target="_blank" rel="external">Being Polite in Open Source</a></li>
-<li><a href="https://ashfurrow.com/blog/minswan-for-ios/" target="_blank" rel="external">MINSWAN for iOS</a></li>
-</ul>
-<p>Github also states that</p>
-<blockquote>
-<p>We understand and agree that copying others’ work without permission goes against the spirit of the open source community</p>
-</blockquote>
-<h2 id="Do-the-right-things"><a href="#Do-the-right-things" class="headerlink" title="Do the right things"></a>Do the right things</h2><ul>
-<li><a href="http://artsy.github.io/blog/2015/12/10/License-and-You/" target="_blank" rel="external">Licenses for OSS Code</a></li>
-<li><a href="https://www.quora.com/How-do-I-properly-credit-an-original-codes-developer-for-her-open-source-contribution" target="_blank" rel="external">How do I properly credit an original code’s developer for her open source contribution?</a></li>
-</ul>
-<p>Is it MIT ‘s fault? Definitely no</p>
-<ul>
-<li><a href="https://twitter.com/TProphet/status/666715662199336960" target="_blank" rel="external">@TProphet
-</a></li>
-</ul>
-<blockquote>
-<p>False choice. Giving up freedom does not lead to more security, just less freedom.</p>
-</blockquote>
-<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><ul>
-<li>Don’t take things personally</li>
-<li>It’s hard to be perfect, but we can learn to do the right things</li>
-<li>We may do the wrong things, but don’t worry, there ‘ll be help via Issues and Pull Requests</li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2016/01/04/disingenuousness/#disqus_thread" class="comments-count-link">Comments</a>
 	
 </div>
 
