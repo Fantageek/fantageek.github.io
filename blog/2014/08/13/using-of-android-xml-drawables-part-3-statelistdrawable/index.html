@@ -137,7 +137,7 @@
 <p><strong>Step 2: Drawables</strong></p>
 <p>Create StateListDrawable in XML for each type of those fruit backgrounds. Below is the one for the coconut:</p>
 <p>[code language=”xml”]</p>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"><br> <item android:state_activated="true" android:drawable="@drawable/coconut_checked"><br> <item android:state_activated="false" android:drawable="@drawable/coconut_unchecked"><br></item></item></selector><br>[/code]<br><br>Notice that the activated state is equivalent to the state if the item is checked. (checked &lt;=&gt; activated=”true” / unchecked &lt;=&gt; activated=”false”)<br><br>and place it in <strong>/res/drawable/selector_coconut.xml</strong><br>Now we have created 5 selector XML drawables.<br><br><strong>Step 3: Layout</strong><br><br>Let’s move on the layout of our Activity, we have only ListView in the screen, and this’s it:<br><br>[code language=”java”]<br><br><a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#x4c;&#105;&#115;&#x74;&#x56;&#x69;&#x65;&#119;&#10;&#97;&#x6e;&#x64;&#x72;&#x6f;&#x69;&#x64;&#58;&#x69;&#x64;&#61;&#34;&#64;&#43;&#x69;&#100;&#x2f;&#x6c;&#105;&#x73;&#x74;&#118;&#x69;&#101;&#119;&#x22;&#xa;&#x61;&#x6e;&#x64;&#x72;&#111;&#x69;&#100;&#x3a;&#x6c;&#x61;&#121;&#x6f;&#117;&#x74;&#x5f;&#x77;&#105;&#x64;&#x74;&#104;&#61;&#x22;&#x6d;&#x61;&#116;&#x63;&#x68;&#x5f;&#x70;&#97;&#x72;&#101;&#x6e;&#116;&#x22;&#xa;&#x61;&#x6e;&#100;&#x72;&#x6f;&#x69;&#100;&#58;&#108;&#97;&#121;&#x6f;&#x75;&#116;&#95;&#104;&#101;&#x69;&#x67;&#x68;&#116;&#61;&#x22;&#x6d;&#97;&#x74;&#99;&#x68;&#95;&#x70;&#97;&#x72;&#x65;&#x6e;&#x74;&#x22;&#10;&#x61;&#x6e;&#x64;&#x72;&#111;&#x69;&#100;&#x3a;&#99;&#x68;&#x6f;&#x69;&#x63;&#101;&#77;&#111;&#100;&#101;&#x3d;&#x22;&#109;&#117;&#x6c;&#x74;&#x69;&#112;&#x6c;&#x65;&#67;&#104;&#111;&#x69;&#99;&#101;&#34;&#x2f;">&#x4c;&#105;&#115;&#x74;&#x56;&#x69;&#x65;&#119;&#10;&#97;&#x6e;&#x64;&#x72;&#x6f;&#x69;&#x64;&#58;&#x69;&#x64;&#61;&#34;&#64;&#43;&#x69;&#100;&#x2f;&#x6c;&#105;&#x73;&#x74;&#118;&#x69;&#101;&#119;&#x22;&#xa;&#x61;&#x6e;&#x64;&#x72;&#111;&#x69;&#100;&#x3a;&#x6c;&#x61;&#121;&#x6f;&#117;&#x74;&#x5f;&#x77;&#105;&#x64;&#x74;&#104;&#61;&#x22;&#x6d;&#x61;&#116;&#x63;&#x68;&#x5f;&#x70;&#97;&#x72;&#101;&#x6e;&#116;&#x22;&#xa;&#x61;&#x6e;&#100;&#x72;&#x6f;&#x69;&#100;&#58;&#108;&#97;&#121;&#x6f;&#x75;&#116;&#95;&#104;&#101;&#x69;&#x67;&#x68;&#116;&#61;&#x22;&#x6d;&#97;&#x74;&#99;&#x68;&#95;&#x70;&#97;&#x72;&#x65;&#x6e;&#x74;&#x22;&#10;&#x61;&#x6e;&#x64;&#x72;&#111;&#x69;&#100;&#x3a;&#99;&#x68;&#x6f;&#x69;&#x63;&#101;&#77;&#111;&#100;&#101;&#x3d;&#x22;&#109;&#117;&#x6c;&#x74;&#x69;&#112;&#x6c;&#x65;&#67;&#104;&#111;&#x69;&#99;&#101;&#34;&#x2f;</a><br><br>[/code]<br><br><strong>Step 4: The  Adapter</strong><br><br>We want items, we must have an adapter for our ListView. This demo doesn’t require complex items so I write a simple Adapter, you should re-write it in your better own ways:<br><br>[code language=”java”]<br><br>class FruitAdapter extends ArrayAdapter<integer> {<br>  public FruitAdapter(Context context) {<br>    super(context, 0, new ArrayList<integer>());<br>    addAll(R.drawable.selector_coconut, R.drawable.selector_lychee, R.drawable.selector_papaya,<br>    R.drawable.selector_pineapple, R.drawable.selector_strawberry);<br>  }<br><br>  @Override<br>  public View getView(int position, View convertView, ViewGroup parent) {<br>    convertView = new View(getContext());<br>    convertView.setBackgroundResource(getItem(position));<br><br>    return convertView;<br>  }<br>}<br><br>[/code]<br><br>Remember to set this as adapter of our ListView in Activity code:<br><br>[code language=”java”]<br>ListView listview = (ListView) findViewById(R.id.listview);<br>listview.setAdapter(new FruitAdapter(this));<br>[/code]<br><br>Now this is how we got so far:<br><a href="http://www.fantageek.com/wp-content/uploads/2014/08/device-2014-08-13-230922.png"><img src="http://www.fantageek.com/wp-content/uploads/2014/08/device-2014-08-13-230922-168x300.png" alt="device-2014-08-13-230922"></a><strong>Step 5: Recall BitmapDrawable</strong><br><br>As you remember in <a href="http://www.fantageek.com/1183/using-of-android-xml-drawables-part-2-bitmapdrawable/">Part 2</a>, we use bitmap with its gravity attributes: bottom and fill_horizontal. Now to make the backgrounds look just right, bitmap is useful again. Change all of our selector XML resource to like this (the lychee one):<br><br>[code language=”xml”]<br><br><selector xmlns:android="http://schemas.android.com/apk/res/android"><br> <item android:state_activated="true"><br> <bitmap android:src="@drawable/lychee_checked" android:gravity="center"><br> </bitmap></item><br> <item android:state_activated="false"><br> <bitmap android:src="@drawable/lychee_unchecked" android:gravity="center"><br><br></bitmap></item><br></selector>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"><br> <item android:state_activated="true" android:drawable="@drawable/coconut_checked"><br> <item android:state_activated="false" android:drawable="@drawable/coconut_unchecked"><br></item></item></selector><br>[/code]<br><br>Notice that the activated state is equivalent to the state if the item is checked. (checked &lt;=&gt; activated=”true” / unchecked &lt;=&gt; activated=”false”)<br><br>and place it in <strong>/res/drawable/selector_coconut.xml</strong><br>Now we have created 5 selector XML drawables.<br><br><strong>Step 3: Layout</strong><br><br>Let’s move on the layout of our Activity, we have only ListView in the screen, and this’s it:<br><br>[code language=”java”]<br><br><a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x4c;&#105;&#115;&#x74;&#x56;&#x69;&#101;&#x77;&#10;&#97;&#x6e;&#100;&#x72;&#111;&#105;&#100;&#x3a;&#x69;&#100;&#x3d;&#34;&#x40;&#43;&#x69;&#100;&#x2f;&#108;&#105;&#115;&#116;&#118;&#x69;&#101;&#119;&#x22;&#xa;&#97;&#110;&#100;&#x72;&#111;&#105;&#x64;&#58;&#108;&#x61;&#121;&#x6f;&#117;&#116;&#x5f;&#119;&#x69;&#x64;&#116;&#x68;&#x3d;&#34;&#109;&#97;&#x74;&#x63;&#x68;&#95;&#112;&#x61;&#x72;&#101;&#110;&#116;&#x22;&#10;&#97;&#110;&#x64;&#114;&#x6f;&#x69;&#100;&#x3a;&#108;&#97;&#121;&#x6f;&#x75;&#x74;&#95;&#104;&#x65;&#105;&#103;&#x68;&#x74;&#61;&#x22;&#109;&#97;&#116;&#99;&#x68;&#x5f;&#112;&#97;&#x72;&#101;&#110;&#116;&#34;&#xa;&#x61;&#110;&#100;&#114;&#x6f;&#x69;&#x64;&#58;&#99;&#x68;&#111;&#x69;&#x63;&#101;&#x4d;&#x6f;&#100;&#x65;&#61;&#x22;&#109;&#x75;&#108;&#116;&#105;&#112;&#108;&#101;&#67;&#104;&#111;&#x69;&#99;&#101;&#34;&#47;">&#x4c;&#105;&#115;&#x74;&#x56;&#x69;&#101;&#x77;&#10;&#97;&#x6e;&#100;&#x72;&#111;&#105;&#100;&#x3a;&#x69;&#100;&#x3d;&#34;&#x40;&#43;&#x69;&#100;&#x2f;&#108;&#105;&#115;&#116;&#118;&#x69;&#101;&#119;&#x22;&#xa;&#97;&#110;&#100;&#x72;&#111;&#105;&#x64;&#58;&#108;&#x61;&#121;&#x6f;&#117;&#116;&#x5f;&#119;&#x69;&#x64;&#116;&#x68;&#x3d;&#34;&#109;&#97;&#x74;&#x63;&#x68;&#95;&#112;&#x61;&#x72;&#101;&#110;&#116;&#x22;&#10;&#97;&#110;&#x64;&#114;&#x6f;&#x69;&#100;&#x3a;&#108;&#97;&#121;&#x6f;&#x75;&#x74;&#95;&#104;&#x65;&#105;&#103;&#x68;&#x74;&#61;&#x22;&#109;&#97;&#116;&#99;&#x68;&#x5f;&#112;&#97;&#x72;&#101;&#110;&#116;&#34;&#xa;&#x61;&#110;&#100;&#114;&#x6f;&#x69;&#x64;&#58;&#99;&#x68;&#111;&#x69;&#x63;&#101;&#x4d;&#x6f;&#100;&#x65;&#61;&#x22;&#109;&#x75;&#108;&#116;&#105;&#112;&#108;&#101;&#67;&#104;&#111;&#x69;&#99;&#101;&#34;&#47;</a><br><br>[/code]<br><br><strong>Step 4: The  Adapter</strong><br><br>We want items, we must have an adapter for our ListView. This demo doesn’t require complex items so I write a simple Adapter, you should re-write it in your better own ways:<br><br>[code language=”java”]<br><br>class FruitAdapter extends ArrayAdapter<integer> {<br>  public FruitAdapter(Context context) {<br>    super(context, 0, new ArrayList<integer>());<br>    addAll(R.drawable.selector_coconut, R.drawable.selector_lychee, R.drawable.selector_papaya,<br>    R.drawable.selector_pineapple, R.drawable.selector_strawberry);<br>  }<br><br>  @Override<br>  public View getView(int position, View convertView, ViewGroup parent) {<br>    convertView = new View(getContext());<br>    convertView.setBackgroundResource(getItem(position));<br><br>    return convertView;<br>  }<br>}<br><br>[/code]<br><br>Remember to set this as adapter of our ListView in Activity code:<br><br>[code language=”java”]<br>ListView listview = (ListView) findViewById(R.id.listview);<br>listview.setAdapter(new FruitAdapter(this));<br>[/code]<br><br>Now this is how we got so far:<br><a href="http://www.fantageek.com/wp-content/uploads/2014/08/device-2014-08-13-230922.png"><img src="http://www.fantageek.com/wp-content/uploads/2014/08/device-2014-08-13-230922-168x300.png" alt="device-2014-08-13-230922"></a><strong>Step 5: Recall BitmapDrawable</strong><br><br>As you remember in <a href="http://www.fantageek.com/1183/using-of-android-xml-drawables-part-2-bitmapdrawable/">Part 2</a>, we use bitmap with its gravity attributes: bottom and fill_horizontal. Now to make the backgrounds look just right, bitmap is useful again. Change all of our selector XML resource to like this (the lychee one):<br><br>[code language=”xml”]<br><br><selector xmlns:android="http://schemas.android.com/apk/res/android"><br> <item android:state_activated="true"><br> <bitmap android:src="@drawable/lychee_checked" android:gravity="center"><br> </bitmap></item><br> <item android:state_activated="false"><br> <bitmap android:src="@drawable/lychee_unchecked" android:gravity="center"><br><br></bitmap></item><br></selector>
 
 <p>[/code]</p>
 <p>Run the project, and:</p>
@@ -308,15 +308,15 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
@@ -328,7 +328,7 @@
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -336,11 +336,11 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -352,7 +352,7 @@
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -360,11 +360,7 @@
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			
@@ -372,11 +368,15 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>
