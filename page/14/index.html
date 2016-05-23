@@ -82,6 +82,75 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/10/14/implementation-of-property-in-ios/" title="Implementation of property in iOS" itemprop="url">Implementation of property in iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-10-14T08:22:52.000Z" itemprop="datePublished"> Published 2013-10-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>For better understanding of retain, assign, copy keyword used in Property declaration, it’s best to look at how they are implemented</p>
+<p><strong>assign</strong></p>
+<p>[code language=”objc”]  </p>
+<p>@property (nonatomic, assign) NSInteger count;  </p>
+<p>[/code]</p>
+<p>“assign” is the default. In the setter that is created by @synthesize, the value will simply be assigned to the attribute. My understanding is that “assign” should be used for non-pointer attributes.  </p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2013/10/14/implementation-of-property-in-ios/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/assign/">assign</a><a href="/tags/copy/">copy</a><a href="/tags/implement/">implement</a><a href="/tags/property/">property</a><a href="/tags/retain/">retain</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/10/14/implementation-of-property-in-ios/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/10/13/convert-cmsamplebufferref-to-uiimage/" title="Convert CMSampleBufferRef to UIImage" itemprop="url">Convert CMSampleBufferRef to UIImage</a>
   </h1>
   <p class="article-author">By
@@ -760,82 +829,6 @@ ARCHS=&quot;armv7&quot;</code></p>
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/07/17/convert-between-cstring-and-char/" title="Convert between CString and char*" itemprop="url">Convert between CString and char*</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-07-17T02:54:21.000Z" itemprop="datePublished"> Published 2013-07-17</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This tutorial will show you some code snippets that perform conversion between CString and   char*</p>
-<p>[code language=”cpp”]  </p>
-<p>char* CString2char(CString str)  </p>
-<p>{  </p>
-<p> int len = str.GetLength();  </p>
-<p> char* result = new char[len];  </p>
-<p> sprintf(result, “%S”, str);  </p>
-<p> return result;  </p>
-<p>}</p>
-<p>CString char2CString(char* str)  </p>
-<p>{  </p>
-<p> return CString(str);  </p>
-<p>}  </p>
-<p>[/code]</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/C/">C</a><a href="/tags/char/">char</a><a href="/tags/convert/">convert</a><a href="/tags/cstring/">cstring</a><a href="/tags/mfc/">mfc</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/07/17/convert-between-cstring-and-char/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/13/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/15/">Next<span></span></a>
@@ -961,11 +954,11 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -977,7 +970,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
@@ -989,7 +982,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			

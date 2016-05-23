@@ -82,6 +82,64 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/12/08/pattern-matching-in-swift-2/" title="Pattern matching in Swift 2" itemprop="url">Pattern matching in Swift 2</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-08T02:49:23.000Z" itemprop="datePublished"> Published 2015-12-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://austinzheng.com/2015/09/23/pmatch-control-flow/" target="_blank" rel="external">Swift 2: Control Flow Pattern Matching Examples</a></li>
+<li><a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/" target="_blank" rel="external">Match Me if you can: Swift Pattern Matching in Detail</a></li>
+<li><a href="http://blog.krzyzanowskim.com/2015/11/13/where-where-may-be-used/" target="_blank" rel="external">Where “where” may be used</a></li>
+<li><a href="http://www.figure.ink/blog/2015/12/6/matching-with-swifts-optional-pattern" target="_blank" rel="external">Matching with Swift’s Optional Pattern</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/12/08/pattern-matching-in-swift-2/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/12/07/parsing-json-in-swift-2/" title="Parsing JSON in Swift 2" itemprop="url">Parsing JSON in Swift 2</a>
   </h1>
   <p class="article-author">By
@@ -819,85 +877,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/11/04/library-not-found-for-lpods/" title="Library not found for -lPods" itemprop="url">Library not found for -lPods</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-04T16:23:48.000Z" itemprop="datePublished"> Published 2015-11-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>I’m changing an old Objective C project to build with Xcode 7 and support 64bit. As you already know, iOS is moving really fast and there’s more requirements added every year</p>
-<ul>
-<li><a href="https://developer.apple.com/news/?id=04082015a" target="_blank" rel="external">64-bit Requirement for App Updates</a></li>
-<li><a href="http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/" target="_blank" rel="external">Configuring App Transport Security Exceptions in iOS 9 and OSX 10.11</a></li>
-<li><a href="https://medium.com/@FredericJacobs/why-i-m-not-enabling-bitcode-f35cd8fbfcc5" target="_blank" rel="external">Why I’m not enabling Bitcode</a></li>
-<li><a href="http://www.appcoda.com/app-thinning/" target="_blank" rel="external">Working with App Thinning in iOS 9</a></li>
-</ul>
-<p>My app uses HockeySDK and Crashlytics, so I use Cocoapods to streamline the process.</p>
-<p>After <code>pod install</code></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">'HockeySDK'</span>, <span class="string">'~&gt; 3.8'</span></span><br><span class="line">pod <span class="string">'Fabric'</span>, <span class="string">'~&gt; 1.5'</span></span><br><span class="line">pod <span class="string">'Crashlytics'</span>, <span class="string">'~&gt; 3.3'</span></span><br></pre></td></tr></table></figure>
-<p>For now, <a href="https://github.com/CocoaPods/Specs/blob/master/Specs/Crashlytics/3.3.4/Crashlytics.podspec.json" target="_blank" rel="external">Crashlytics podspec</a> does not declare that it depends on <code>Fabric</code>, but in fact it does. So we need to to declare Fabric</p>
-<h2 id="Library-not-found-for-lPods"><a href="#Library-not-found-for-lPods" class="headerlink" title="Library not found for -lPods"></a>Library not found for -lPods</h2><p>Firstly, I get this famous linker error <code>Library not found for -lPods</code></p>
-<p>Most of the time, it is because our app can’t link against the library that Cocoapods has generated</p>
-<p>I outline many solutions here <a href="https://github.com/onmyway133/ios-issues/issues/27" target="_blank" rel="external">Library not found for -lPods</a></p>
-<h2 id="inherited"><a href="#inherited" class="headerlink" title="$(inherited)"></a>$(inherited)</h2><p>In my case, my fixes are to add <code>$(inherited)</code> to the following places in target <code>Build Settings</code></p>
-<ul>
-<li>FRAMEWORK_SEARCH_PATHS (Framework Search Paths)</li>
-<li>HEADER_SEARCH_PATHS (Header Search Paths)</li>
-<li>LIBRARY_SEARCH_PATHS (Library Search Paths)</li>
-<li>OTHER_LDFLAGS (Other Linker Flags)</li>
-<li>GCC_PREPROCESSOR_DEFINITIONS (Preprocessor Macros)</li>
-</ul>
-<p>And</p>
-<blockquote>
-<p>Ensure that Build Active Architectures Only settings for both of your project and the Pods project were equal for debug and release configuration!</p>
-</blockquote>
-<p>Since Cocoapods target sets Debug configuration to NO, so I have to set my app target Debug configuration to NO, too</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/11/04/library-not-found-for-lpods/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
@@ -1023,11 +1002,11 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1039,7 +1018,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
@@ -1051,7 +1030,7 @@
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			

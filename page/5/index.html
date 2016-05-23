@@ -82,6 +82,85 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/07/14/simple-caching/" title="Simple caching" itemprop="url">Simple caching</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-14T11:10:27.000Z" itemprop="datePublished"> Published 2015-07-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="Memory-and-disk"><a href="#Memory-and-disk" class="headerlink" title="Memory and disk"></a>Memory and disk</h2><p>This simple cache uses both memory and disk cache</p>
+<ul>
+<li>Retrieval: Ask memory first. If not, ask disk, then set back to memory cache</li>
+<li>Save: Save to both memory and disk.</li>
+</ul>
+<p>I used to use <a href="https://github.com/tumblr/TMCache" target="_blank" rel="external">TMCache</a>, but then I found <a href="https://realm.io/docs/objc/latest/" target="_blank" rel="external">Realm</a> to be much better.</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Take a look at my gist <a href="https://gist.github.com/onmyway133/50d7139314bc196bf2e2" target="_blank" rel="external">SimpleCache</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/Haneke/Haneke" target="_blank" rel="external">Haneke</a></li>
+</ul>
+<ul>
+<li><a href="https://github.com/path/FastImageCache" target="_blank" rel="external">FastImageCache</a></li>
+</ul>
+<ul>
+<li><a href="https://github.com/rs/SDWebImage" target="_blank" rel="external">SDWebImage</a></li>
+</ul>
+<ul>
+<li><a href="https://blogs.dropbox.com/tech/2012/10/caching-in-theory-and-practice/" target="_blank" rel="external">Caching in theory and practice</a></li>
+</ul>
+<ul>
+<li><a href="https://bpoplauschi.wordpress.com/2014/03/21/ios-image-caching-sdwebimage-vs-fastimage/" target="_blank" rel="external">iOS image caching. Libraries benchmark (SDWebImage vs FastImageCache)</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/07/14/simple-caching/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/07/11/debugging-auto-layout/" title="Debugging Auto Layout" itemprop="url">Debugging Auto Layout</a>
   </h1>
   <p class="article-author">By
@@ -794,72 +873,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/06/18/understanding-sdwebimage-cache/" title="Understanding SDWebImage - Cache" itemprop="url">Understanding SDWebImage - Cache</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-18T15:26:48.000Z" itemprop="datePublished"> Published 2015-06-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h2><p>SDWebImage stores UIImage in <code>memCache</code> first, then into disk. UIImage gets compressed to <code>NSData</code> before going to disk<br>In <code>SDImageCache.m</code></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)storeImage:(<span class="built_in">UIImage</span> *)image recalculateFromImage:(<span class="built_in">BOOL</span>)recalculate imageData:(<span class="built_in">NSData</span> *)imageData forKey:(<span class="built_in">NSString</span> *)key toDisk:(<span class="built_in">BOOL</span>)toDisk &#123;</span><br><span class="line">    <span class="keyword">if</span> (!image || !key) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="keyword">self</span>.memCache setObject:image forKey:key cost:image.size.height * image.size.width * image.scale * image.scale];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (toDisk) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (imageIsPng) &#123;</span><br><span class="line">                    data = <span class="built_in">UIImagePNGRepresentation</span>(image);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    data = <span class="built_in">UIImageJPEGRepresentation</span>(image, (<span class="built_in">CGFloat</span>)<span class="number">1.0</span>);</span><br><span class="line">                &#125;</span><br><span class="line"><span class="meta">#else</span></span><br><span class="line">                data = [<span class="built_in">NSBitmapImageRep</span> representationOfImageRepsInArray:image.representations usingType: <span class="built_in">NSJPEGFileType</span> properties:<span class="literal">nil</span>];</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (data) &#123;</span><br><span class="line">                <span class="keyword">if</span> (![_fileManager fileExistsAtPath:_diskCachePath]) &#123;</span><br><span class="line">                    [_fileManager createDirectoryAtPath:_diskCachePath withIntermediateDirectories:<span class="literal">YES</span> attributes:<span class="literal">nil</span> error:<span class="literal">NULL</span>];</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                [_fileManager createFileAtPath:[<span class="keyword">self</span> defaultCachePathForKey:key] contents:data attributes:<span class="literal">nil</span>];</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Note that <code>NSFileManager</code> <code>createFileAtPath:contents:data:attributes:nil:</code> returns NO if the write operation fails. This includes not enough disk space. See <a href="http://stackoverflow.com/a/7618759/1418457" target="_blank" rel="external">detect no disk space iPhone SDK</a></p>
-<h2 id="Retrieval"><a href="#Retrieval" class="headerlink" title="Retrieval"></a>Retrieval</h2><p>SDWebImage will first check to see if the images are in local before going to make network request<br>In <code>SDImageCache.m</code></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSOperation</span> *)queryDiskCacheForKey:(<span class="built_in">NSString</span> *)key done:(SDWebImageQueryCompletedBlock)doneBlock &#123;</span><br><span class="line">    <span class="keyword">if</span> (!doneBlock) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!key) &#123;</span><br><span class="line">        doneBlock(<span class="literal">nil</span>, SDImageCacheTypeNone);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// First check the in-memory cache...</span></span><br><span class="line">    <span class="built_in">UIImage</span> *image = [<span class="keyword">self</span> imageFromMemoryCacheForKey:key];</span><br><span class="line">    <span class="keyword">if</span> (image) &#123;</span><br><span class="line">        doneBlock(image, SDImageCacheTypeMemory);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSOperation</span> *operation = [<span class="built_in">NSOperation</span> new];</span><br><span class="line">    <span class="built_in">dispatch_async</span>(<span class="keyword">self</span>.ioQueue, ^&#123;</span><br><span class="line">        <span class="keyword">if</span> (operation.isCancelled) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">            <span class="built_in">UIImage</span> *diskImage = [<span class="keyword">self</span> diskImageForKey:key];</span><br><span class="line">            <span class="keyword">if</span> (diskImage) &#123;</span><br><span class="line">                <span class="built_in">CGFloat</span> cost = diskImage.size.height * diskImage.size.width * diskImage.scale * diskImage.scale;</span><br><span class="line">                [<span class="keyword">self</span>.memCache setObject:diskImage forKey:key cost:cost];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                doneBlock(diskImage, SDImageCacheTypeDisk);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="How-UIImage-is-created"><a href="#How-UIImage-is-created" class="headerlink" title="How UIImage is created"></a>How UIImage is created</h2><p>SDWebImage uses <code>SDWebImageDownloaderOperation</code> and <code>NSURLConnection</code> to kick off network requests.<br>UIImage is created by a call to <code>sd_imageWithData:</code></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">UIImage</span> *)sd_imageWithData:(<span class="built_in">NSData</span> *)data &#123;</span><br><span class="line">    <span class="built_in">UIImage</span> *image;</span><br><span class="line">    <span class="built_in">NSString</span> *imageContentType = [<span class="built_in">NSData</span> sd_contentTypeForImageData:data];</span><br><span class="line">    <span class="keyword">if</span> ([imageContentType isEqualToString:<span class="string">@"image/gif"</span>]) &#123;</span><br><span class="line">        image = [<span class="built_in">UIImage</span> sd_animatedGIFWithData:data];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#ifdef SD_WEBP</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ([imageContentType isEqualToString:<span class="string">@"image/webp"</span>])</span><br><span class="line">    &#123;</span><br><span class="line">        image = [<span class="built_in">UIImage</span> sd_imageWithWebPData:data];</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        image = [[<span class="built_in">UIImage</span> alloc] initWithData:data];</span><br><span class="line">        <span class="built_in">UIImageOrientation</span> orientation = [<span class="keyword">self</span> sd_imageOrientationFromImageData:data];</span><br><span class="line">        <span class="keyword">if</span> (orientation != <span class="built_in">UIImageOrientationUp</span>) &#123;</span><br><span class="line">            image = [<span class="built_in">UIImage</span> imageWith<span class="built_in">CGImage</span>:image.CGImage</span><br><span class="line">                                        scale:image.scale</span><br><span class="line">                                  orientation:orientation];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> image;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Use-another-SDImageCache"><a href="#Use-another-SDImageCache" class="headerlink" title="Use another SDImageCache"></a>Use another SDImageCache</h2><p>From <a href="https://github.com/rs/SDWebImage" target="_blank" rel="external">SDWebImage</a>,</p>
-<blockquote><br>  It is also possible to use the async based image cache store independently. SDImageCache maintains a memory cache and an optional disk cache. Disk cache write operations are performed asynchronous so it doesn’t add unnecessary latency to the UI.<br>  The SDImageCache class provides a singleton instance for convenience but you can create your own instance if you want to create separated cache namespace<br></blockquote>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/06/18/understanding-sdwebimage-cache/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/4/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/6/">Next<span></span></a>
@@ -985,11 +998,11 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1001,7 +1014,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
@@ -1013,7 +1026,7 @@
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			

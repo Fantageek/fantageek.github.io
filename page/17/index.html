@@ -82,6 +82,94 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/05/18/install-pkg-config-for-mac-osx/" title="Install pkg-config for Mac OSX" itemprop="url">Install pkg-config for Mac OSX</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-05-18T09:21:31.000Z" itemprop="datePublished"> Published 2013-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>For those who don’t know about pkg-config, it is a tool that help we compile applications and libraries by inserting the correct compiler options.</p>
+<p>Now, how can we install pkg-config for Mac OSX ?</p>
+<p><strong>Get MacPort</strong>  </p>
+<p>For no headache, install MacPort. It helps a lot when install open source software on the Mac.  </p>
+<p>Install here <a href="http://www.macports.org/install.php" target="_blank" rel="external">http://www.macports.org/install.php</a>. You should choose “pkg” installer for quick use. Remember to select the right Mac version</p>
+<p><strong>Install pkg-config</strong>  </p>
+<p>Run Terminal. Cd to where you want to install pkg-config, and enter this</p>
+<p>[code language=”css”]  </p>
+<p>sudo port install pkgconfig  </p>
+<p>[/code]</p>
+<p><strong>Oops</strong>, if you receive this error</p>
+<p>[code language=”css”]  </p>
+<p>port command not found  </p>
+<p>[/code]</p>
+<p>It is because <strong>port</strong> is install in <em>/opt/local/bin</em>  by default. You should add <em>/opt/local/bin</em> to your PATH</p>
+<p>Run Terminal, and enter this for temporary PATH append</p>
+<p>[code language=”css”]  </p>
+<p>export PATH=$PATH:/opt/local/bin  </p>
+<p>[/code]</p>
+<p>Fore more information about pkg-config, visit  </p>
+<ol>
+<li><p><a href="http://people.freedesktop.org/~dbn/pkg-config-guide.html" target="_blank" rel="external">Guide to pkg-config</a>  </p>
+</li>
+<li><p><a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_blank" rel="external">pkg-config</a></p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/mac-osx/">mac osx</a><a href="/tags/config/">config</a><a href="/tags/pkg/">pkg</a><a href="/tags/pkg-config/">pkg-config</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/05/18/install-pkg-config-for-mac-osx/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/05/18/build-openssl-for-ios/" title="Build openssl for iOS" itemprop="url">Build openssl for iOS</a>
   </h1>
   <p class="article-author">By
@@ -852,74 +940,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/02/24/how-to-pass-arguments-to-command-line-application-in-visual-studio/" title="How to pass arguments to command line application in Visual Studio ?" itemprop="url">How to pass arguments to command line application in Visual Studio ?</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-02-24T08:17:02.000Z" itemprop="datePublished"> Published 2013-02-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Sometimes you need to provide arguments to your Console application while running straight from Visual Studio. Follow these steps</p>
-<ol>
-<li>Right click on your project in Solution Explorer, select Properties</li>
-<li>Go to Configuration Properties, then select Debugging</li>
-<li>Select Command Arguments and input</li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/argument/">argument</a><a href="/tags/command-line/">command line</a><a href="/tags/console/">console</a><a href="/tags/visual-studio/">visual studio</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/02/24/how-to-pass-arguments-to-command-line-application-in-visual-studio/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/16/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/18/">Next<span></span></a>
@@ -1045,11 +1065,11 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -1061,7 +1081,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
@@ -1073,7 +1093,7 @@
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
