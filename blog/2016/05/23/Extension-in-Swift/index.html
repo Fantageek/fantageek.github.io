@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="Fantageek">
 <meta property="og:description" content="Swift allows us to define more methods on existing class using extension.
 1234567891011121314extension UIView &amp;#123;  func shake() &amp;#123;  &amp;#125;  func fade() &amp;#123;  &amp;#125;  func centerIn(anotherView">
-<meta property="og:updated_time" content="2016-05-23T19:18:41.000Z">
+<meta property="og:updated_time" content="2016-05-23T19:19:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Extension in Swift">
 <meta name="twitter:description" content="Swift allows us to define more methods on existing class using extension.
@@ -109,7 +109,7 @@
 <p>If you ‘re afraid of the naming conflict, you can prefix your methods. Or a better way, reverse it :dancer: , like</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">view.animation.shake()</span><br><span class="line">view.animation.fade()</span><br><span class="line">view.layout.centerIn(anotherView)</span><br></pre></td></tr></table></figure>
 <p>This way, no more conflict and we make it clear that <code>shake()</code> and <code>fade()</code> belongs to <code>animation</code> category</p>
-<p>Actually, <code>animation</code> and <code>layout</code> are property in <code>UIView</code> extension. This may cause naming conflict, but the number of them is reduced</p>
+<p>Actually, <code>animation</code> and <code>layout</code> are properties in <code>UIView</code> extension. This may cause naming conflict, but the number of them is reduced</p>
 <p>This is how it works</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">UIView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Animation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> view: <span class="type">UIView</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">shake</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="comment">// Shake the view</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fade</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="type">PowerfulAnimationEngine</span>.fade(view)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> animation: <span class="type">Animation</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Animation</span>(view: <span class="keyword">self</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Layout</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> view: <span class="type">UIView</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">centerIn</span><span class="params">(anotherView: UIView)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> layout: <span class="type">Layout</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Layout</span>(view: <span class="keyword">self</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
   
@@ -255,15 +255,15 @@
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -275,7 +275,7 @@
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
@@ -283,11 +283,7 @@
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -295,23 +291,15 @@
 			
 		
 			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -319,11 +307,23 @@
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>
