@@ -82,6 +82,73 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/" title="iOS dynamic table view cells with varying row height and Autolayout" itemprop="url">iOS dynamic table view cells with varying row height and Autolayout</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-11-22T08:51:55.000Z" itemprop="datePublished"> Published 2014-11-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This post tries to explain how to achieve varying cell height with Autolayout simply and with few steps as possible. Although the title says <code>Table View</code>, it works for <code>Collection View</code> also. This works for both iOS 7 and iOS 8</p>
+<p>The Github repo for the demo is <a href="https://github.com/onmyway133/DynamicTableViewCellHeight">DynamicTableViewCellHeight</a></p>
+<p>The demo display a list of famous quotes, it looks like this</p>
+<p><img src="http://i57.tinypic.com/wmkqch.png" alt=""></p>
+<h2 id="preferredMaxLayoutWidth"><a href="#preferredMaxLayoutWidth" class="headerlink" title="preferredMaxLayoutWidth"></a>preferredMaxLayoutWidth</h2><p>The trick to all this come from <code>preferredMaxLayoutWidth</code>. For more advanced use case, see <a href="http://devetc.org/code/2014/07/07/auto-layout-and-views-that-wrap.html">Auto Layout and Views that Wrap</a></p>
+<h2 id="User-Interface"><a href="#User-Interface" class="headerlink" title="User Interface"></a>User Interface</h2><p>I use Storyboard, but you can use xib or create from code. For how to use code, please take a look <a href="http://derpturkey.com/autosize-uitableviewcell-height-programmatically/">AutoSize UITableViewCell height programmatically</a></p>
+<p><img src="http://i58.tinypic.com/2mphr1c.png" alt=""></p>
+<p><img src="http://i60.tinypic.com/rw0xhk.png" alt=""></p>
+<p>Here the quote label is multiple lines (Set Lines to 0). Because we have 2 labels, Autolayout does not know which will expand, which will stay the same when the cell changes size. In this case, we want the quote label to expand, so decrease its Verticle Hugging Priority and increase its Content Compression Resistance Priority</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/11/22/ios-dynamic-table-view-cells-with-varying-row-height-and-autolayout/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/10/11/fun-with-objective-c/" title="Fun with Objective C" itemprop="url">Fun with Objective C</a>
   </h1>
   <p class="article-author">By
@@ -821,104 +888,6 @@ return size.height;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/08/31/dsl-in-objective-c/" title="DSL in Objective C" itemprop="url">DSL in Objective C</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-08-31T14:31:55.000Z" itemprop="datePublished"> Published 2014-08-31</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
-<li><a href="http://martinfowler.com/books/dsl.html" target="_blank" rel="external">Domain Specific Languages by Martin Fowler</a></li>
-</ol>
-<ol>
-<li><a href="http://www.merowing.info/2014/08/writing-less-code/#.VANVubySwil" target="_blank" rel="external">Writing Less Code</a></li>
-</ol>
-<ol>
-<li><a href="http://www.harukizaemon.com/blog/2005/10/19/domain-specific-languages-objective-c/" target="_blank" rel="external">Domain Specific Languages: Objective-C, Ruby and Java (and Groovy)</a></li>
-</ol>
-<ol>
-<li><a href="https://github.com/cppforlife/UITableViewDSL" target="_blank" rel="external">UITableViewDSL</a></li>
-</ol>
-<ol>
-<li><a href="http://paul-samuels.com/blog/2014/03/16/how-does-it-work-expecta/" target="_blank" rel="external">How does it work - Expecta</a></li>
-</ol>
-<ol>
-<li><a href="https://github.com/Masonry/Masonry" target="_blank" rel="external">Masonry</a></li>
-</ol>
-<ol>
-<li><a href="http://martinfowler.com/bliki/FluentInterface.html" target="_blank" rel="external">Fluent Interface</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/3124001/fluent-interface-pattern-in-objective-c" target="_blank" rel="external">Fluent interface pattern in Objective-C</a></li>
-</ol>
-<ol>
-<li><a href="http://www.annema.me/the-builder-pattern-in-objective-c" target="_blank" rel="external">THE BUILDER PATTERN IN OBJECTIVE-C</a></li>
-</ol>
-<ol>
-<li><a href="https://github.com/VerbalExpressions/ObjectiveCVerbalExpressions" target="_blank" rel="external">ObjectiveCVerbalExpressions</a></li>
-</ol>
-<ol>
-<li><a href="http://www.dudas.co.uk/aocudl/" target="_blank" rel="external">Alternative Objective-C User Defined Literals</a></li>
-</ol>
-<ol>
-<li><a href="http://dbachrach.com/posts/ocudl-in-depth/" target="_blank" rel="external">OCUDL in Depth</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/objective-c/">objective c</a><a href="/tags/domain/">domain</a><a href="/tags/dsl/">dsl</a><a href="/tags/fluent-interface/">fluent interface</a><a href="/tags/language/">language</a><a href="/tags/macro/">macro</a><a href="/tags/specific/">specific</a><a href="/tags/syntax/">syntax</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/08/31/dsl-in-objective-c/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/8/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/10/">Next<span></span></a>
@@ -1048,23 +1017,15 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1085,6 +1046,14 @@ return size.height;
 		
 			
 				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 		</ul>

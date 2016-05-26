@@ -82,6 +82,65 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/06/28/understanding-sdwebimage-clean/" title="Understanding SDWebImage - Clean" itemprop="url">Understanding SDWebImage - Clean</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-28T13:20:11.000Z" itemprop="datePublished"> Published 2015-06-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="clearDisk"><a href="#clearDisk" class="headerlink" title="clearDisk"></a>clearDisk</h2><p>Erase all files on disk cache. In <code>SDImageCache.m</code><br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)clearDiskOnCompletion:(SDWebImageNoParamsBlock)completion</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">dispatch_async</span>(<span class="keyword">self</span>.ioQueue, ^&#123;</span><br><span class="line">        [_fileManager removeItemAtPath:<span class="keyword">self</span>.diskCachePath error:<span class="literal">nil</span>];</span><br><span class="line">        [_fileManager createDirectoryAtPath:<span class="keyword">self</span>.diskCachePath</span><br><span class="line">                withIntermediateDirectories:<span class="literal">YES</span></span><br><span class="line">                                 attributes:<span class="literal">nil</span></span><br><span class="line">                                      error:<span class="literal">NULL</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (completion) &#123;</span><br><span class="line">            <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                completion();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="cleanDisk"><a href="#cleanDisk" class="headerlink" title="cleanDisk"></a>cleanDisk</h2><p>Erase some files based on cache time and cache size<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)cleanDiskWithCompletionBlock:(SDWebImageNoParamsBlock)completionBlock &#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">   <span class="comment">// Erase old files</span></span><br><span class="line">   <span class="built_in">NSDate</span> *expirationDate = [<span class="built_in">NSDate</span> dateWithTimeIntervalSinceNow:-<span class="keyword">self</span>.maxCacheAge];</span><br><span class="line">        <span class="built_in">NSMutableDictionary</span> *cacheFiles = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line">        <span class="built_in">NSUInteger</span> currentCacheSize = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Enumerate all of the files in the cache directory.  This loop has two purposes:</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">//  1. Removing files that are older than the expiration date.</span></span><br><span class="line">        <span class="comment">//  2. Storing file attributes for the size-based cleanup pass.</span></span><br><span class="line">        <span class="built_in">NSMutableArray</span> *urlsToDelete = [[<span class="built_in">NSMutableArray</span> alloc] init];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// Erase more until cache size is preservered</span></span><br><span class="line">    <span class="comment">// If our remaining disk cache exceeds a configured maximum size, perform a second</span></span><br><span class="line">        <span class="comment">// size-based cleanup pass.  We delete the oldest files first.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.maxCacheSize &gt; <span class="number">0</span> &amp;&amp; currentCacheSize &gt; <span class="keyword">self</span>.maxCacheSize) &#123;</span><br><span class="line">            <span class="comment">// Target half of our maximum cache size for this cleanup pass.</span></span><br><span class="line">            <span class="keyword">const</span> <span class="built_in">NSUInteger</span> desiredCacheSize = <span class="keyword">self</span>.maxCacheSize / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/06/28/understanding-sdwebimage-clean/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/06/18/understanding-sdwebimage-cache/" title="Understanding SDWebImage - Cache" itemprop="url">Understanding SDWebImage - Cache</a>
   </h1>
   <p class="article-author">By
@@ -941,126 +1000,6 @@ self.kittens = fetchedKittens;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/04/02/recommended-resources-for-learning-reactivecocoa-2/" title="Recommended resources for learning ReactiveCocoa" itemprop="url">Recommended resources for learning ReactiveCocoa</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-04-02T15:50:50.000Z" itemprop="datePublished"> Published 2015-04-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="Fundamental"><a href="#Fundamental" class="headerlink" title="Fundamental"></a>Fundamental</h3><ul>
-<li><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754" target="_blank" rel="external">The introduction to Reactive Programming you’ve been missing</a></li>
-</ul>
-<ul>
-<li><a href="http://neilpa.me/rac-marbles/" target="_blank" rel="external">RAC Marbles</a></li>
-</ul>
-<ul>
-<li><a href="http://reactivex.io/" target="_blank" rel="external">ReactiveX</a></li>
-</ul>
-<h3 id="Raywenderlich"><a href="#Raywenderlich" class="headerlink" title="Raywenderlich"></a>Raywenderlich</h3><ul>
-<li>ReactiveCocoa Tutorial – The Definitive Introduction <a href="http://www.raywenderlich.com/62699/reactivecocoa-tutorial-pt1" target="_blank" rel="external">Part 1</a> <a href="http://www.raywenderlich.com/62796/reactivecocoa-tutorial-pt2" target="_blank" rel="external">Part 2</a></li>
-</ul>
-<ul>
-<li>iOS 7 Best Practices; A Weather App Case Study <a href="http://www.raywenderlich.com/55384/ios-7-best-practices-part-1" target="_blank" rel="external">Part 1</a> <a href="http://www.raywenderlich.com/55386/ios-7-best-practices-part-2" target="_blank" rel="external">Part 2</a></li>
-</ul>
-<ul>
-<li>MVVM Tutorial with ReactiveCocoa <a href="http://www.raywenderlich.com/74106/mvvm-tutorial-with-reactivecocoa-part-1" target="_blank" rel="external">Part 1</a> <a href="http://www.raywenderlich.com/74131/mvvm-tutorial-with-reactivecocoa-part-2" target="_blank" rel="external">Part 2</a></li>
-</ul>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=fWV7xyN5CR8" target="_blank" rel="external">April 2014 Tech Talk: Reactive Cocoa</a></li>
-</ul>
-<h3 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h3><ul>
-<li><a href="https://github.com/AshFurrow/C-41" target="_blank" rel="external">C-41</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/ashfurrow/FunctionalReactivePixels" target="_blank" rel="external">FunctionalReactivePixels</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/jspahrsummers/GroceryList" target="_blank" rel="external">GroceryList</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/TeehanLax/Upcoming" target="_blank" rel="external">Upcoming</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/octokit/octokit.objc" target="_blank" rel="external">octokit.objc</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/artsy/eigen" target="_blank" rel="external">eigen</a></li>
-</ul>
-<h3 id="GitHub-Reactive-Cocoa-Developer-Conference"><a href="#GitHub-Reactive-Cocoa-Developer-Conference" class="headerlink" title="GitHub Reactive Cocoa Developer Conference"></a>GitHub Reactive Cocoa Developer Conference</h3><ul>
-<li><a href="https://www.youtube.com/watch?v=sek0ohbboNU&amp;list=PL0lo9MOBetEEXnrrP5pwZxSkGvaDBGdOC&amp;index=3" target="_blank" rel="external">RACify Non-Reactive Code</a></li>
-</ul>
-<h3 id="Atomic-Object"><a href="#Atomic-Object" class="headerlink" title="Atomic Object"></a>Atomic Object</h3><ul>
-<li><a href="http://spin.atomicobject.com/?s=reactivecocoa" target="_blank" rel="external">ReactiveCocoa posts tag</a></li>
-</ul>
-<h3 id="ReactiveCocoa-Design-Patterns"><a href="#ReactiveCocoa-Design-Patterns" class="headerlink" title="ReactiveCocoa Design Patterns"></a>ReactiveCocoa Design Patterns</h3><ul>
-<li><a href="http://rcdp.io/Signal.html" target="_blank" rel="external">Signal</a></li>
-</ul>
-<h3 id="Sprynthesis"><a href="#Sprynthesis" class="headerlink" title="Sprynthesis"></a>Sprynthesis</h3><ul>
-<li><a href="http://www.sprynthesis.com/2014/06/15/why-reactivecocoa/" target="_blank" rel="external">Why ReactiveCocoa</a></li>
-</ul>
-<ul>
-<li><a href="http://www.sprynthesis.com/2014/12/06/reactivecocoa-mvvm-introduction/" target="_blank" rel="external">ReactiveCocoa and MVVM, an Introduction</a></li>
-</ul>
-<h3 id="if-apps"><a href="#if-apps" class="headerlink" title="if(!apps)"></a>if(!apps)</h3><ul>
-<li>ReactiveCocoa From the Ground Floor <a href="http://ifnotapps.com/2013/07/25/reactivecocoa-from-the-ground-floor-part1/" target="_blank" rel="external">Part 1</a> <a href="http://ifnotapps.com/2013/08/10/reactivecocoa-from-the-ground-floor-part2/" target="_blank" rel="external">Part 2</a></li>
-</ul>
-<h3 id="RAC-Issues"><a href="#RAC-Issues" class="headerlink" title="RAC Issues"></a>RAC Issues</h3><ul>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa/issues/448" target="_blank" rel="external">Why do you prefer flattenMap: over map:?</a></li>
-</ul>
-<h3 id="Stackoverflow"><a href="#Stackoverflow" class="headerlink" title="Stackoverflow"></a>Stackoverflow</h3><ul>
-<li><a href="http://stackoverflow.com/questions/tagged/reactive-cocoa" target="_blank" rel="external">Highest voted questions</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/04/02/recommended-resources-for-learning-reactivecocoa-2/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
@@ -1190,23 +1129,15 @@ self.kittens = fetchedKittens;
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1227,6 +1158,14 @@ self.kittens = fetchedKittens;
 		
 			
 				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 		</ul>

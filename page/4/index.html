@@ -82,6 +82,74 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/11/04/show-layout-bounds-in-ios/" title="Show layout bounds in iOS" itemprop="url">Show layout bounds in iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-04T17:32:57.000Z" itemprop="datePublished"> Published 2015-11-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>On Android, we have an option called <code>Show layout bounds</code>, which allows us to see bounding areas of your views displayed in vibrant blue and purple.</p>
+<ul>
+<li><a href="http://tysmith.me/post/27035355999/layoutbounds" target="_blank" rel="external">Layout bounds</a></li>
+</ul>
+<p><img src="http://38.media.tumblr.com/tumblr_m719seXwah1qfcybd.png" alt=""></p>
+<h2 id="Border"><a href="#Border" class="headerlink" title="Border"></a>Border</h2><p>On iOS, with the help of runtime, we can do the same. Using <a href="https://github.com/onmyway133/border" target="_blank" rel="external">Border</a></p>
+<p>All you have to do is</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">'Border'</span>, <span class="string">'~&gt; 1.0'</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://camo.githubusercontent.com/70b3a0998d0e97d0a45749a2a6e676baa1a90404/68747470733a2f2f7261772e6769746875622e636f6d2f6f6e6d797761793133332f426f726465722f6d61737465722f53637265656e73686f74732f73637265656e73686f74312e706e67" alt=""></p>
+<h2 id="How-Border-works"><a href="#How-Border-works" class="headerlink" title="How Border works"></a>How Border works</h2><p>The idea is to swizzle <code>didMoveToSuperview</code> in <code>constructor</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> swizzleInstanceMethod(Class class, SEL originalAction, SEL swizzledAction) &#123;</span><br><span class="line">    method_exchangeImplementations(class_getInstanceMethod(class, originalAction),</span><br><span class="line">                                   class_getInstanceMethod(class, swizzledAction));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> swizzle() &#123;</span><br><span class="line">    swizzleInstanceMethod(<span class="built_in">UIView</span>.class, <span class="keyword">@selector</span>(didMoveToSuperview),</span><br><span class="line">                          <span class="keyword">@selector</span>(ftg_didMoveToSuperview));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__attribute__((constructor)) <span class="keyword">static</span> <span class="keyword">void</span> FTGBorderConstructor(<span class="keyword">void</span>) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        swizzle();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#pragma mark - UIView</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIView</span> (<span class="title">FTGBorder</span>)</span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIView</span> (<span class="title">FTGBorder</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)ftg_didMoveToSuperview &#123;</span><br><span class="line">    <span class="keyword">self</span>.layer.borderWidth = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">self</span>.layer.borderColor = [<span class="built_in">UIColor</span> brownColor].CGColor;</span><br><span class="line"></span><br><span class="line">    [<span class="keyword">self</span> ftg_didMoveToSuperview];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://stackoverflow.com/questions/2053029/how-exactly-does-attribute-constructor-work" target="_blank" rel="external">How exactly does <strong>attribute</strong>((constructor)) work?</a></li>
+<li><a href="https://blog.twitter.com/2014/attribute-directives-in-objective-c" target="_blank" rel="external"><strong>attribute</strong> directives in Objective-C</a></li>
+<li><a href="http://nshipster.com/__attribute__/" target="_blank" rel="external"><strong>attribute</strong></a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/11/04/show-layout-bounds-in-ios/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/11/04/library-not-found-for-lpods/" title="Library not found for -lPods" itemprop="url">Library not found for -lPods</a>
   </h1>
   <p class="article-author">By
@@ -808,72 +876,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/14/understanding-calabash/" title="Understanding Calabash" itemprop="url">Understanding Calabash</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-14T12:01:08.000Z" itemprop="datePublished"> Published 2015-07-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://github.com/calabash/calabash-ios" target="_blank" rel="external">calabash-ios</a></li>
-</ul>
-<ul>
-<li><a href="https://github.com/calabash/x-platform-example" target="_blank" rel="external">x-platform-example</a></li>
-</ul>
-<ul>
-<li><a href="http://natashatherobot.com/calabash-ios-tutorial/" target="_blank" rel="external">Calabash iOS Tutorial</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/14/understanding-calabash/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/3/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/5/">Next<span></span></a>
@@ -1003,23 +1005,15 @@
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1040,6 +1034,14 @@
 		
 			
 				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 		</ul>

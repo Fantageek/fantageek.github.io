@@ -82,6 +82,76 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/06/22/how-to-disable-precompiled-header-in-visual-studio/" title="How to disable Precompiled header in Visual Studio ?" itemprop="url">How to disable Precompiled header in Visual Studio ?</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-06-22T02:42:44.000Z" itemprop="datePublished"> Published 2013-06-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>As you may know, precompiled header (pch.h, stdafx.h) is header file that is compiled into an intermediate form that is faster to process for the compiler. Each subsequent compilation is faster because the stable code does not need to be recompiled</p>
+<p>To disable Precompiled header</p>
+<ol>
+<li>Right click on your project, choose Properties</li>
+<li>Configuration Propeties -&gt; C/C++ -&gt; Precompiled Headers</li>
+<li>In the right panel, select Not Using Precompiled Headers</li>
+</ol>
+<p><a href="http://www.fantageek.com/wp-content/uploads/2013/06/precompiled_header.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/06/precompiled_header.png" alt="precompiled_header"></a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>►<a class="article-category-link" href="/categories/Others/Windows-8/">Windows 8</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/disable/">disable</a><a href="/tags/project/">project</a><a href="/tags/visual-studio/">visual studio</a><a href="/tags/C/">C</a><a href="/tags/header/">header</a><a href="/tags/pch/">pch</a><a href="/tags/precompile/">precompile</a><a href="/tags/precompiled/">precompiled</a><a href="/tags/stdafx/">stdafx</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/06/22/how-to-disable-precompiled-header-in-visual-studio/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/06/22/openssl-programming-tutorial/" title="OpenSSL programming tutorial" itemprop="url">OpenSSL programming tutorial</a>
   </h1>
   <p class="article-author">By
@@ -802,94 +872,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/05/21/build-opencore-amr-for-windows/" title="Build opencore-amr for Windows" itemprop="url">Build opencore-amr for Windows</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-05-21T14:38:24.000Z" itemprop="datePublished"> Published 2013-05-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><a href="https://en.wikipedia.org/wiki/Adaptive_Multi-Rate_audio_codec" target="_blank" rel="external">AMR (Apdative multi rate)</a> is a codec optimized for compression audio data. It has 2 versions, narrow band and wide band.  </p>
-<p>Opencore-amr is an implementation of it, which is extracted from Android source.</p>
-<p>This tutorial will guide you how to build opencore-amr for Windows, with the help of minGW</p>
-<p><strong>Install minGW first</strong>  </p>
-<p>Download <a href="http://sourceforge.net/projects/mingw/files/" target="_blank" rel="external">mingw-get-inst</a> for a quick GUI installation. Choose the folder where you want to install minGW (C:\minGW for example). Remember to check for <em>msys</em> addon (<em>msys</em> is an optimized shell for minGW operation)</p>
-<p>After installation is completed, add <em>C:\minGW\bin</em> to your PATH  </p>
-<p>More information about minGW, visit <a href="http://www.mingw.org/wiki/Getting_Started" target="_blank" rel="external">http://www.mingw.org/wiki/Getting_Started</a></p>
-<p><strong>Download opencore-amr</strong>  </p>
-<p>Download here <a href="http://sourceforge.net/projects/opencore-amr/files/opencore-amr/" target="_blank" rel="external">http://sourceforge.net/projects/opencore-amr/files/opencore-amr/</a>  </p>
-<p>The latest version is 0.1.3</p>
-<p><strong>Build opencore-amr</strong>  </p>
-<p>Open msys  </p>
-<p>Cd to where you put opencore-amr  </p>
-<p>Run</p>
-<p>[code language=”css”]  </p>
-<p>./configure  </p>
-<p>[/code]</p>
-<p>Then, run</p>
-<p>[code language=”css”]  </p>
-<p>make  </p>
-<p>[/code]</p>
-<p>Now you should see your lib   <em>libopencore-amrnb.a</em> in <em>opencore-amr-0.1.3\amrnb.libs</em> and your include file in <em>opencore-amr-0.1.3\amrnb</em></p>
-<p>The important include files are _interf<em>enc.h</em> and _interf<em>dec.h</em></p>
-<p>You can then use opencore-arm in your favorite Visual Studio. The archives of static libraries generated with MinGW are generally compatible with Visual C++ compiler/linker.</p>
-<p>If you still encounter errors, maybe you need to add some minGW ‘s libraries. Follow this <a href="http://stackoverflow.com/questions/2096519/from-mingw-static-library-a-to-visual-studio-static-library-lib" target="_blank" rel="external">answer on SO</a>.</p>
-<p>If you still can’t build it, you can use this already built opencore-amr from <a href="http://www.codeproject.com/Articles/332109/AMR-Audio-Encoding" target="_blank" rel="external">Suresh</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/amr/">amr</a><a href="/tags/mingw/">mingw</a><a href="/tags/opencore/">opencore</a><a href="/tags/windows/">windows</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/05/21/build-opencore-amr-for-windows/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/15/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/17/">Next<span></span></a>
@@ -1019,23 +1001,15 @@
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1056,6 +1030,14 @@
 		
 			
 				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 		</ul>
