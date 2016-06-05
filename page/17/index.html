@@ -82,6 +82,143 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/06/01/how-netcut-works-and-the-prevention/" title="How Netcut works and the prevention" itemprop="url">How Netcut works and the prevention</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-06-01T00:59:30.000Z" itemprop="datePublished"> Published 2013-06-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Grrr, those bastards, they use Netcut to limit our connection. It’s time to dig into the problem</p>
+<p><strong>How does Netcut work</strong>  </p>
+<p>Netcut uses attacking technique called ARP Spoofing.</p>
+<p>ARP (Address Resolution Protocol) is a link layer procotol, it is used for resolving network layer address (IP) into link layer address (MAC).  </p>
+<p>When we want to send IP packet to another host (a computer in the same LAN, or the Gateway), we must know the destination IP address. In order for the packet to reach the destination, the destination IP address must be converted to the corresponding MAC address, so the transmission can be processed in the data link layer. To setup this mapping IP-MAC in the ARP table, we must first send ARP request as broadcast one to the LAN. In the happy case, the one with the IP in the ARP request will reply us with his MAC address.</p>
+<p>Unfortunately, ARP is a stateless protocol. This means we continue to accept ARP replies and overwrite the old ones, even they have not expired yet. Worse, ARP does not define any authentication method to check whether the replies come from the trusted one (the one we want to receive the replies). These offer chances for the attacker to perform ARP Spoofing.</p>
+<p><strong>The theory behind ARP Spoofing</strong>  </p>
+<p>From the machine in the LAN, the attacker associate his MAC address and IP address of the target host (usually the Gateway), so that any traffic sent to that target host will come to the attacker. Here the attacker can decide whether to modify the packet, send or not.</p>
+<p><strong>There are 3 types of ARP Spoofing</strong>  </p>
+<ol>
+<li><p>Spoof the host computer  </p>
+</li>
+<li><p>Spoof the Gateway  </p>
+</li>
+<li><p>Spoof both the host computer and the Gateway</p>
+</li>
+</ol>
+<p><strong>To see the ARP table</strong>  </p>
+<p>Open Command line (Windows) or Terminal (Mac OSX), and type</p>
+<p>[code language=”css”]  </p>
+<p>arp -a  </p>
+<p>[/code]</p>
+<p>This will list the MAC address associated with a specific IP. Note that some mappings maybe wrong due to ARP Spoofing</p>
+<p><strong>How to prevent against this ?</strong>  </p>
+<p>To prevent spoofing our computer, we can use softwares (search for Anti Netcut, Anti ARP spoofing, …) or set the static ARP ourselves. In fact, those softwares are based on setting static ARP. This way we set the static mapping IP-MAC for a specific host (computer or Gateway), and the OS definitely ignores all ARP replies for that IP.</p>
+<p>Example of static ARP mapping associated with the Gateway, performed on the computer host</p>
+<p>[code language=”css”]  </p>
+<p>192.168.1.1 B4-B3-62-7C-CE-55  </p>
+<p>[/code]</p>
+<p>Here 192.168.1.1 and B4-B3-62-7C-CE-55 are the Gateway’s IP and MAC address</p>
+<p>To prevent spoofing the Gateway, we must set static ARP on that Gateway. Go to the Gateway/Router interface, in its ARP setting, fill in the mapping IP-MAC for a specific host  </p>
+<p>Look for that Gateway manual or the related guide on how to perform this. This is devices dependent-method, but the theory remains the same.</p>
+<p>Example of static ARP mapping associated with the computer host, performed on the Gateway</p>
+<p>[code language=”css”]  </p>
+<p>192.168.1.2 64-70-02-B2-9B-E1  </p>
+<p>[/code]</p>
+<p>Here 192.168.1.2 and 64-70-02-B2-9B-E1 are the machine host ‘s IP and MAC address. The machine host can be any computer in the LAN</p>
+<p><strong>How to set static ARP</strong>  </p>
+<p>Proposed that  </p>
+<p>192.168.1.1 The destination host ‘s IP  </p>
+<p>B4-B3-62-7C-CE-55 The destination host ‘s MAC  </p>
+<p>Local Area Connection Our network interface name</p>
+<p>Open Command Line (Windows) or Terminal (Mac OSX) and type</p>
+<p><strong>Windows XP</strong>  </p>
+<p>To delete specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>arp -d 192.168.1.1  </p>
+<p>[/code]</p>
+<p>To set specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>arp -s 192.168.1.1 B4-B3-62-7C-CE-55  </p>
+<p>[/code]</p>
+<p><strong>Windows 7 64bit</strong>  </p>
+<p>Maybe you need to open Command Line as Administration role  </p>
+<p>To delete specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>netsh interface ipv4 delete neighbors 192.168.1.1  </p>
+<p>[/code]</p>
+<p>To set specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>netsh interface ipv4 add neighbors “Local Area Connection” 192.168.1.1 B4-B3-62-7C-CE-55  </p>
+<p>[/code]</p>
+<p><strong>Mac OSX</strong>  </p>
+<p>To delete specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>sudo arp -d 192.168.1.1  </p>
+<p>[/code]</p>
+<p>To set specific mapping</p>
+<p>[code language=”css”]  </p>
+<p>sudo arp -s 192.168.1.1 B4-B3-62-7C-CE-55  </p>
+<p>[/code]</p>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><a href="http://en.wikipedia.org/wiki/ARP_spoofing" target="_blank" rel="external">http://en.wikipedia.org/wiki/ARP_spoofing</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/anti/">anti</a><a href="/tags/arp/">arp</a><a href="/tags/netcut/">netcut</a><a href="/tags/prevent/">prevent</a><a href="/tags/spoofing/">spoofing</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/06/01/how-netcut-works-and-the-prevention/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/05/21/build-opencore-amr-for-windows/" title="Build opencore-amr for Windows" itemprop="url">Build opencore-amr for Windows</a>
   </h1>
   <p class="article-author">By
@@ -826,79 +963,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/04/10/how-to-get-google-cache-of-any-webpage/" title="How to get Google cache of any webpage" itemprop="url">How to get Google cache of any webpage</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-04-10T00:52:05.000Z" itemprop="datePublished"> Published 2013-04-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>If you want to get   Google cache of any webpage, simply use this url</p>
-<p>[sourcecode language=”csharp”]  </p>
-<p><a href="http://webcache.googleusercontent.com/search?q=cache:www.yourwebpage.com/path" target="_blank" rel="external">http://webcache.googleusercontent.com/search?q=cache:www.yourwebpage.com/path</a>  </p>
-<p>[/sourcecode]</p>
-<p><strong>For example</strong></p>
-<p>[sourcecode language=”csharp”]  </p>
-<p><a href="http://webcache.googleusercontent.com/search?q=cache:www.fantageek.com" target="_blank" rel="external">http://webcache.googleusercontent.com/search?q=cache:www.fantageek.com</a>  </p>
-<p>[/sourcecode]</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/cache/">cache</a><a href="/tags/google/">google</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/04/10/how-to-get-google-cache-of-any-webpage/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/16/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/18/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/18/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1021,7 +1088,7 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -1029,7 +1096,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			

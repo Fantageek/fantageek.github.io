@@ -82,6 +82,118 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2014/04/13/compilers-and-interpreters-c-jones/" title="Compilers And Interpreters - C. Jones" itemprop="url">Compilers And Interpreters - C. Jones</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-04-13T15:27:34.000Z" itemprop="datePublished"> Published 2014-04-13</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This article is great, but I can only find it in archive.org, so I make a copy it here, as a reference for my self and for those who need it</p>
+<p>Original link <a href="http://ugweb.cs.ualberta.ca/resources/java/faq/compile.html" target="_blank" rel="external">http://ugweb.cs.ualberta.ca/resources/java/faq/compile.html</a></p>
+<p><strong>Introduction</strong><br>In order for us to make the computer perform the tasks we want it to, we have to communicate with the machine. We write our programs in a high-level language such as Java, C, Pascal, etc. but the machine cannot understand that language, as it operates only in bits (<strong>b</strong>inary dig<strong>its</strong> of zero or one). So there needs to be some translation process which will convert our Java instructions (our “source code”) into machine code which the computer can then understand and execute (the “object code”). There are two main ways of achieving this translation process:</p>
+<ol>
+<li><strong>Compilation</strong></li>
+</ol>
+<ol>
+<li><strong>Interpretation</strong></li>
+</ol>
+<p>The method used depends upon the high level language you are using. Some languages are compiled (e.g. Turbo Pascal, C, etc. ) while others are interpreted languages (e.g. QBasic). (Java, however, uses a combination of both approaches which we’ll talk about at the end of this page). Compilers and interpreters are simply pieces of software (in other words, they are programs themselves!) which have been specially written to take the commands we write in our chosen programming language and translate them into a form which the machine understands. Here’s an explanation of the difference between a compiler and an interpreter: </p>
+<p><strong>Comparison of Traditional Compilers and Interpreters</strong><br>If 2 native English speakers wish to communicate, there is no language problem. But what if an English speaker wishes to communicate with a French speaker? There are two possible solutions to the problem:</p>
+<ol>
+<li>The English speaker employs an <em>interpreter</em> who translates the English sentences into French as they are spoken. The English speaker says a sentence in English, the interpreter hears it, translates it in his/her brain into French, and the speaks the sentence in French. This is repeated for each sentence. Progress is slow: there are pauses between sentences as the translation process takes place.</li>
+</ol>
+<ol>
+<li>The English speaker writes down (in English) what needs to be said. The whole document is then translated into French, producing another piece of paper with the French version written on it. There are two factors to consider in this scenario:</li>
+</ol>
+<pre><code>1. There is a slight delay at the start as the English document needs to be translated in its entirity before it can be read.
+
+
+2. The translated document can be read at any time after that, and at the normal speed at which the French-speaker reads.
+</code></pre><p>In this analogy, English = the <em>SOURCE CODE</em>. French = the <em>MACHINE CODE</em>. You can think of the French speaker’s brain as the computer’s CPU.</p>
+<p> A <strong>compiler</strong> translates a complete source program into machine code. The whole source code file is compiled in one go, and a complete, compiled version of the file is produced. This can be saved on some secondary storage medium (e.g. floppy disk, hard disk…). This means that:</p>
+<ul>
+<li>The program can only be executed once translation is complete</li>
+</ul>
+<ul>
+<li>ANY changes to the source code require a complete recompilation.</li>
+</ul>
+<p>An <strong>interpreter</strong>, on the other hand, provides a means by which a program written in source language can be understood and executed by the CPU line by line. As the first line is encountered by the interpreter, it is translated and executed. Then it moves to the next line of source code and repeats the process. This means that:</p>
+<ul>
+<li>The interpreter is a program which is loaded into memory alongside the source program</li>
+</ul>
+<ul>
+<li>Statements from the source program are fetched and executed one by one</li>
+</ul>
+<ul>
+<li>No copy of the translation exists, and if the program is to be re-run, it has to be interpreted all over again.</li>
+</ul>
+<p><strong>Considerations</strong><br>There are a number of other points which we need to consider: </p>
+<ul>
+<li>Because the interpreter must be loaded into memory, there is less space available during execution; a compiler is only loaded into memory during compilation stage, and so only the machine code is resident in memory during run-time;</li>
+</ul>
+<ul>
+<li>Once we have a compiled file, we can re-run it any time we want to without having to use the compiler each time; With any interpreted language, however, we would have to re-interpret the program each time we wanted to run it;</li>
+</ul>
+<ul>
+<li>Machine code programs run more quickly than interpreted programs;</li>
+</ul>
+<ul>
+<li>However, it is often quicker and easier to make changes with an interpreted program than a compiled one, and as such development time may be reduced.</li>
+</ul>
+<p><strong>The Approach That Java Uses</strong></p>
+<p>As I said above, Java uses a combination of compilation and interpretation. When you create and save a Java source code file (the file that contains your Java instructions and is saved using the .java extension) it needs to be translated before a computer can understand the instructions. So we compile the .java file. However, unlike other compiled languages, the Java compiler does not produce machine code designed specifically for a particular type of computer. Instead, it produces a new file containing <strong>bytecode</strong>, and this file has the .class extension. Bytecode is like an idealised form of machine language, and the really special thing about bytecode is that it is not machine dependent. Another words, the bytecode produced by the Java compiler is not designed so that only one type of computer can read it, any computer (that has the Java interpreter installed) can read and understand bytecode. The Java interpreter is sometimes referred to as the “Java Virtual Machine” ( Java VM for short) and some books even refer to it as the “Java run-time system”. The interpreter on your computer takes the Java bytecode in the .class file, turns it into machine code which your particular computer can understand, and then executes (or “runs”) the code.</p>
+<p>You might wonder why the Java creators designed things this way - why use a two stage approach instead of just compiling or just interpreting the code like most other languages do? Well, the advantage is that once a Java file has been compiled, any computer with a Java VM can interpret and run that file. So the code is a lot more portable. Think about the huge number of network and Internet applications we run today - lots of different types of computers trying to communicate with each other. This approach overcomes these machine-dependency problems.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/04/13/compilers-and-interpreters-c-jones/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/04/13/taxi-now-vn/" title="Taxi Now VN" itemprop="url">Taxi Now VN</a>
   </h1>
   <p class="article-author">By
@@ -848,74 +960,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/" title="Why Objective-C Metaprogramming Dramatically Improves Your iOS App" itemprop="url">Why Objective-C Metaprogramming Dramatically Improves Your iOS App</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-12-26T13:50:26.000Z" itemprop="datePublished"> Published 2013-12-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h4 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h4><p>The original post is from <a href="http://kurtedelbrock.com/objective-c-metaprogramming/">http://kurtedelbrock.com/objective-c-metaprogramming/</a> but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are interested</p>
-<p>For those of you who work with me, you know that I evenly split my time between complaining about how chunky, verbose, and buggy Objective-C can be and evangelizing (better) languages like Haskell, Clojure, and Ruby. Of course, Apple won’t use languages like that on iOS, so I was beginning to accept that building iPhone and iPad apps would never be as fun or as seamless as deploying web apps with Rack or Node.js.</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/programming/">programming</a><a href="/tags/meta/">meta</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/12/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/14/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/14/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1038,7 +1085,7 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -1046,7 +1093,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			

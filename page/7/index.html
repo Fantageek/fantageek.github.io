@@ -82,6 +82,113 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/04/10/ios-asynchrony/" title="iOS Asynchrony" itemprop="url">iOS Asynchrony</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-04-10T01:30:41.000Z" itemprop="datePublished"> Published 2015-04-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h3 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a><a href="https://developer.apple.com/library/prerelease/mac/documentation/Performance/Reference/GCD_libdispatch_Ref/index.html" target="_blank" rel="external">GCD</a></h3><blockquote><br>  Grand Central Dispatch (GCD) comprises language features, runtime libraries, and system enhancements that provide systemic, comprehensive improvements to the support for concurrent code execution on multicore hardware in iOS and OS X.<br></blockquote>
+
+
+
+<p>[code language=”objc”]<br>// Doing something on the main thread</p>
+<p>dispatch_queue_t myQueue = dispatch_queue_create(“My Queue”,NULL);<br>dispatch_async(myQueue, ^{<br>    // Perform long running process</p>
+<pre><code>dispatch_async(dispatch_get_main_queue(), ^{
+    // Update the UI
+
+});
+</code></pre><p>}); </p>
+<p>// Continue doing other stuff on the<br>// main thread while process is running.<br>[/code]</p>
+<h3 id="PromiseKit"><a href="#PromiseKit" class="headerlink" title="PromiseKit"></a><a href="https://github.com/mxcl/PromiseKit" target="_blank" rel="external">PromiseKit</a></h3><blockquote><br>  A promise is an object that wraps an asynchronous task. Pass that object around, and write clean, ordered code; a logical, simple, modular stream of progression from one asynchronous task to another.<br></blockquote>
+
+
+
+<p>[code language=”objc”]<br>[self login].then(^{</p>
+<pre><code>// our login method wrapped an async task in a promise
+return [API fetchKittens];
+</code></pre><p>}).then(^(NSArray *fetchedKittens){</p>
+<pre><code>// our API class wraps our API and returns promises
+// fetchKittens returned a promise that resolves with an array of kittens
+self.kittens = fetchedKittens;
+[self.tableView reloadData];
+</code></pre><p>}).catch(^(NSError *error){</p>
+<pre><code>// any errors in any of the above promises land here
+[[[UIAlertView alloc] init…] show];
+</code></pre><p>});<br>[/code]</p>
+<h3 id="Bolt"><a href="#Bolt" class="headerlink" title="Bolt"></a><a href="https://github.com/BoltsFramework/Bolts-iOS" target="_blank" rel="external">Bolt</a></h3><blockquote><br>  A task represents the result of an asynchronous operation. Typically, a BFTask is returned from an asynchronous function and gives the ability to continue processing the result of the task. When a task is returned from a function, it’s already begun doing its job.<br><br>  A task is not tied to a particular threading model: it represents the work being done, not where it is executing.<br></blockquote>
+
+
+
+<p>[code language=”objc”]<br>[[self saveAsync:obj] continueWithBlock:^id(BFTask <em>task) {<br>  if (task.isCancelled) {<br>    // the save was cancelled.<br>  } else if (task.error) {<br>    // the save failed.<br>  } else {<br>    // the object was saved successfully.<br>    PFObject </em>object = task.result;<br>  }<br>  return nil;<br>}];<br>[/code]</p>
+<h3 id="ReactiveCocoa"><a href="#ReactiveCocoa" class="headerlink" title="ReactiveCocoa"></a><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">ReactiveCocoa</a></h3><blockquote><br>  ReactiveCocoa (RAC) is an Objective-C framework inspired by Functional Reactive Programming. It provides APIs for composing and transforming streams of values.<br><br>  Rather than using mutable variables which are replaced and modified in-place, RAC provides signals (represented by RACSignal) that capture present and future values.<br><br>  By chaining, combining, and reacting to signals, software can be written declaratively, without the need for code that continually observes and updates values.<br></blockquote>
+
+
+
+<p>[code language=”objc”]<br>[[[[client<br>    logInUser]<br>    flattenMap:^(User <em>user) {<br>        // Return a signal that loads cached messages for the user.<br>        return [client loadCachedMessagesForUser:user];<br>    }]<br>    flattenMap:^(NSArray </em>messages) {<br>        // Return a signal that fetches any remaining messages.<br>        return [client fetchMessagesAfterMessage:messages.lastObject];<br>    }]<br>    subscribeNext:^(NSArray *newMessages) {<br>        NSLog(@”New messages: %@”, newMessages);<br>    } completed:^{<br>        NSLog(@”Fetched all messages.”);<br>    }];<br>[/code]</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="http://www.dimroc.com/2014/12/17/bolt-framework-promisekit-or-reactive-cocoa-for-async/" target="_blank" rel="external">Taming Callbacks in iOS: Bolts Framework</a></li>
+</ol>
+<ol>
+<li><a href="http://jeffreysambells.com/2013/03/01/asynchronous-operations-in-ios-with-grand-central-dispatch" target="_blank" rel="external">Asynchronous Operations in iOS with Grand Central Dispatch</a></li>
+</ol>
+<ol>
+<li><a href="http://sapandiwakar.in/promisekit-promises-for-ios/" target="_blank" rel="external">PromiseKit: Promises for iOS</a></li>
+</ol>
+<ol>
+<li><a href="http://www.fantageek.com/1649/recommended-resources-for-learning-reactivecocoa-2/">Recommended resources for learning ReactiveCocoa</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/04/10/ios-asynchrony/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/04/02/recommended-resources-for-learning-reactivecocoa-2/" title="Recommended resources for learning ReactiveCocoa" itemprop="url">Recommended resources for learning ReactiveCocoa</a>
   </h1>
   <p class="article-author">By
@@ -907,85 +1014,9 @@ return CGSizeMake(size.width + self.rightView.bounds.size.width + self.leftView.
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/01/16/interview/" title="Interview" itemprop="url">Interview</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-01-16T03:20:09.000Z" itemprop="datePublished"> Published 2015-01-16</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>Jobs may come and go, but it’s the people I’ve worked with that I always remember</p>
-</blockquote>
-<h2 id="Interviewee"><a href="#Interviewee" class="headerlink" title="Interviewee"></a>Interviewee</h2><ul>
-<li><a href="https://medium.com/@drogier/recruiting-advice-no-one-tells-you-5ae6fb285d1" target="_blank" rel="external">Recruiting Advice No One Tells You</a></li>
-<li><a href="http://www.catehuston.com/blog/2010/07/13/interviewing-google/" target="_blank" rel="external">INTERVIEWING @ GOOGLE</a></li>
-<li><a href="https://www.quora.com/If-you-and-every-job-candidate-had-identical-resumes-what-would-you-say-do-at-an-interview-to-stand-out" target="_blank" rel="external">If you and every job candidate had identical resumes, what would you say/do at an interview to stand out?</a></li>
-<li><a href="http://blog.codeschool.io/2015/08/25/5-mistakes-developers-make-during-the-job-hunt/" target="_blank" rel="external">5 Mistakes Developers Make During the Job Hunt</a></li>
-</ul>
-<h2 id="Interviewer"><a href="#Interviewer" class="headerlink" title="Interviewer"></a>Interviewer</h2><ul>
-<li><a href="http://qz.com/258066/this-is-why-you-dont-hire-good-developers/" target="_blank" rel="external">This is why you never end up hiring good developers</a></li>
-<li><a href="http://www.amazon.com/Effective-Programming-More-Than-Writing-ebook/dp/B008HUMTO0" target="_blank" rel="external">Effective Programing: More than writing code</a> Hiring Programmers The Right Way</li>
-<li><a href="https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions" target="_blank" rel="external">The Five Essential Phone-Screen Questions </a></li>
-<li><a href="http://www.artima.com/wbc/interprog.html" target="_blank" rel="external">How to Interview a Programmer</a></li>
-<li><a href="http://www.joelonsoftware.com/articles/GuerrillaInterviewing3.html" target="_blank" rel="external">The Guerrilla Guide to Interviewing (version 3.0)</a></li>
-<li><a href="http://www.sellsbrothers.com/interview" target="_blank" rel="external">SellsBrother interview</a></li>
-<li><a href="http://www.amazon.com/Smart-Gets-Things-Done-Technical/dp/1590598385" target="_blank" rel="external">Smart and Gets Things Done: Joel Spolsky’s Concise Guide to Finding the Best Technical Talent</a></li>
-<li><a href="http://blogs.atlassian.com/2010/11/how_to_get_a_job_at_atlassian_an_insiders_perspective/" target="_blank" rel="external">How to get a job at Atlassian – An insider’s perspective</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Programming/">Programming</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/01/16/interview/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/6/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/8/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/8/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1108,7 +1139,7 @@ return CGSizeMake(size.width + self.rightView.bounds.size.width + self.leftView.
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -1116,7 +1147,7 @@ return CGSizeMake(size.width + self.rightView.bounds.size.width + self.leftView.
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			

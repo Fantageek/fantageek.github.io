@@ -82,6 +82,81 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/06/05/Property-configuration-in-Swift/" title="Property configuration in Swift" itemprop="url">Property configuration in Swift</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-06-05T16:21:26.000Z" itemprop="datePublished"> Published 2016-06-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This post is like a sum up of sum ways to configure your property</p>
+<h5 id="Using-a-helper-method"><a href="#Using-a-helper-method" class="headerlink" title="Using a helper method"></a>Using a helper method</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> label: <span class="type">UILabel</span>!</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">  configureLabel()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">configureLabel</span><span class="params">()</span></span> &#123;</span><br><span class="line">  label = <span class="type">UILabel</span>()</span><br><span class="line">  label.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  view.addSubview(label)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Using-anonymous-function"><a href="#Using-anonymous-function" class="headerlink" title="Using anonymous function"></a>Using anonymous function</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">  <span class="keyword">let</span> label = <span class="type">UILabel</span>()</span><br><span class="line">  label.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  <span class="keyword">return</span> label</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+<p>Ah, by the way, did you know that</p>
+<ul>
+<li>You shouldn’t call access <code>label</code> in ViewController <code>deinit</code>, because it is <code>lazy</code> and we have <code>weak self</code></li>
+<li><code>lazy</code> increases your compile time</li>
+</ul>
+<h5 id="noescape-configure-Block-on-init"><a href="#noescape-configure-Block-on-init" class="headerlink" title="@noescape configure Block on init"></a>@noescape configure Block on init</h5><p>I first saw it on <a href="https://github.com/AliSoftware/Dip/blob/develop/Sources/Dip.swift#L61" target="_blank" rel="external">https://github.com/AliSoftware/Dip/blob/develop/Sources/Dip.swift#L61</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">init</span>(<span class="meta">@noescape</span> configBlock: (<span class="type">DependencyContainer</span>-&gt;()) = &#123; <span class="number">_</span> <span class="keyword">in</span> &#125;) &#123;</span><br><span class="line">    configBlock(<span class="keyword">self</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="configure-Block-as-extension"><a href="#configure-Block-as-extension" class="headerlink" title="configure Block as extension"></a>configure Block as extension</h5><p>This <a href="https://github.com/devxoul/Then" target="_blank" rel="external">https://github.com/devxoul/Then</a> makes it easier to configure your property as an extension to NSObject</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Then</span> <span class="title">where</span> <span class="title">Self</span>: <span class="title">AnyObject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">then</span><span class="params">(@noescape block: <span class="keyword">Self</span> -&gt; Void)</span></span> -&gt; <span class="type">Self</span> &#123;</span><br><span class="line">        block(<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>so we have</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">UILabel</span>().then &#123;</span><br><span class="line">    $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>oops, we can’t use [weak self] here</p>
+<h5 id="init-without-extension"><a href="#init-without-extension" class="headerlink" title="init without extension"></a>init without extension</h5><p>I try to avoid extension, after reading this <a href="http://nshipster.com/new-years-2016/" target="_blank" rel="external">http://nshipster.com/new-years-2016/</a></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">Init</span>&lt;Type&gt;<span class="params">(value : <span class="keyword">Type</span>, @noescape block: <span class="params">(object: <span class="keyword">Type</span>)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">Type</span></span><br><span class="line">&#123;</span><br><span class="line">    block(object: value)</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>we can use it like</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">Init</span>(<span class="type">UILabel</span>()) &#123;</span><br><span class="line">    $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>again, we can’t use <code>weak self</code></p>
+<h5 id="anonymous-function-again"><a href="#anonymous-function-again" class="headerlink" title="anonymous function again"></a>anonymous function again</h5><p>This <a href="https://gist.github.com/erica/4fa60524d9b71bfa9819" target="_blank" rel="external">https://gist.github.com/erica/4fa60524d9b71bfa9819</a> makes configuration easier</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> label: <span class="type">UILabel</span> = &#123;</span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  <span class="keyword">return</span> $<span class="number">0</span></span><br><span class="line">&#125;(<span class="type">UILabel</span>())</span><br></pre></td></tr></table></figure>
+<p>again, we can’t use <code>weak self</code></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/06/05/Property-configuration-in-Swift/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2016/05/26/Badge-in-GitHub/" title="Badge in GitHub" itemprop="url">Badge in GitHub</a>
   </h1>
   <p class="article-author">By
@@ -849,204 +924,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2016/01/15/ios-best-pratices/" title="iOS best practices" itemprop="url">iOS best practices</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2016-01-15T08:11:15.000Z" itemprop="datePublished"> Published 2016-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Here are practices I found useful when developing iOS.<br>They can be tools or framework that greatly affect your style. Sometimes, it applies to other platform as well</p>
-<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>We’re always looking for ways to structure our apps better, I collect some cool stuffs in <a href="https://github.com/onmyway133/ios-architecture" target="_blank" rel="external">ios-architecture</a></p>
-<h2 id="Name-it-right"><a href="#Name-it-right" class="headerlink" title="Name it right"></a>Name it right</h2><ul>
-<li><a href="http://www.fantageek.com/blog/2015/01/14/name-it-right/">Name It Right</a></li>
-<li><a href="http://cocoadevcentral.com/articles/000082.php" target="_blank" rel="external">Cocoa style for Objective C</a></li>
-<li><a href="https://github.com/github/swift-style-guide" target="_blank" rel="external">swift-style-guide</a></li>
-<li><a href="https://github.com/raywenderlich/swift-style-guide" target="_blank" rel="external">swift-style-guide</a></li>
-</ul>
-<p>Naming is hard. But we can start by naming correctly and with correct spelling. The best way is to stick with the platform naming convention</p>
-<h2 id="Project-structure"><a href="#Project-structure" class="headerlink" title="Project structure"></a>Project structure</h2><ul>
-<li><a href="http://merowing.info/2014/03/subjective-guide-to-writing-ios-apps-part-1-introduction/" target="_blank" rel="external">iOS App Architecture, Part 1: Setting up</a></li>
-</ul>
-<p>Some prefer to group their projects by object role, like Model, View, View Controller. But I prefer to group by feature or use case, learning from Clean Architecture</p>
-<ul>
-<li><a href="https://vimeo.com/43612849" target="_blank" rel="external">Clean Architecture</a> When you look at a software system, and all you see is MCV in a web configuration, then the architecture of that system is hiding the use cases of that system and exposing the delivery mechanism.</li>
-</ul>
-<p>I often group my code like this</p>
-<ul>
-<li>Share: Contains code that can be useful to other project. Not related to any project. Can be extract to a Pod</li>
-<li>Engine: Contains code that is specific to this project. Like UserManager, ViewAnimator, …</li>
-<li>Modules: Separate each screen into module. In each module, there are view, view model and wireframe</li>
-</ul>
-<p>There are some architectures like MVC, MVVM, VIPER, VIP, … and you may want to leverage some templates to help creating projects faster, like</p>
-<ul>
-<li><a href="https://github.com/freesuraj/SwiftTemplate" target="_blank" rel="external">https://github.com/freesuraj/SwiftTemplate</a></li>
-<li><a href="https://github.com/romsi/VIPERXCodeTemplate" target="_blank" rel="external">https://github.com/romsi/VIPERXCodeTemplate</a></li>
-</ul>
-<p>And learn how to make them</p>
-<ul>
-<li><a href="https://littlebitesofcocoa.com/89-custom-xcode-file-templates" target="_blank" rel="external">Custom Xcode File Templates</a></li>
-</ul>
-<p>There are also some scripts to bootstrap your project</p>
-<ul>
-<li><a href="https://github.com/krzysztofzablocki/crafter" target="_blank" rel="external">crafter</a> Crafter - Xcode project configuration CLI made easy</li>
-<li><a href="https://github.com/jcampbell05/xcake" target="_blank" rel="external">xcake</a> Create your Xcode projects automatically using a stupid simple DSL.</li>
-<li><a href="https://github.com/thoughtbot/liftoff" target="_blank" rel="external">liftoff</a> CLI for creating and configuring new Xcode projects</li>
-</ul>
-<h2 id="Functional-Reactive-Programming"><a href="#Functional-Reactive-Programming" class="headerlink" title="Functional Reactive Programming"></a>Functional Reactive Programming</h2><p>The Reactive Extension inspired libraries are cool, and they greatly changes the way you develop, especially signal chaining</p>
-<ul>
-<li><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">ReactiveCocoa</a></li>
-<li><a href="https://github.com/ReactiveX/RxSwift" target="_blank" rel="external">RxSwift</a></li>
-</ul>
-<h2 id="Unidirectional-data-flow"><a href="#Unidirectional-data-flow" class="headerlink" title="Unidirectional data flow"></a>Unidirectional data flow</h2><p>Another trend is React inspired libraries, which encourage Unidirectional data flow</p>
-<ul>
-<li><a href="https://github.com/facebook/react-native" target="_blank" rel="external">react-native</a></li>
-<li><a href="https://github.com/Swift-Flow/Swift-Flow" target="_blank" rel="external">Swift-Flow</a></li>
-<li><a href="https://github.com/thoughtbot/Delta" target="_blank" rel="external">Delta</a></li>
-<li><a href="https://github.com/ReduxKit/ReduxKit" target="_blank" rel="external">ReduxKit</a></li>
-</ul>
-<h2 id="Data-manipulation"><a href="#Data-manipulation" class="headerlink" title="Data manipulation"></a>Data manipulation</h2><p>Leverage some functional style for better data manipulation</p>
-<ul>
-<li><a href="https://github.com/typelift/Swiftz" target="_blank" rel="external">Swiftz</a> It defines functional data structures, functions, idioms, and extensions that augment the Swift standard library.</li>
-<li><a href="https://github.com/ankurp/Dollar.swift" target="_blank" rel="external">Dollar.swift</a> A functional tool-belt for Swift Language similar to Lo-Dash or Underscore.js in Javascript</li>
-</ul>
-<h2 id="Prefer-decoration-over-extension"><a href="#Prefer-decoration-over-extension" class="headerlink" title="Prefer decoration over extension"></a>Prefer decoration over extension</h2><p>This maybe subjective. But in some case decoration wins</p>
-<p>Often when we want to add custom color, font or animate a view, or custom <code>NSDateFormatter</code>, we often make categories on <code>UIColor, UIFont, UIView, NSDateFormatter</code>, …</p>
-<p>But most of the case, we can group them inside class, like <code>ColorBucket, FontBucket, ViewAnimator, DateFormatterBucket</code>, …</p>
-<p>So, instead of</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIColor</span> (<span class="title">Additions</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIColor</span> *)customColor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>We can have ColorBucket</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ColorBucket</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">UIColor</span> *)customColor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<h2 id="Mixin"><a href="#Mixin" class="headerlink" title="Mixin"></a>Mixin</h2><ul>
-<li><a href="http://matthijshollemans.com/2015/07/22/mixins-and-traits-in-swift-2/" target="_blank" rel="external">Mixins and Traits in Swift 2.0</a></li>
-</ul>
-<p>Another way to add functionality to an entity is mixin, which is cool</p>
-<h2 id="IoC-container"><a href="#IoC-container" class="headerlink" title="IoC container"></a>IoC container</h2><p>Usage of IoC container can greatly change the app workflow, which praises Dependency Injection</p>
-<ul>
-<li><a href="https://github.com/Swinject/Swinject" target="_blank" rel="external">Swinject</a></li>
-<li><a href="https://github.com/AliSoftware/Dip" target="_blank" rel="external">Dip</a></li>
-</ul>
-<h2 id="Single-Responsibility-Principle"><a href="#Single-Responsibility-Principle" class="headerlink" title="Single Responsibility Principle"></a>Single Responsibility Principle</h2><p>Always keep this in mind :]</p>
-<h2 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h2><p>Understanding of performance issue, especially some common uses like tableview pre rendering, helps</p>
-<ul>
-<li><a href="http://www.nsprogrammer.com/2013/10/easy-uitableview-buffering.html#uitv_sec2" target="_blank" rel="external">Easy UITableView optimizations</a></li>
-<li><a href="http://www.raywenderlich.com/31166/25-ios-app-performance-tips-tricks" target="_blank" rel="external">25 iOS App Performance Tips &amp; Tricks</a></li>
-<li><a href="http://code.tutsplus.com/tutorials/ios-quick-tip-5-tips-to-increase-app-performance--mobile-18503" target="_blank" rel="external">iOS Quick Tip: 5 Tips to Increase App Performance</a></li>
-<li><a href="https://yalantis.com/blog/mastering-uikit-performance/" target="_blank" rel="external">Mastering UIKit performance</a></li>
-</ul>
-<h2 id="Main-thread"><a href="#Main-thread" class="headerlink" title="Main thread"></a>Main thread</h2><p>It’s good to care about our main thread so see if it is blocked</p>
-<ul>
-<li><a href="https://gist.github.com/steipete/5664345" target="_blank" rel="external">PSPDFUIKitMainThreadGuard.m</a> This is a guard that tracks down UIKit access on threads other than main</li>
-<li><a href="https://github.com/wojteklu/Watchdog" target="_blank" rel="external">Watchdog</a> Class for logging excessive blocking on the main thread</li>
-</ul>
-<h2 id="Overlay-app-icon-with-build-information"><a href="#Overlay-app-icon-with-build-information" class="headerlink" title="Overlay app icon with build information"></a>Overlay app icon with build information</h2><ul>
-<li><a href="http://merowing.info/2013/03/overlaying-application-version-on-top-of-your-icon/" target="_blank" rel="external">Overlaying application version on top of your icon</a></li>
-</ul>
-<h2 id="Show-TODO-FIXME-as-warnings"><a href="#Show-TODO-FIXME-as-warnings" class="headerlink" title="Show TODO FIXME as warnings"></a>Show TODO FIXME as warnings</h2><ul>
-<li><a href="http://krakendev.io/blog/generating-warnings-in-xcode" target="_blank" rel="external">HOW TO HIGHLIGHT YOUR TODOS, FIXMES, &amp; ERRORS IN XCODE</a></li>
-<li><a href="https://github.com/trawor/XToDo" target="_blank" rel="external">XToDo</a> Xcode plugin to collect and list the <code>TODO</code>,<code>FIXME</code>,<code>???</code>,<code>!!!!</code></li>
-</ul>
-<p>Use this script in Run Script Build Phase</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">KEYWORDS=<span class="string">"TODO:|VERIFY:|FIXME:|\?\?\?:|\!\!\!:"</span></span><br><span class="line">find <span class="string">"<span class="variable">$&#123;SRCROOT&#125;</span>"</span> -name <span class="string">"*.h"</span> -or -name <span class="string">"*.m"</span> -print0 | xargs -0 egrep --with-filename --line-number --only-matching <span class="string">"(<span class="variable">$KEYWORDS</span>).*\$"</span> | perl -p <span class="_">-e</span> <span class="string">"s/(<span class="variable">$KEYWORDS</span>)/ warning: \$1/"</span></span><br></pre></td></tr></table></figure>
-<h2 id="Breakpoints"><a href="#Breakpoints" class="headerlink" title="Breakpoints"></a>Breakpoints</h2><p>There are some common needed breakpoints, like <a href="https://gist.github.com/Ashton-W/5c1ede17f8cec1f8b529" target="_blank" rel="external">Breakpoints_v2.xcbkptlist</a></p>
-<h2 id="Code-snippets"><a href="#Code-snippets" class="headerlink" title="Code snippets"></a>Code snippets</h2><p>Code snippets auto generate common code</p>
-<ul>
-<li><a href="https://github.com/burczyk/XcodeSwiftSnippets" target="_blank" rel="external">XcodeSwiftSnippets</a></li>
-<li><a href="https://github.com/acoomans/ACCodeSnippetRepositoryPlugin" target="_blank" rel="external">ACCodeSnippetRepositoryPlugin</a></li>
-</ul>
-<h2 id="Utility-class"><a href="#Utility-class" class="headerlink" title="Utility class"></a>Utility class</h2><p>We can avoid duplicated helper classes in projects by using some cool frameworks</p>
-<ul>
-<li><a href="https://github.com/hyperoslo/Sugar" target="_blank" rel="external">Sugar</a> Sugar is a sweetener for your Cocoa implementations.</li>
-</ul>
-<h2 id="Xcode-plugins"><a href="#Xcode-plugins" class="headerlink" title="Xcode plugins"></a>Xcode plugins</h2><p>Using Xcode plugins can boost your productivity</p>
-<ul>
-<li><a href="http://nshipster.com/xcode-plugins/" target="_blank" rel="external">Xcode Plugins</a></li>
-</ul>
-<p>And learning to write your own can assist you with more tasks</p>
-<ul>
-<li><a href="http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">How To Create an Xcode Plugin</a></li>
-</ul>
-<h2 id="Xcode-keyboard-shortcuts"><a href="#Xcode-keyboard-shortcuts" class="headerlink" title="Xcode keyboard shortcuts"></a>Xcode keyboard shortcuts</h2><p>Navigate faster</p>
-<ul>
-<li><a href="http://spin.atomicobject.com/2014/03/23/xcode-keyboard-shortcuts/" target="_blank" rel="external">Xcode Efficiency Tips: Keyboard Shortcuts</a></li>
-</ul>
-<h2 id="xcconfig"><a href="#xcconfig" class="headerlink" title="xcconfig"></a>xcconfig</h2><p>Build yourself some predefined xcconfig</p>
-<ul>
-<li><a href="http://www.jontolof.com/cocoa/using-xcconfig-files-for-you-xcode-project/" target="_blank" rel="external">Using xcconfig files for your XCode Project</a></li>
-<li><a href="https://github.com/boredzo/Warnings-xcconfig" target="_blank" rel="external">Warnings-xcconfig</a> An xcconfig (Xcode configuration) file for easily turning on a boatload of warnings in your project or its targets.</li>
-<li><a href="https://github.com/jonreid/XcodeWarnings" target="_blank" rel="external">XcodeWarnings</a> xcconfig to enable lots of Xcode warnings</li>
-</ul>
-<h2 id="Strongly-typed-resource"><a href="#Strongly-typed-resource" class="headerlink" title="Strongly typed resource"></a>Strongly typed resource</h2><p>There’s some scripts that generate strongly typed resource classes</p>
-<ul>
-<li><a href="https://github.com/AliSoftware/SwiftGen" target="_blank" rel="external">SwiftGen</a> A collection of Swift tools to generate Swift code (enums for your assets, storyboards, Localizable.strings, …)</li>
-<li><a href="https://github.com/mac-cain13/R.swift" target="_blank" rel="external">R.swift</a> Get strong typed, autocompleted resources like images, fonts and segues in Swift projects</li>
-</ul>
-<h2 id="Continuous-learning"><a href="#Continuous-learning" class="headerlink" title="Continuous learning"></a>Continuous learning</h2><p>Technologies move really fast. We must learn continuously. I have <a href="https://github.com/onmyway133/ios-resources" target="_blank" rel="external">ios-resources</a> to keep track of all the cool stuffs</p>
-<ul>
-<li><a href="http://merowing.info/2016/01/programming/" target="_blank" rel="external">Programming</a></li>
-<li><a href="http://blog.krzyzanowskim.com/2015/12/28/how-to-be-awesome-swift-developer/" target="_blank" rel="external">How to be awesome Swift developer</a></li>
-</ul>
-<p>Also, I leverage Github as my notes <a href="https://github.com/onmyway133/ios-issues" target="_blank" rel="external">ios-issues</a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://github.com/futurice/ios-good-practices" target="_blank" rel="external">ios-good-practices by futurice</a></li>
-<li><a href="http://stackoverflow.com/questions/155964/what-are-best-practices-that-you-use-when-writing-objective-c-and-cocoa" target="_blank" rel="external">What are best practices that you use when writing Objective-C and Cocoa?</a></li>
-<li><a href="https://github.com/jverkoey/iOS-Best-Practices" target="_blank" rel="external">iOS-Best-Practices by jverkoey</a></li>
-<li><a href="http://www.raywenderlich.com/55384/ios-7-best-practices-part-1" target="_blank" rel="external">iOS 7 Best Practices; A Weather App Case Stud</a></li>
-<li><a href="http://www.merowing.info/2014/02/ios-tips/#.VAHx17ySwik" target="_blank" rel="external">iOS Tips by Krzysztof Zabłocki</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2016/01/15/ios-best-pratices/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1169,7 +1049,7 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -1177,7 +1057,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			

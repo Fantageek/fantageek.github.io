@@ -82,6 +82,71 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/" title="Why Objective-C Metaprogramming Dramatically Improves Your iOS App" itemprop="url">Why Objective-C Metaprogramming Dramatically Improves Your iOS App</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-12-26T13:50:26.000Z" itemprop="datePublished"> Published 2013-12-26</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h4 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword"></a>Foreword</h4><p>The original post is from <a href="http://kurtedelbrock.com/objective-c-metaprogramming/">http://kurtedelbrock.com/objective-c-metaprogramming/</a> but don’t know why it isn’t there. So I backup it, just as reference for myself, and for those who are interested</p>
+<p>For those of you who work with me, you know that I evenly split my time between complaining about how chunky, verbose, and buggy Objective-C can be and evangelizing (better) languages like Haskell, Clojure, and Ruby. Of course, Apple won’t use languages like that on iOS, so I was beginning to accept that building iPhone and iPad apps would never be as fun or as seamless as deploying web apps with Rack or Node.js.</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/programming/">programming</a><a href="/tags/meta/">meta</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/12/26/why-objective-c-metaprogramming-dramatically-improves-your-ios-app/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/11/09/install-both-xcode-4-and-xcode-5/" title="Install both Xcode 4 and Xcode 5" itemprop="url">Install both Xcode 4 and Xcode 5</a>
   </h1>
   <p class="article-author">By
@@ -316,7 +381,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/android/">android</a><a href="/tags/facebook/">facebook</a><a href="/tags/tutorial/">tutorial</a><a href="/tags/fly-out/">fly out</a><a href="/tags/fragment/">fragment</a><a href="/tags/framelayout/">framelayout</a><a href="/tags/menu/">menu</a><a href="/tags/sliding/">sliding</a>
+  <span></span> <a href="/tags/android/">android</a><a href="/tags/facebook/">facebook</a><a href="/tags/tutorial/">tutorial</a><a href="/tags/menu/">menu</a><a href="/tags/sliding/">sliding</a><a href="/tags/fly-out/">fly out</a><a href="/tags/fragment/">fragment</a><a href="/tags/framelayout/">framelayout</a>
   </div>
 
 </div>
@@ -725,109 +790,9 @@ ARCHS=&quot;armv7&quot;</code></p>
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/08/31/debug-cc-in-linux-with-nemiver/" title="Debug C/C++ in Linux with Nemiver" itemprop="url">Debug C/C++ in Linux with Nemiver</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-08-31T01:47:09.000Z" itemprop="datePublished"> Published 2013-08-31</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Debugging C/C++ in Linux with gdb can be frustrating, even with an experienced developers. Come around Stack Overflow and we can see many threads asking about a GUI debugging tool. Many answers are raised : ddd, Eclipse CDT, KDBG, … but I personally think Nemiver is the best because of its simplicity and many features supported.</p>
-<p>Nemiver is for GNOME environment only</p>
-<p><strong>Installing Nemiver</strong></p>
-<p>We can install Nemiver in 2 ways</p>
-<p>In Ubuntu, we can specify this command</p>
-<blockquote>sudo apt-get install nemiver</blockquote>
-
-
-<p>Install from source : Go to <a href="https://projects.gnome.org/nemiver/" target="_blank" rel="external">https://projects.gnome.org/nemiver/</a> and follow the instructions there.</p>
-<p><strong>Debugging with Nemiver</strong></p>
-<p>I will show you quick tutorial on how to use Nemiver to debug a C program, let’s take rtpproxy for example.</p>
-<p>Run Nemiver with administration role, or you can enter these command in Terminal</p>
-<blockquote>sudo nemiver</blockquote>
-
-
-<p>Go to File -&gt; Load Executable to load the program</p>
-<p><a href="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-1.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-1.png" alt="nemiver (1)"></a></p>
-<p>We can specify the arguments to our program</p>
-<p><a href="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-2.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-2.png" alt="nemiver (2)"></a></p>
-<p>Nemiver will by default break in the main(). We can File -&gt; Open Source File, Nemiver will show the source files associated with this program, we can then choose the files and set breakpoints into them.</p>
-<p><a href="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-4.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-4.png" alt="nemiver (4)"></a></p>
-<p>Nemiver then stops at the breakpoints and show us many information about thread, variable and logs</p>
-<p><a href="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-3.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/08/nemiver-3.png" alt="nemiver (3)"></a></p>
-<p><strong>Reference</strong></p>
-<ol>
-<li><p><a href="https://projects.gnome.org/nemiver/" target="_blank" rel="external">projects.gnome.org/nemiver</a></p>
-</li>
-<li><p><a href="http://fosswire.com/post/2008/04/debugging-with-nemiver/" target="_blank" rel="external">Debugging with Nemiver </a></p>
-</li>
-<li><p><a href="http://stackoverflow.com/questions/79537/which-is-the-best-linux-c-c-debugger-or-front-end-to-gdb-to-help-teaching-pr" target="_blank" rel="external">Which is the best Linux C/C++ debugger (or front-end to gdb) to help teaching programming</a></p>
-</li>
-<li><p><a href="http://stackoverflow.com/questions/5344764/gui-debugger-for-c-on-linux" target="_blank" rel="external">GUI debugger for c++ on linux</a></p>
-</li>
-<li><p><a href="http://stackoverflow.com/questions/15490468/can-i-use-eclipse-cdt-to-debug-a-prebuilt-c-executable?lq=1" target="_blank" rel="external">Can I use Eclipse CDT to debug a prebuilt C++ executable?</a></p>
-</li>
-<li><p><a href="https://secweb.cs.odu.edu/~zeil/cs252/website/Lectures/progdevx/pages/nemiver.html" target="_blank" rel="external">Nemiver lecture</a></p>
-</li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/debug/">debug</a><a href="/tags/C/">C</a><a href="/tags/gnome/">gnome</a><a href="/tags/gui/">gui</a><a href="/tags/linux/">linux</a><a href="/tags/nemiver/">nemiver</a><a href="/tags/ubuntu/">ubuntu</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/08/31/debug-cc-in-linux-with-nemiver/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/13/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/15/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/15/">Next<span></span></a>
   </nav>
 
 </div>
@@ -950,7 +915,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -958,7 +923,7 @@ ARCHS=&quot;armv7&quot;</code></p>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			

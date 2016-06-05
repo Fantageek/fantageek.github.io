@@ -82,6 +82,87 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/07/15/xvim/" title="XVim" itemprop="url">XVim</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-15T13:31:40.000Z" itemprop="datePublished"> Published 2015-07-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h3 id="Assistant-editors"><a href="#Assistant-editors" class="headerlink" title="Assistant editors"></a>Assistant editors</h3><p><code>:sp</code></p>
+<blockquote><br>  Add new assistant editor. Assistant editors are laid out horizontally.<br></blockquote>
+
+
+
+<p><code>:vsp</code></p>
+<blockquote><br>  Add new assistant editor. Assistant editors are laid out vertically.<br></blockquote>
+
+
+
+
+
+<h3 id="Replace"><a href="#Replace" class="headerlink" title="Replace"></a>Replace</h3><blockquote><br>  When text is visually selected, press : to enter a command<br></blockquote>
+
+
+
+<p><code>s/old/new/g</code></p>
+<h3 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h3><p><code>/search_text</code><br>Press Enter, then next with <code>n</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/XVimProject/XVim" target="_blank" rel="external">XVim</a></li>
+</ul>
+<ul>
+<li><a href="https://github.com/XVimProject/XVim/blob/master/Documents/Users/FeatureList.md" target="_blank" rel="external">XVim feature list</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/07/15/xvim/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/07/14/understanding-calabash/" title="Understanding Calabash" itemprop="url">Understanding Calabash</a>
   </h1>
   <p class="article-author">By
@@ -816,73 +897,9 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/06/28/understanding-flex-hit-testing/" title="Understanding FLEX - Hit testing" itemprop="url">Understanding FLEX - Hit testing</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-28T13:25:04.000Z" itemprop="datePublished"> Published 2015-06-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>We can’t touch through FLEX ‘s bar to its underneath content. It’s a good thing to learn</p>
-<h3 id="FLEXWindow-m"><a href="#FLEXWindow-m" class="headerlink" title="FLEXWindow.m"></a>FLEXWindow.m</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)pointInside:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BOOL</span> pointInside = <span class="literal">NO</span>;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span>.eventDelegate shouldHandleTouchAtPoint:point]) &#123;</span><br><span class="line">        pointInside = [<span class="keyword">super</span> pointInside:point withEvent:event];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pointInside;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="FLEXManager-m"><a href="#FLEXManager-m" class="headerlink" title="FLEXManager.m"></a>FLEXManager.m</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)shouldHandleTouchAtPoint:(<span class="built_in">CGPoint</span>)pointInWindow</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Ask the explorer view controller</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span>.explorerViewController shouldReceiveTouchAtWindowPoint:pointInWindow];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="FLEXExplorerViewController-m"><a href="#FLEXExplorerViewController-m" class="headerlink" title="FLEXExplorerViewController.m"></a>FLEXExplorerViewController.m</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)shouldReceiveTouchAtWindowPoint:(<span class="built_in">CGPoint</span>)pointInWindowCoordinates</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BOOL</span> shouldReceiveTouch = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CGPoint</span> pointInLocalCoordinates = [<span class="keyword">self</span>.view convertPoint:pointInWindowCoordinates fromView:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Always if it's on the toolbar</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">CGRectContainsPoint</span>(<span class="keyword">self</span>.explorerToolbar.frame, pointInLocalCoordinates)) &#123;</span><br><span class="line">        shouldReceiveTouch = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Always if we're in selection mode</span></span><br><span class="line">    <span class="keyword">if</span> (!shouldReceiveTouch &amp;&amp; <span class="keyword">self</span>.currentMode == FLEXExplorerModeSelect) &#123;</span><br><span class="line">        shouldReceiveTouch = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Always in move mode too</span></span><br><span class="line">    <span class="keyword">if</span> (!shouldReceiveTouch &amp;&amp; <span class="keyword">self</span>.currentMode == FLEXExplorerModeMove) &#123;</span><br><span class="line">        shouldReceiveTouch = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Always if we have a modal presented</span></span><br><span class="line">    <span class="keyword">if</span> (!shouldReceiveTouch &amp;&amp; <span class="keyword">self</span>.presentedViewController) &#123;</span><br><span class="line">        shouldReceiveTouch = <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> shouldReceiveTouch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://github.com/flipboard/flex" target="_blank" rel="external">FLEX</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/06/28/understanding-flex-hit-testing/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/4/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/6/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/6/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1005,7 +1022,7 @@
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -1013,7 +1030,7 @@
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			
