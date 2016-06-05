@@ -89,21 +89,19 @@ we can use it like
 
 ```swift
 lazy var label = Init(UILabel()) {
-    $0.backgroundColor = UIColor.greenColor()
+  $0.backgroundColor = UIColor.greenColor()
 }
 ```
 
-again, we can't use `weak self`
+we can't use `[weak self]` here
 
 ##### anonymous function again
 
 This https://gist.github.com/erica/4fa60524d9b71bfa9819 makes configuration easier
 
 ```swift
-let label: UILabel = {
+lazy var label: UILabel = { [weak self] in
   $0.backgroundColor = UIColor.greenColor()
   return $0
 }(UILabel())
 ```
-
-again, we can't use `weak self`
