@@ -113,11 +113,10 @@
 <h5 id="init-without-extension"><a href="#init-without-extension" class="headerlink" title="init without extension"></a>init without extension</h5><p>I try to avoid extension, after reading this <a href="http://nshipster.com/new-years-2016/" target="_blank" rel="external">http://nshipster.com/new-years-2016/</a></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">Init</span>&lt;Type&gt;<span class="params">(value : <span class="keyword">Type</span>, @noescape block: <span class="params">(object: <span class="keyword">Type</span>)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">Type</span></span><br><span class="line">&#123;</span><br><span class="line">    block(object: value)</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>we can use it like</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">Init</span>(<span class="type">UILabel</span>()) &#123;</span><br><span class="line">    $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>again, we can’t use <code>weak self</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">Init</span>(<span class="type">UILabel</span>()) &#123;</span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>we can’t use <code>[weak self]</code> here</p>
 <h5 id="anonymous-function-again"><a href="#anonymous-function-again" class="headerlink" title="anonymous function again"></a>anonymous function again</h5><p>This <a href="https://gist.github.com/erica/4fa60524d9b71bfa9819" target="_blank" rel="external">https://gist.github.com/erica/4fa60524d9b71bfa9819</a> makes configuration easier</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> label: <span class="type">UILabel</span> = &#123;</span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  <span class="keyword">return</span> $<span class="number">0</span></span><br><span class="line">&#125;(<span class="type">UILabel</span>())</span><br></pre></td></tr></table></figure>
-<p>again, we can’t use <code>weak self</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  <span class="keyword">return</span> $<span class="number">0</span></span><br><span class="line">&#125;(<span class="type">UILabel</span>())</span><br></pre></td></tr></table></figure>
 
         
         
@@ -1053,11 +1052,15 @@
 			
 		
 			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1065,7 +1068,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
@@ -1078,10 +1081,6 @@
 		
 			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
