@@ -17,8 +17,8 @@ parameter label
 parameter type
 return type
 
-so that these are all valid
-1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
+so that these are all valid, and works for subscript as well
+12345678910111213141516171819202122232425262">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Overloading function in Swift">
 <meta property="og:url" content="http://www.fantageek.com/blog/2016/06/22/Overloading-function-in-Swift/index.html">
@@ -29,9 +29,9 @@ parameter label
 parameter type
 return type
 
-so that these are all valid
-1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
-<meta property="og:updated_time" content="2016-06-22T22:08:27.000Z">
+so that these are all valid, and works for subscript as well
+12345678910111213141516171819202122232425262">
+<meta property="og:updated_time" content="2016-06-22T22:18:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Overloading function in Swift">
 <meta name="twitter:description" content="FunctionFunctions in Swift are distinguishable by
@@ -40,8 +40,8 @@ parameter label
 parameter type
 return type
 
-so that these are all valid
-1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
+so that these are all valid, and works for subscript as well
+12345678910111213141516171819202122232425262">
 <meta name="twitter:creator" content="@onmyway133">
 
     
@@ -128,8 +128,8 @@ so that these are all valid
 <li>parameter type</li>
 <li>return type</li>
 </ul>
-<p>so that these are all valid</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mix of parameter type and return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// parameter label</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(int: Int)</span></span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(string: String)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// concrete type from generic</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;String&gt;)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;Int&gt;)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>so that these are all valid, and works for <code>subscript</code> as well</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mix of parameter type and return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">String</span>) -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">Int</span>) -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// parameter label</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(int: Int)</span></span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(string: String)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// concrete type from generic</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;String&gt;)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;Int&gt;)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;) -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="keyword">subscript</span>(param: <span class="type">Array</span>&lt;<span class="type">Int</span>&gt;) -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>When you specialize a generic type, like <code>Array&lt;Int&gt;</code>, you’re actually using a concrete type</p>
 <p>Unfortunately, this does not work for NSObject subclass</p>
 <blockquote>
@@ -281,11 +281,11 @@ so that these are all valid
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
@@ -293,11 +293,7 @@ so that these are all valid
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -305,35 +301,11 @@ so that these are all valid
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -341,15 +313,43 @@ so that these are all valid
 			
 		
 			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 		</ul>
