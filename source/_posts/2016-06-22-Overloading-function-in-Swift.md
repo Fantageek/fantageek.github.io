@@ -12,7 +12,7 @@ Functions in Swift are distinguishable by
 - parameter type
 - return type
 
-so that these are all valid
+so that these are all valid, and works for `subscript` as well
 
 ```swift
 struct A {
@@ -27,6 +27,11 @@ struct A {
   func get(param: Int) -> Int { return 1 }
   func get(param: Int) -> String { return "" }
 
+  subscript(param: String) -> String { return "" }
+  subscript(param: String) -> Int { return 1 }
+  subscript(param: Int) -> Int { return 1 }
+  subscript(param: Int) -> String { return "" }
+
   // parameter label
   func set(int: Int) {}
   func set(string: String) {}
@@ -34,6 +39,9 @@ struct A {
   // concrete type from generic
   func get(param: Array<String>) -> String { return "" }
   func get(param: Array<Int>) -> Int { return 1 }
+
+  subscript(param: Array<String>) -> String { return "" }
+  subscript(param: Array<Int>) -> Int { return 1 }
 }
 
 ```
