@@ -19,7 +19,7 @@ Using a helper method12345678910111213var label: UILabel!override func viewDidLo
 <meta property="og:site_name" content="Fantageek">
 <meta property="og:description" content="This post is like a sum up of sum ways to configure your property
 Using a helper method12345678910111213var label: UILabel!override func viewDidLoad() &amp;#123;  super.viewDidLoad()  configureLabel()&amp;#12">
-<meta property="og:updated_time" content="2016-06-05T16:47:40.000Z">
+<meta property="og:updated_time" content="2016-06-22T21:46:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Property configuration in Swift">
 <meta name="twitter:description" content="This post is like a sum up of sum ways to configure your property
@@ -117,13 +117,13 @@ Using a helper method12345678910111213var label: UILabel!override func viewDidLo
 <h5 id="configure-Block-as-extension"><a href="#configure-Block-as-extension" class="headerlink" title="configure Block as extension"></a>configure Block as extension</h5><p>This <a href="https://github.com/devxoul/Then" target="_blank" rel="external">https://github.com/devxoul/Then</a> makes it easier to configure your property as an extension to NSObject</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Then</span> <span class="title">where</span> <span class="title">Self</span>: <span class="title">AnyObject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">then</span><span class="params">(@noescape block: <span class="keyword">Self</span> -&gt; Void)</span></span> -&gt; <span class="type">Self</span> &#123;</span><br><span class="line">        block(<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>so we have</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">UILabel</span>().then &#123;</span><br><span class="line">    $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>oops, we can’t use [weak self] here</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = <span class="type">UILabel</span>().then &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">    $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We have to declare <code>label: UILabel</code> to use <code>`[weak self]</code></p>
 <h5 id="init-without-extension"><a href="#init-without-extension" class="headerlink" title="init without extension"></a>init without extension</h5><p>I try to avoid extension, after reading this <a href="http://nshipster.com/new-years-2016/" target="_blank" rel="external">http://nshipster.com/new-years-2016/</a></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">Init</span>&lt;Type&gt;<span class="params">(value : <span class="keyword">Type</span>, @noescape block: <span class="params">(object: <span class="keyword">Type</span>)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">Type</span></span><br><span class="line">&#123;</span><br><span class="line">    block(object: value)</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>we can use it like</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label = <span class="type">Init</span>(<span class="type">UILabel</span>()) &#123;</span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>we can’t use <code>[weak self]</code> here</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = <span class="type">Init</span>(<span class="type">UILabel</span>()) &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We have to declare <code>label: UILabel</code> to use <code>`[weak self]</code></p>
 <h5 id="anonymous-function-again"><a href="#anonymous-function-again" class="headerlink" title="anonymous function again"></a>anonymous function again</h5><p>This <a href="https://gist.github.com/erica/4fa60524d9b71bfa9819" target="_blank" rel="external">https://gist.github.com/erica/4fa60524d9b71bfa9819</a> makes configuration easier</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">  $<span class="number">0</span>.backgroundColor = <span class="type">UIColor</span>.greenColor()</span><br><span class="line">  <span class="keyword">return</span> $<span class="number">0</span></span><br><span class="line">&#125;(<span class="type">UILabel</span>())</span><br></pre></td></tr></table></figure>
   
@@ -297,11 +297,11 @@ Using a helper method12345678910111213var label: UILabel!override func viewDidLo
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
@@ -317,7 +317,7 @@ Using a helper method12345678910111213var label: UILabel!override func viewDidLo
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
@@ -329,7 +329,7 @@ Using a helper method12345678910111213var label: UILabel!override func viewDidLo
 			
 		
 			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
