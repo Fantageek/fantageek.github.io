@@ -66,12 +66,12 @@ extension Then where Self: AnyObject {
 so we have
 
 ```swift
-lazy var label = UILabel().then {
+lazy var label: UILabel = UILabel().then { [weak self] in
     $0.backgroundColor = UIColor.greenColor()
 }
 ```
 
-oops, we can't use [weak self] here
+We have to declare `label: UILabel` to use ``[weak self]`
 
 ##### init without extension
 
@@ -88,12 +88,12 @@ public func Init<Type>(value : Type, @noescape block: (object: Type) -> Void) ->
 we can use it like
 
 ```swift
-lazy var label = Init(UILabel()) {
+lazy var label: UILabel = Init(UILabel()) { [weak self] in
   $0.backgroundColor = UIColor.greenColor()
 }
 ```
 
-we can't use `[weak self]` here
+We have to declare `label: UILabel` to use ``[weak self]`
 
 ##### anonymous function again
 

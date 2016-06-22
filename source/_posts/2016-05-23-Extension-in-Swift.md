@@ -69,3 +69,5 @@ extension UIView {
   }
 }
 ```
+
+This is applied in [Wave](https://github.com/onmyway133/Wave)
