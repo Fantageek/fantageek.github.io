@@ -82,6 +82,81 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/12/20/xmas/" title="Xmas" itemprop="url">Xmas</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-20T03:23:58.000Z" itemprop="datePublished"> Published 2015-12-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Christmas is when we I have the most special feeling. The cool air, the snow, the reunion, the church bell ringing, …</p>
+<p><img src="http://www.fantageek.com/images/christmas_scene.jpg" alt=""><br>(From google)</p>
+<p>It ‘s beginning to look a lot like Christmas. First with Xcode</p>
+<h2 id="Xmas"><a href="#Xmas" class="headerlink" title="Xmas"></a>Xmas</h2><p><a href="https://github.com/onmyway133/xmas" target="_blank" rel="external">Xmas</a> is an Xcode plugin that shows Xmas picture along with wishing message whenever a build succeeds</p>
+<p><img src="https://github.com/onmyway133/Xmas/raw/master/Screenshots/xmas.png" alt=""></p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><h3 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h3><ul>
+<li>Try to do much of the job in Swift as possible</li>
+</ul>
+<h3 id="DVTKit"><a href="#DVTKit" class="headerlink" title="DVTKit"></a>DVTKit</h3><ul>
+<li>Xcode uses <code>DVTBezelAlertPanel</code> to display alert. So we swizzle its <code>initWithIcon:message:parentWindow:duration:</code></li>
+<li><code>DVTBezelAlertPanel</code> is from <code>DVTKit</code>. I thought about importing <a href="https://github.com/luisobo/Xcode-RuntimeHeaders" target="_blank" rel="external">run time header</a> and just <code>extension</code> it. But I find swizzling in Objective C a much more easier solution</li>
+</ul>
+<h3 id="NSVisualEffectView"><a href="#NSVisualEffectView" class="headerlink" title="NSVisualEffectView"></a>NSVisualEffectView</h3><ul>
+<li>It seems that <code>NSImage</code> added to the panel ‘s <code>NSVisualEffectView</code> had it <code>template</code> set to YES again, hence causing the image into template color with the panel background color</li>
+<li>This happens in the <code>init</code> method. So we must change <code>template</code> back to NO after <code>init</code> happens</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)xmas_initWithIcon:(<span class="keyword">id</span>)icon</span><br><span class="line">                message:(<span class="built_in">NSString</span> *)message</span><br><span class="line">           parentWindow:(<span class="keyword">id</span>)parentWindow</span><br><span class="line">               duration:(<span class="keyword">double</span>)duration &#123;</span><br><span class="line">        [<span class="keyword">self</span> xmas_initWithIcon:image message:gift.message parentWindow:parentWindow duration:duration];</span><br><span class="line"></span><br><span class="line">        image.template = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And, Merry Christmas to you and your family</p>
+<iframe width="854" height="480" src="https://www.youtube.com/embed/yrRPLBYiiEc" frameborder="0" allowfullscreen></iframe>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">How To Create an Xcode Plugin: Part 1/3</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/12/20/xmas/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/12/18/a-simple-resolver-for-swift/" title="A simple resolver for Swift" itemprop="url">A simple resolver for Swift</a>
   </h1>
   <p class="article-author">By
@@ -903,66 +978,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/11/27/tuple-shuffle-in-swift/" title="Tuple shuffle in Swift" itemprop="url">Tuple shuffle in Swift</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T01:51:35.000Z" itemprop="datePublished"> Published 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Tuple shuffle exists in Swift.</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">"one"</span>, b = <span class="string">"two"</span></span><br><span class="line">(a, b) = (b, a)</span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">// "two"</span></span><br><span class="line"><span class="built_in">print</span>(b) <span class="comment">// "one"</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> items = [<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>]</span><br><span class="line">(items[<span class="number">0</span>], items[<span class="number">2</span>]) = (items[<span class="number">2</span>], items[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(items) <span class="comment">// "["three", "two", "one"]"</span></span><br></pre></td></tr></table></figure>
-<p>With an example of array shuffle using <code>Fisher-Yates</code>, let’s leverage tuple shuffle instead of <code>swap</code></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">CollectionType</span> </span>&#123;</span><br><span class="line">    <span class="comment">/// Return a copy of `self` with its elements shuffled</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">shuffle</span><span class="params">()</span></span> -&gt; [<span class="type">Generator</span>.<span class="type">Element</span>] &#123;</span><br><span class="line">        <span class="keyword">var</span> list = <span class="type">Array</span>(<span class="keyword">self</span>)</span><br><span class="line">        list.shuffleInPlace()</span><br><span class="line">        <span class="keyword">return</span> list</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">MutableCollectionType</span> <span class="title">where</span> <span class="title">Index</span> == <span class="title">Int</span> </span>&#123;</span><br><span class="line">    <span class="comment">/// Shuffle the elements of `self` in-place.</span></span><br><span class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">shuffleInPlace</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// empty and single-element collections don't shuffle</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">count</span> &lt; <span class="number">2</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;<span class="built_in">count</span> - <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> j = <span class="type">Int</span>(arc4random_uniform(<span class="type">UInt32</span>(<span class="built_in">count</span> - i))) + i</span><br><span class="line">            <span class="keyword">guard</span> i != j <span class="keyword">else</span> &#123; <span class="keyword">continue</span> &#125;</span><br><span class="line">            (<span class="keyword">self</span>[i], <span class="keyword">self</span>[j]) = (<span class="keyword">self</span>[j], <span class="keyword">self</span>[i])</span><br><span class="line">            <span class="comment">// instead of swap(&amp;self[i], &amp;self[j])</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>].shuffle()</span><br></pre></td></tr></table></figure>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://ericasadun.com/2015/06/02/swift-swappity-doo-dah/" target="_blank" rel="external">Swift: Swappity Doo-dah!</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/11/27/tuple-shuffle-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
@@ -1060,11 +1075,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1072,11 +1087,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1084,15 +1095,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1100,19 +1107,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -1120,11 +1123,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

@@ -82,6 +82,79 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/09/05/how-to-crack-sip-workbench/" title="How to crack SIP Workbench" itemprop="url">How to crack SIP Workbench</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-09-05T15:53:58.000Z" itemprop="datePublished"> Published 2013-09-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>As stated in its <a href="http://www.sipworkbench.com/" target="_blank" rel="external">home page</a>, SIP Workbench is a graphical SIP, RTP, STUN, and TURN protocol analyzer and viewer designed to help illustrate and correlate VoIP and IM network interactions.</p>
+<p>If you run out of your trial period and are in an urgent, you can crack it using this simple trick</p>
+<p>Run Registry Editor (regedit) and find SIP Workbench. Normally, it is in</p>
+<blockquote>HKEY_CURRENT_USER\Software\Breakpoint License Manager<br>&gt;<br>&gt; </blockquote>
+
+
+
+
+<p><a href="http://www.fantageek.com/wp-content/uploads/2013/09/sip-workbench-crack.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/09/sip-workbench-crack.png" alt="sip workbench crack"></a></p>
+<p>In the right panel, select SIP Workbench   (whose Type is REG_BINARY) and delete it</p>
+<p>Now you can continue to use SIP Workbench. Remember to be more polite by purchasing their license</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/breakpoint-sip/">breakpoint. sip</a><a href="/tags/crack/">crack</a><a href="/tags/workbench/">workbench</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/09/05/how-to-crack-sip-workbench/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/08/31/debug-cc-in-linux-with-nemiver/" title="Debug C/C++ in Linux with Nemiver" itemprop="url">Debug C/C++ in Linux with Nemiver</a>
   </h1>
   <p class="article-author">By
@@ -960,105 +1033,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/06/23/build-openssl-for-windows-8-desktop/" title="Build OpenSSL for Windows 8 desktop" itemprop="url">Build OpenSSL for Windows 8 desktop</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-06-23T01:18:18.000Z" itemprop="datePublished"> Published 2013-06-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This tutorial will show you how to  build OpenSSL for Windows 8 desktop</p>
-<p>First, make sure you ‘ve already downloaded <a href="http://www.openssl.org/source/" target="_blank" rel="external">OpenSSL source code</a>. You also need <a href="http://www.activestate.com/activeperl/downloads" target="_blank" rel="external">ActivePerl</a> to process the Configure file</p>
-<p><strong>Build 32bit static library</strong>  </p>
-<p>Open VS2012 x86 Native Tool Command Prompt  </p>
-<p>Cd to your OpenSSL directory  </p>
-<p>Run the following commands</p>
-<p>[code language=”css”]  </p>
-<p>perl Configure VC-WIN32 no-asm no-shared  </p>
-<p>ms\do_ms  </p>
-<p>nmake -f ms\nt.mak  </p>
-<p>nmake -f ms\nt.mak install  </p>
-<p>[/code]</p>
-<p><strong>Build 64bit static library</strong>  </p>
-<p>Open VS2012 x64 Native Tool Command Prompt  </p>
-<p>Cd to your OpenSSL directory  </p>
-<p>Run the following commands</p>
-<p>[code language=”css”]  </p>
-<p>perl Configure VC-WIN64A no-asm no-shared  </p>
-<p>ms\do_win64a  </p>
-<p>nmake -f ms\nt.mak  </p>
-<p>nmake -f ms\nt.mak install  </p>
-<p>[/code]</p>
-<p>You ‘ll find your libraries at out32 folder. These are libeay32.lib (AKA libcrypto.a) and ssleay32 (AKA libssl.a), which can be used in your application</p>
-<p><strong>Note</strong>  </p>
-<ol>
-<li>If you want to build dynamic libraries, use the following</li>
-</ol>
-<p>[code language=”css”]  </p>
-<p>nmake -f ms\ntdll.mak  </p>
-<p>nmake -f ms\ntdll.mak install  </p>
-<p>[/code]</p>
-<ol>
-<li>If you want to build a Debug version, simply add “debug” to the perl command</li>
-</ol>
-<p>[code language=”css”]  </p>
-<p>perl Configure debug VC-WIN32 no-asm no-shared  </p>
-<p>[/code]</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/build/">build</a><a href="/tags/command/">command</a><a href="/tags/openssl/">openssl</a><a href="/tags/windows-8/">windows 8</a><a href="/tags/compile/">compile</a><a href="/tags/prompt/">prompt</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/06/23/build-openssl-for-windows-8-desktop/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/14/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/16/">Next<span></span></a>
@@ -1156,11 +1130,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1168,11 +1142,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1180,15 +1150,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1196,19 +1162,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -1216,11 +1178,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

@@ -82,6 +82,90 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/01/22/voip-sample-rate-bit-rate/" title="VoIP sample rate, bit rate &amp; bit depth" itemprop="url">VoIP sample rate, bit rate &amp; bit depth</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-01-22T15:45:56.000Z" itemprop="datePublished"> Published 2013-01-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>In order to understand why sample rate and bitrate came about, you need to understand a little bit about how all things digital work. Digital works like a ticking second hand. Whereas time and the world as we know it seems continuous and seamless, digital breaks things like time up into little measurements. When we’re talking about measurements of time, we are talking about ticks just like the ticking of a second hand. If anything is to happen digitally, it has to happen on a tick. The rate of these ticks is measured in hertz. A 2ghz computer has 2,000,000,000,000 ticks a second. That’s a lot of ticks.</p>
+<p><strong>What is a Sample Rate?</strong>  </p>
+<p>Sample rate is</p>
+<p> is represented by t.</p>
+<p><img src="http://www.fantageek.com/wp-content/uploads/2013/01/sampled_signal.png" alt="sampled_signal">   <a href="http://www.fantageek.com/212/voip-sample-rate-bit-rate/analog_signal/#main"><img src="http://www.fantageek.com/wp-content/uploads/2013/01/analog_signal.png" alt="analog_signal"></a></p>
+<p>If we start to split up the smooth analog signal into digital chunks, you will start to see something like the second image. With each tick of the clock we measure what’s happening at each tick ‘t’. That measurement is documented, represented by the balls on the signal graph. How often we do these measurements is called the sample rate. The higher the rate, the closer you’ll get to the smoothness of the first image. Measuring things in bits like this is called quantizing and the measurements are called samples (hence sample rate).</p>
+<p>The sample rate can be thought of as how often or how much the sound is described.</p>
+<p>CD quality audio has 44,100 of these measurements a second. That’s called 44.1 kilohertz (khz)</p>
+<p><strong>What is a Bit Rate?</strong>  </p>
+<p>With what we just learned in mind, consider that in order for these ticks to make any sense at all they need to actually be measuring something. What is it that we’re measuring? Volume. Volume is represented by the height of the balls in the image. With each tick a new measurement of the volume is made. How do we describe the volume? Is it a range from 0 to 100? 0 to 2000? 0 to 1? The range of volumes that can be described is the bit rate. Now, in each of these examples, 0 means totally silent and 100, 2000, or 1, respectively, means as-loud-as-it-can-get. So the only difference between each of these ranges is not how loud the sound can be but how many different volumes can be described. We only have two choices for ’0 to 1′, ie. is there a sound or not? But from 0 to 2000 we can have half volume (1000), quarter volume (500), or even somewhere in between (829). The higher the bitrate, the more accurately we can communicate exactly how loud the volume of the ‘real’ sound we want to describe is.</p>
+<p>The bit rate can be thought of as how well the sound is described.</p>
+<p>CD quality   audio has 65,536 volumes to choose from for every sample that’s measured. That’s called 16-bit audio (because 2 to the 16th power is 65,536).</p>
+<p><strong>What is bit depth</strong>  </p>
+<p>In digital audio, bit depth describes the number of bits of information recorded for each sample.Bit depth directly corresponds to the resolution of each sample in a set of digital audio data.  </p>
+<p>Common examples of bit depth include CD quality audio, which is recorded at 16 bits, and DVD-Audio, which can support up to 24-bit audio.</p>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><p><a href="http://thestereobus.com/2008/01/12/sample-rate-and-bitrate-the-guts-of-digital-audio/" target="_blank" rel="external">http://thestereobus.com</a>  </p>
+</li>
+<li><p><a href="http://en.wikipedia.org/wiki/Audio_bit_depth" target="_blank" rel="external">http://en.wikipedia.org</a></p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/voip/">voip</a><a href="/tags/bit-rate/">bit rate</a><a href="/tags/sample-rate/">sample rate</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/01/22/voip-sample-rate-bit-rate/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/01/22/voip-jitter-buffer/" title="VoIP Jitter buffer" itemprop="url">VoIP Jitter buffer</a>
   </h1>
   <p class="article-author">By
@@ -115,7 +199,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/buffer/">buffer</a><a href="/tags/jitter/">jitter</a><a href="/tags/voip/">voip</a>
+  <span></span> <a href="/tags/voip/">voip</a><a href="/tags/buffer/">buffer</a><a href="/tags/jitter/">jitter</a>
   </div>
 
 </div>
@@ -690,7 +774,7 @@ fixedSlider.IsHitTestVisible = false;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/open/">open</a><a href="/tags/wp7/">wp7</a><a href="/tags/file/">file</a><a href="/tags/g-i-s/">g.i.s</a>
+  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/open/">open</a><a href="/tags/file/">file</a><a href="/tags/g-i-s/">g.i.s</a>
   </div>
 
 </div>
@@ -702,72 +786,6 @@ fixedSlider.IsHitTestVisible = false;
 	
 	  	<span></span>
 		<a href="/blog/2012/12/22/wp7-how-to-open-g-i-s-file-in-visual-studio-2010/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/21/strange-avd-with-hw-ramsize/" title="Strange AVD with hw.ramSize" itemprop="url">Strange AVD with hw.ramSize</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-21T14:32:13.000Z" itemprop="datePublished"> Published 2012-12-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Today, after a peaceful 2012 Dec 21st, I go on with my Android robo :)</p>
-<p>Use AVD (Android virtual device) for a long time, but the strange error happens every time I set up a new AVD.</p>
-<p>The situation is that, I create a Nexus 7 AVD with 1GB RAM (other specs are normal and not concerned here). It is created normally, but when I start it, one error message is shown from the emulator-arm.exe.</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2012/12/21/strange-avd-with-hw-ramsize/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Android/">Android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android/">android</a><a href="/tags/avd/">avd</a><a href="/tags/ramsize/">ramsize</a><a href="/tags/strange/">strange</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/21/strange-avd-with-hw-ramsize/#disqus_thread" class="comments-count-link">Comments</a>
 	
 </div>
 
@@ -878,11 +896,11 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -890,11 +908,7 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -902,15 +916,11 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -918,19 +928,15 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -938,11 +944,23 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

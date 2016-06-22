@@ -82,6 +82,65 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/01/20/selecting-objects-in-xcode-interface-builder/" title="Selecting objects in Xcode Interface Builder" itemprop="url">Selecting objects in Xcode Interface Builder</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-20T15:51:13.000Z" itemprop="datePublished"> Published 2016-01-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>There are some ways to select objects in Xcode Interface Builder</p>
+<ul>
+<li>Document Outline</li>
+<li>Jump Bar</li>
+<li>Shift + Right Click</li>
+</ul>
+<p><img src="http://www.fantageek.com/images/select_object_xcode.png" alt=""></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/01/20/selecting-objects-in-xcode-interface-builder/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2016/01/15/ios-best-pratices/" title="iOS best practices" itemprop="url">iOS best practices</a>
   </h1>
   <p class="article-author">By
@@ -1019,81 +1078,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/12/20/xmas/" title="Xmas" itemprop="url">Xmas</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-12-20T03:23:58.000Z" itemprop="datePublished"> Published 2015-12-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Christmas is when we I have the most special feeling. The cool air, the snow, the reunion, the church bell ringing, …</p>
-<p><img src="http://www.fantageek.com/images/christmas_scene.jpg" alt=""><br>(From google)</p>
-<p>It ‘s beginning to look a lot like Christmas. First with Xcode</p>
-<h2 id="Xmas"><a href="#Xmas" class="headerlink" title="Xmas"></a>Xmas</h2><p><a href="https://github.com/onmyway133/xmas" target="_blank" rel="external">Xmas</a> is an Xcode plugin that shows Xmas picture along with wishing message whenever a build succeeds</p>
-<p><img src="https://github.com/onmyway133/Xmas/raw/master/Screenshots/xmas.png" alt=""></p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><h3 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h3><ul>
-<li>Try to do much of the job in Swift as possible</li>
-</ul>
-<h3 id="DVTKit"><a href="#DVTKit" class="headerlink" title="DVTKit"></a>DVTKit</h3><ul>
-<li>Xcode uses <code>DVTBezelAlertPanel</code> to display alert. So we swizzle its <code>initWithIcon:message:parentWindow:duration:</code></li>
-<li><code>DVTBezelAlertPanel</code> is from <code>DVTKit</code>. I thought about importing <a href="https://github.com/luisobo/Xcode-RuntimeHeaders" target="_blank" rel="external">run time header</a> and just <code>extension</code> it. But I find swizzling in Objective C a much more easier solution</li>
-</ul>
-<h3 id="NSVisualEffectView"><a href="#NSVisualEffectView" class="headerlink" title="NSVisualEffectView"></a>NSVisualEffectView</h3><ul>
-<li>It seems that <code>NSImage</code> added to the panel ‘s <code>NSVisualEffectView</code> had it <code>template</code> set to YES again, hence causing the image into template color with the panel background color</li>
-<li>This happens in the <code>init</code> method. So we must change <code>template</code> back to NO after <code>init</code> happens</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)xmas_initWithIcon:(<span class="keyword">id</span>)icon</span><br><span class="line">                message:(<span class="built_in">NSString</span> *)message</span><br><span class="line">           parentWindow:(<span class="keyword">id</span>)parentWindow</span><br><span class="line">               duration:(<span class="keyword">double</span>)duration &#123;</span><br><span class="line">        [<span class="keyword">self</span> xmas_initWithIcon:image message:gift.message parentWindow:parentWindow duration:duration];</span><br><span class="line"></span><br><span class="line">        image.template = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>And, Merry Christmas to you and your family</p>
-<iframe width="854" height="480" src="https://www.youtube.com/embed/yrRPLBYiiEc" frameborder="0" allowfullscreen></iframe>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">How To Create an Xcode Plugin: Part 1/3</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/12/20/xmas/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
@@ -1191,11 +1175,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1203,11 +1187,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1215,15 +1195,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1231,19 +1207,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -1251,11 +1223,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

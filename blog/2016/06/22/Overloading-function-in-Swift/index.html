@@ -4,23 +4,44 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>iOS Asynchrony | Fantageek</title>
+    <title>Overloading function in Swift | Fantageek</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Khoa Pham">
     
 
     
-    <meta name="description" content="GCD  Grand Central Dispatch (GCD) comprises language features, runtime libraries, and system enhancements that provide systemic, comprehensive improvements to the support for concurrent code execution">
+    <meta name="description" content="FunctionFunctions in Swift are distinguishable by
+
+parameter label
+parameter type
+return type
+
+so that these are all valid
+1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS Asynchrony">
-<meta property="og:url" content="http://www.fantageek.com/blog/2015/04/10/ios-asynchrony/index.html">
+<meta property="og:title" content="Overloading function in Swift">
+<meta property="og:url" content="http://www.fantageek.com/blog/2016/06/22/Overloading-function-in-Swift/index.html">
 <meta property="og:site_name" content="Fantageek">
-<meta property="og:description" content="GCD  Grand Central Dispatch (GCD) comprises language features, runtime libraries, and system enhancements that provide systemic, comprehensive improvements to the support for concurrent code execution">
-<meta property="og:updated_time" content="2016-04-14T19:30:36.000Z">
+<meta property="og:description" content="FunctionFunctions in Swift are distinguishable by
+
+parameter label
+parameter type
+return type
+
+so that these are all valid
+1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
+<meta property="og:updated_time" content="2016-06-22T22:08:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS Asynchrony">
-<meta name="twitter:description" content="GCD  Grand Central Dispatch (GCD) comprises language features, runtime libraries, and system enhancements that provide systemic, comprehensive improvements to the support for concurrent code execution">
+<meta name="twitter:title" content="Overloading function in Swift">
+<meta name="twitter:description" content="FunctionFunctions in Swift are distinguishable by
+
+parameter label
+parameter type
+return type
+
+so that these are all valid
+1234567891011121314151617181920struct A &amp;#123;  // return type  func get() -&amp;">
 <meta name="twitter:creator" content="@onmyway133">
 
     
@@ -81,14 +102,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/blog/2015/04/10/ios-asynchrony/" title="iOS Asynchrony" itemprop="url">iOS Asynchrony</a>
+      <a href="/blog/2016/06/22/Overloading-function-in-Swift/" title="Overloading function in Swift" itemprop="url">Overloading function in Swift</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
 		
   <p class="article-time">
-    <time datetime="2015-04-10T01:30:41.000Z" itemprop="datePublished"> Published 2015-04-10</time>
+    <time datetime="2016-06-22T21:58:59.000Z" itemprop="datePublished"> Published 2016-06-22</time>
     
   </p>
 </header>
@@ -97,69 +118,30 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-number">1.</span> <span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PromiseKit"><span class="toc-number">2.</span> <span class="toc-text">PromiseKit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bolt"><span class="toc-number">3.</span> <span class="toc-text">Bolt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ReactiveCocoa"><span class="toc-number">4.</span> <span class="toc-text">ReactiveCocoa</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.</span> <span class="toc-text">Function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generic-function"><span class="toc-number">2.</span> <span class="toc-text">Generic function</span></a></li></ol>
 		
 		</div>
 		
-		<h3 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a><a href="https://developer.apple.com/library/prerelease/mac/documentation/Performance/Reference/GCD_libdispatch_Ref/index.html" target="_blank" rel="external">GCD</a></h3><blockquote><br>  Grand Central Dispatch (GCD) comprises language features, runtime libraries, and system enhancements that provide systemic, comprehensive improvements to the support for concurrent code execution on multicore hardware in iOS and OS X.<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>// Doing something on the main thread</p>
-<p>dispatch_queue_t myQueue = dispatch_queue_create(“My Queue”,NULL);<br>dispatch_async(myQueue, ^{<br>    // Perform long running process</p>
-<pre><code>dispatch_async(dispatch_get_main_queue(), ^{
-    // Update the UI
-
-});
-</code></pre><p>}); </p>
-<p>// Continue doing other stuff on the<br>// main thread while process is running.<br>[/code]</p>
-<h3 id="PromiseKit"><a href="#PromiseKit" class="headerlink" title="PromiseKit"></a><a href="https://github.com/mxcl/PromiseKit" target="_blank" rel="external">PromiseKit</a></h3><blockquote><br>  A promise is an object that wraps an asynchronous task. Pass that object around, and write clean, ordered code; a logical, simple, modular stream of progression from one asynchronous task to another.<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>[self login].then(^{</p>
-<pre><code>// our login method wrapped an async task in a promise
-return [API fetchKittens];
-</code></pre><p>}).then(^(NSArray *fetchedKittens){</p>
-<pre><code>// our API class wraps our API and returns promises
-// fetchKittens returned a promise that resolves with an array of kittens
-self.kittens = fetchedKittens;
-[self.tableView reloadData];
-</code></pre><p>}).catch(^(NSError *error){</p>
-<pre><code>// any errors in any of the above promises land here
-[[[UIAlertView alloc] init…] show];
-</code></pre><p>});<br>[/code]</p>
-<h3 id="Bolt"><a href="#Bolt" class="headerlink" title="Bolt"></a><a href="https://github.com/BoltsFramework/Bolts-iOS" target="_blank" rel="external">Bolt</a></h3><blockquote><br>  A task represents the result of an asynchronous operation. Typically, a BFTask is returned from an asynchronous function and gives the ability to continue processing the result of the task. When a task is returned from a function, it’s already begun doing its job.<br><br>  A task is not tied to a particular threading model: it represents the work being done, not where it is executing.<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>[[self saveAsync:obj] continueWithBlock:^id(BFTask <em>task) {<br>  if (task.isCancelled) {<br>    // the save was cancelled.<br>  } else if (task.error) {<br>    // the save failed.<br>  } else {<br>    // the object was saved successfully.<br>    PFObject </em>object = task.result;<br>  }<br>  return nil;<br>}];<br>[/code]</p>
-<h3 id="ReactiveCocoa"><a href="#ReactiveCocoa" class="headerlink" title="ReactiveCocoa"></a><a href="https://github.com/ReactiveCocoa/ReactiveCocoa" target="_blank" rel="external">ReactiveCocoa</a></h3><blockquote><br>  ReactiveCocoa (RAC) is an Objective-C framework inspired by Functional Reactive Programming. It provides APIs for composing and transforming streams of values.<br><br>  Rather than using mutable variables which are replaced and modified in-place, RAC provides signals (represented by RACSignal) that capture present and future values.<br><br>  By chaining, combining, and reacting to signals, software can be written declaratively, without the need for code that continually observes and updates values.<br></blockquote>
-
-
-
-<p>[code language=”objc”]<br>[[[[client<br>    logInUser]<br>    flattenMap:^(User <em>user) {<br>        // Return a signal that loads cached messages for the user.<br>        return [client loadCachedMessagesForUser:user];<br>    }]<br>    flattenMap:^(NSArray </em>messages) {<br>        // Return a signal that fetches any remaining messages.<br>        return [client fetchMessagesAfterMessage:messages.lastObject];<br>    }]<br>    subscribeNext:^(NSArray *newMessages) {<br>        NSLog(@”New messages: %@”, newMessages);<br>    } completed:^{<br>        NSLog(@”Fetched all messages.”);<br>    }];<br>[/code]</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
-<li><a href="http://www.dimroc.com/2014/12/17/bolt-framework-promisekit-or-reactive-cocoa-for-async/" target="_blank" rel="external">Taming Callbacks in iOS: Bolts Framework</a></li>
-</ol>
-<ol>
-<li><a href="http://jeffreysambells.com/2013/03/01/asynchronous-operations-in-ios-with-grand-central-dispatch" target="_blank" rel="external">Asynchronous Operations in iOS with Grand Central Dispatch</a></li>
-</ol>
-<ol>
-<li><a href="http://sapandiwakar.in/promisekit-promises-for-ios/" target="_blank" rel="external">PromiseKit: Promises for iOS</a></li>
-</ol>
-<ol>
-<li><a href="http://www.fantageek.com/1649/recommended-resources-for-learning-reactivecocoa-2/">Recommended resources for learning ReactiveCocoa</a></li>
-</ol>
+		<h3 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h3><p>Functions in Swift are distinguishable by</p>
+<ul>
+<li>parameter label</li>
+<li>parameter type</li>
+<li>return type</li>
+</ul>
+<p>so that these are all valid</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// mix of parameter type and return type</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: String)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Int)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// parameter label</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(int: Int)</span></span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(string: String)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// concrete type from generic</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;String&gt;)</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(param: Array&lt;Int&gt;)</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When you specialize a generic type, like <code>Array&lt;Int&gt;</code>, you’re actually using a concrete type</p>
+<p>Unfortunately, this does not work for NSObject subclass</p>
+<blockquote>
+<p>Method ‘get()’ with Objective-C selector ‘get’ conflicts with previous declaration with the same Objective-C selector</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">String</span> &#123; <span class="keyword">return</span> <span class="string">""</span> &#125;</span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> -&gt; <span class="type">Int</span> &#123; <span class="keyword">return</span> <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Generic-function"><a href="#Generic-function" class="headerlink" title="Generic function"></a>Generic function</h3><p>We can overload generic functions as well</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>&lt;T&gt;<span class="params">(t: T)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"T"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(string: String)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"String"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(int: Int)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"Int"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
 
 
 </div>
@@ -168,7 +150,7 @@ self.kittens = fetchedKittens;
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.fantageek.com/blog/2015/04/10/ios-asynchrony/" data-title="iOS Asynchrony | Fantageek" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.fantageek.com/blog/2016/06/22/Overloading-function-in-Swift/" data-title="Overloading function in Swift | Fantageek" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -181,19 +163,11 @@ self.kittens = fetchedKittens;
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/blog/2015/04/18/opportunities/" title="Opportunities">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Opportunities</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/blog/2015/04/02/recommended-resources-for-learning-reactivecocoa-2/"  title="Recommended resources for learning ReactiveCocoa">
+<a href="/blog/2016/06/05/Property-configuration-in-Swift/"  title="Property configuration in Swift">
  <strong>下一篇：</strong><br/> 
- <span>Recommended resources for learning ReactiveCocoa
+ <span>Property configuration in Swift
 </span>
 </a>
 </div>
@@ -214,7 +188,7 @@ self.kittens = fetchedKittens;
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#GCD"><span class="toc-number">1.</span> <span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PromiseKit"><span class="toc-number">2.</span> <span class="toc-text">PromiseKit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bolt"><span class="toc-number">3.</span> <span class="toc-text">Bolt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ReactiveCocoa"><span class="toc-number">4.</span> <span class="toc-text">ReactiveCocoa</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Function"><span class="toc-number">1.</span> <span class="toc-text">Function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generic-function"><span class="toc-number">2.</span> <span class="toc-text">Generic function</span></a></li></ol>
  
   </div>
 

@@ -82,6 +82,90 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/06/12/xcode-code-sign-error-solved/" title="Xcode code sign error solved" itemprop="url">Xcode code sign error solved</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-06-12T15:21:25.000Z" itemprop="datePublished"> Published 2013-06-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Have you ever been in this situation, you have your development certificate (Enterprise certificate in my case) ready. Click both on .mobileprevision and .p12 to install them in your Keychain.</p>
+<p>All went OK. But deploying on your device in Xcode popups the error “Code sign error”.  </p>
+<p>Now, open Keychain Access, choose login as Keychains and My certificates as Category, click on your development certificate, you probably see that</p>
+<p>[code language=”css”]  </p>
+<p>This certificate was signed by an unknown authority  </p>
+<p>[/code]</p>
+<p>This is because your Mac is missing Apple Root Certificate, which   is a known authority :D  </p>
+<p>Visit <a href="http://www.apple.com/certificateauthority/" target="_blank" rel="external">Apple Root Certification Authority site,</a> you may need to download and install</p>
+<ul>
+<li>Apple Inc. Root Certificate</li>
+</ul>
+<ul>
+<li>Apple Computer, Inc. Root Certificate</li>
+</ul>
+<ul>
+<li>Worldwide Developer Relations</li>
+</ul>
+<p>Now back to your development certificate in Keychain Access, you should see</p>
+<p>[code language=”css”]  </p>
+<p>This certificate is valid  </p>
+<p>[/code]</p>
+<p>Now you should have no problem deploy your app to your device, open Xcode and start happy coding</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/mac-osx/">mac osx</a><a href="/tags/authority/">authority</a><a href="/tags/certificate/">certificate</a><a href="/tags/code/">code</a><a href="/tags/error/">error</a><a href="/tags/sign/">sign</a><a href="/tags/xcode/">xcode</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/06/12/xcode-code-sign-error-solved/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/06/01/how-netcut-works-and-the-prevention/" title="How Netcut works and the prevention" itemprop="url">How Netcut works and the prevention</a>
   </h1>
   <p class="article-author">By
@@ -790,7 +874,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/mac-osx/">mac osx</a><a href="/tags/32bit/">32bit</a><a href="/tags/64bit/">64bit</a><a href="/tags/intel/">intel</a>
+  <span></span> <a href="/tags/32bit/">32bit</a><a href="/tags/64bit/">64bit</a><a href="/tags/intel/">intel</a><a href="/tags/mac-osx/">mac osx</a>
   </div>
 
 </div>
@@ -862,7 +946,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/svn/">svn</a><a href="/tags/mac-osx/">mac osx</a><a href="/tags/32bit/">32bit</a><a href="/tags/64bit/">64bit</a><a href="/tags/svnx/">svnx</a>
+  <span></span> <a href="/tags/svn/">svn</a><a href="/tags/32bit/">32bit</a><a href="/tags/64bit/">64bit</a><a href="/tags/mac-osx/">mac osx</a><a href="/tags/svnx/">svnx</a>
   </div>
 
 </div>
@@ -874,82 +958,6 @@
 	
 	  	<span></span>
 		<a href="/blog/2013/04/18/how-to-use-svnx/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/04/12/bill-gates-11-rules-of-life/" title="Bill Gates&#39; 11 Rules of Life" itemprop="url">Bill Gates&#39; 11 Rules of Life</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-04-12T08:53:25.000Z" itemprop="datePublished"> Published 2013-04-12</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><strong>BILL GATES’ SPEECH TO MT. WHITNEY HIGH SCHOOL in Visalia, California.</strong></p>
-<p>Love him or hate him, he sure hits the nail on the head with this!</p>
-<p>To anyone with kids of any age, here’s some advice. Bill Gates recently gave a speech at a High School about 11 things they did not and will not learn in school. He talks about how feel-good, politically correct teachings created a generation of kids with no concept of reality and how this concept set them up for failure in the real world.</p>
-<p><strong>Rule 1:</strong> Life is not fair – get used to it!</p>
-<p><strong>Rule 2:</strong> The world won’t care about your self-esteem. The world will expect you to accomplish something BEFORE you feel good about yourself.</p>
-<p><strong>Rule 3:</strong> You will NOT make $60,000 a year right out of high school. You won’t be a vice-president with a car phone until you earn both.</p>
-<p><strong>Rule 4:</strong> If you think your teacher is tough, wait till you get a boss.</p>
-<p><strong>Rule 5:</strong> Flipping burgers is not beneath your dignity. Your Grandparents had a different word for burger flipping – they called it opportunity.</p>
-<p><strong>Rule 6:</strong> If you mess up, it’s not your parents’ fault, so don’t whine about your mistakes, learn from them.</p>
-<p><strong>Rule 7:</strong> Before you were born, your parents weren’t as boring as they are now. They got that way from paying your bills, cleaning your clothes and listening to you talk about how cool you thought you are. So before you save the rain forest from the parasites of your parent’s generation, try delousing the closet in your own room.</p>
-<p><strong>Rule 8:</strong> Your school may have done away with winners and losers, but life HAS NOT. In some schools they have abolished failing grades and they’ll give you as MANY TIMES as you want to get the right answer. This doesn’t bear the slightest resemblance to ANYTHING in real life.</p>
-<p><strong>Rule 9:</strong> Life is not divided into semesters. You don’t get summers off and very few employers are interested in helping you FIND YOURSELF. Do that on your own time.</p>
-<p><strong>Rule 10:</strong> Television is NOT real life. In real life people actually have to leave the coffee shop and go to jobs.</p>
-<p><strong>Rule 11:</strong> Be nice to nerds. Chances are you’ll end up working for one.</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Miscellaneous/">Miscellaneous</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/advice/">advice</a><a href="/tags/bill-gate/">bill gate</a><a href="/tags/rule/">rule</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/04/12/bill-gates-11-rules-of-life/#disqus_thread" class="comments-count-link">Comments</a>
 	
 </div>
 
@@ -1060,11 +1068,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1072,11 +1080,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1084,15 +1088,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1100,19 +1100,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -1120,11 +1116,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

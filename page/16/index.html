@@ -82,6 +82,105 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/06/23/build-openssl-for-windows-8-desktop/" title="Build OpenSSL for Windows 8 desktop" itemprop="url">Build OpenSSL for Windows 8 desktop</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-06-23T01:18:18.000Z" itemprop="datePublished"> Published 2013-06-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This tutorial will show you how to  build OpenSSL for Windows 8 desktop</p>
+<p>First, make sure you ‘ve already downloaded <a href="http://www.openssl.org/source/" target="_blank" rel="external">OpenSSL source code</a>. You also need <a href="http://www.activestate.com/activeperl/downloads" target="_blank" rel="external">ActivePerl</a> to process the Configure file</p>
+<p><strong>Build 32bit static library</strong>  </p>
+<p>Open VS2012 x86 Native Tool Command Prompt  </p>
+<p>Cd to your OpenSSL directory  </p>
+<p>Run the following commands</p>
+<p>[code language=”css”]  </p>
+<p>perl Configure VC-WIN32 no-asm no-shared  </p>
+<p>ms\do_ms  </p>
+<p>nmake -f ms\nt.mak  </p>
+<p>nmake -f ms\nt.mak install  </p>
+<p>[/code]</p>
+<p><strong>Build 64bit static library</strong>  </p>
+<p>Open VS2012 x64 Native Tool Command Prompt  </p>
+<p>Cd to your OpenSSL directory  </p>
+<p>Run the following commands</p>
+<p>[code language=”css”]  </p>
+<p>perl Configure VC-WIN64A no-asm no-shared  </p>
+<p>ms\do_win64a  </p>
+<p>nmake -f ms\nt.mak  </p>
+<p>nmake -f ms\nt.mak install  </p>
+<p>[/code]</p>
+<p>You ‘ll find your libraries at out32 folder. These are libeay32.lib (AKA libcrypto.a) and ssleay32 (AKA libssl.a), which can be used in your application</p>
+<p><strong>Note</strong>  </p>
+<ol>
+<li>If you want to build dynamic libraries, use the following</li>
+</ol>
+<p>[code language=”css”]  </p>
+<p>nmake -f ms\ntdll.mak  </p>
+<p>nmake -f ms\ntdll.mak install  </p>
+<p>[/code]</p>
+<ol>
+<li>If you want to build a Debug version, simply add “debug” to the perl command</li>
+</ol>
+<p>[code language=”css”]  </p>
+<p>perl Configure debug VC-WIN32 no-asm no-shared  </p>
+<p>[/code]</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/build/">build</a><a href="/tags/command/">command</a><a href="/tags/openssl/">openssl</a><a href="/tags/windows-8/">windows 8</a><a href="/tags/compile/">compile</a><a href="/tags/prompt/">prompt</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/06/23/build-openssl-for-windows-8-desktop/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/06/23/visual-studio-2012-c-project-load-failed/" title="Visual Studio 2012 C++ project load failed" itemprop="url">Visual Studio 2012 C++ project load failed</a>
   </h1>
   <p class="article-author">By
@@ -718,90 +817,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/06/12/xcode-code-sign-error-solved/" title="Xcode code sign error solved" itemprop="url">Xcode code sign error solved</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-06-12T15:21:25.000Z" itemprop="datePublished"> Published 2013-06-12</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Have you ever been in this situation, you have your development certificate (Enterprise certificate in my case) ready. Click both on .mobileprevision and .p12 to install them in your Keychain.</p>
-<p>All went OK. But deploying on your device in Xcode popups the error “Code sign error”.  </p>
-<p>Now, open Keychain Access, choose login as Keychains and My certificates as Category, click on your development certificate, you probably see that</p>
-<p>[code language=”css”]  </p>
-<p>This certificate was signed by an unknown authority  </p>
-<p>[/code]</p>
-<p>This is because your Mac is missing Apple Root Certificate, which   is a known authority :D  </p>
-<p>Visit <a href="http://www.apple.com/certificateauthority/" target="_blank" rel="external">Apple Root Certification Authority site,</a> you may need to download and install</p>
-<ul>
-<li>Apple Inc. Root Certificate</li>
-</ul>
-<ul>
-<li>Apple Computer, Inc. Root Certificate</li>
-</ul>
-<ul>
-<li>Worldwide Developer Relations</li>
-</ul>
-<p>Now back to your development certificate in Keychain Access, you should see</p>
-<p>[code language=”css”]  </p>
-<p>This certificate is valid  </p>
-<p>[/code]</p>
-<p>Now you should have no problem deploy your app to your device, open Xcode and start happy coding</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/mac-osx/">mac osx</a><a href="/tags/authority/">authority</a><a href="/tags/certificate/">certificate</a><a href="/tags/code/">code</a><a href="/tags/error/">error</a><a href="/tags/sign/">sign</a><a href="/tags/xcode/">xcode</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/06/12/xcode-code-sign-error-solved/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/15/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/17/">Next<span></span></a>
@@ -899,11 +914,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -911,11 +926,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -923,15 +934,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -939,19 +946,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -959,11 +962,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			

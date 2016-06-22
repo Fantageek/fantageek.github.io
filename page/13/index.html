@@ -82,6 +82,76 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2014/04/27/how-to-cool-a-mac-after-upgrading-ram/" title="How to cool a Mac after upgrading RAM" itemprop="url">How to cool a Mac after upgrading RAM</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-04-27T07:18:20.000Z" itemprop="datePublished"> Published 2014-04-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>My Mac is 13in Mid-2012 MacBook Pro with original 4GB of RAM.</p>
+<p>After upgrade it to the 8GB RAM Crucial kit, everything’s fine except the computer did crash then restart after long hours work, especially while I’m watching video.</p>
+<p>At first I thought it was an RAM uncompatibility and downloaded some tools to check it out. Tool I used was the famous Mac memtest <a href="http://osxdaily.com/2011/05/03/memtest-mac-ram-test/" target="_blank" rel="external">http://osxdaily.com/2011/05/03/memtest-mac-ram-test/</a></p>
+<p>Just follow the guide and it led to the end of the test, my Mac crashed and restarted again, althought the statuses of passed test sections on the console screen is all OK!  </p>
+<p>Re-check again at Crucial home page, after a system scanning, the result was a Guaranteed-compatible upgrade.  </p>
+<p>Re-run the memtest tool again, it crash right away.</p>
+<p>So at end I came up with the solution that was check the machine temperature. Seems it was very hot at the graphics stuff, which never made the computer crash or restart before. I did a search and used the smcFanControl <a href="http://www.eidac.de/?p=243" target="_blank" rel="external">http://www.eidac.de/?p=243</a> to tune the fan speed up to 6000rpm while runing memtest!</p>
+<p>The fan ‘s sound was louder, but I was patiently waiting for some good</p>
+<p> result which might help me stay out of RAM error! It finally got the test’s result. No crash/restart with   all tests was OK.</p>
+<p>I thought I got some clues from that. The reason was my computer’s getting hot after the RAM upgrade. So I kept monitoring my machine’s temp. It was so high while watching video, ~80 C, but the fan did not rise the speed up. I must use the smcFanControl to set the speed at 3000rpm to keep the GPU temperature at ~60. (Normal at 2000rpm).</p>
+<p>At the speed of 3000rpm, the fan retains quiet and the computer is acceptable warm. Need to search if keeping this speed in every normal start-ups may harm the computer, but with what I am opening now is Chrome (with playing Youtube and 5 other tabs), Eclipse, Skype and few other programs, I think it is totally a good try!</p>
+<p>Phew!</p>
+<p>P/S: The fan speed number we set in smcFanControl is only the minimum speed we allow the fan to run. It’s not a static value.</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Miscellaneous/">Miscellaneous</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/04/27/how-to-cool-a-mac-after-upgrading-ram/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/04/13/compilers-and-interpreters-c-jones/" title="Compilers And Interpreters - C. Jones" itemprop="url">Compilers And Interpreters - C. Jones</a>
   </h1>
   <p class="article-author">By
@@ -894,72 +964,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/01/12/create-and-use-custom-view-in-ios/" title="Create and use custom view in iOS" itemprop="url">Create and use custom view in iOS</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-01-12T02:57:18.000Z" itemprop="datePublished"> Published 2014-01-12</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This maybe old to most of you, but completely new to me, I just met iOS several months ago and it is a little late.</p>
-<p>The problem today is how to do with UI reusability. During the development, we find the need to create custom views and want to reuse them everywhere we need to, whether in code or in another nib. This post is particular for the use with Nib, but I’ll recap the use with code as well, and from a pragmatic point of view :D</p>
-<p>The example will be about creating a Custom View (containing a Button and a Label) and reuse that custom view in the View Controller</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2014/01/12/create-and-use-custom-view-in-ios/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Warning-error-log-has-been-disabled-for-security-reasons-in-home-fantagee-public-html-wp-includes-wp-db-php-on-line-1200/">Warning: error_log() has been disabled for security reasons in /home/fantagee/public_html/wp-includes/wp-db.php on line 1200</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/01/12/create-and-use-custom-view-in-ios/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/12/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/14/">Next<span></span></a>
@@ -1057,11 +1061,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1069,11 +1073,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1081,15 +1081,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1097,19 +1093,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
@@ -1117,11 +1109,23 @@
 			
 		
 			
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
