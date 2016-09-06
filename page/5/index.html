@@ -82,6 +82,77 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/09/27/if-case-in-swift-2/" title="if case in Swift 2" itemprop="url">if case in Swift 2</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-09-27T05:12:43.000Z" itemprop="datePublished"> Published 2015-09-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>If you ‘re trying to perform 2 nested <code>switch</code> just to find the most suitable combination, then <code>if case</code> in Swift 2 will save your day</p>
+<p>Suppose I have a <code>Maybe</code> (Maybe is similar to Optional)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public enum Maybe&lt;X&gt; &#123;</span><br><span class="line">    case Just(X)</span><br><span class="line">    case Nothing</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>A naive solution could use nested <code>switch</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func combine&lt;X&gt;(ma: Maybe&lt;X&gt;, mb: Maybe&lt;X&gt;, f:(X,X)-&gt;X) -&gt; Maybe&lt;X&gt; &#123;</span><br><span class="line">    switch ma &#123;</span><br><span class="line">    case let .Just(valueA):</span><br><span class="line">        switch mb &#123;</span><br><span class="line">        case let .Just(valueB):</span><br><span class="line">            return .Just(f(valueA,valueB))</span><br><span class="line">        case .Nothing:</span><br><span class="line">            return .Nothing</span><br><span class="line">        &#125;</span><br><span class="line">    case .Nothing:</span><br><span class="line">        return .Nothing;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Using <code>if case</code> with multiple <code>let</code> statements</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func combine2&lt;X&gt;(ma: Maybe&lt;X&gt;, mb: Maybe&lt;X&gt;, f:(X,X)-&gt;X) -&gt; Maybe&lt;X&gt; &#123;</span><br><span class="line">    if case let .Just(valueA) = ma, case let .Just(valueB) = mb &#123;</span><br><span class="line">        return .Just(f(valueA,valueB))</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return .Nothing</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And enjoy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let ma = Maybe.Just(1)</span><br><span class="line">let mb = Maybe.Just(2)</span><br><span class="line">let mc = combine(ma, mb: mb, f: +)</span><br><span class="line">let md = combine2(ma, mb: mb, f: +)</span><br></pre></td></tr></table></figure>
+<p>Here is the log if don’t believe me :D</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po ma</span><br><span class="line">▿ Maybe&lt;Int&gt;</span><br><span class="line">  - Just : 1</span><br><span class="line"></span><br><span class="line">(lldb) po mb</span><br><span class="line">▿ Maybe&lt;Int&gt;</span><br><span class="line">  - Just : 2</span><br><span class="line"></span><br><span class="line">(lldb) po mc</span><br><span class="line">▿ Maybe&lt;Int&gt;</span><br><span class="line">  - Just : 3</span><br><span class="line"></span><br><span class="line">(lldb) po md</span><br><span class="line">▿ Maybe&lt;Int&gt;</span><br><span class="line">  - Just : 3</span><br></pre></td></tr></table></figure>
+<p>Actually, there is another way, that is pattern matching against a tuple that contains both Maybe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func combine3&lt;X&gt;(ma: Maybe&lt;X&gt;, mb: Maybe&lt;X&gt;, f:(X,X)-&gt;X) -&gt; Maybe&lt;X&gt; &#123;</span><br><span class="line">    switch (ma, mb) &#123;</span><br><span class="line">    case let (.Just(valueA), .Just(valueB)):</span><br><span class="line">        return .Just(f(valueA, valueB))</span><br><span class="line">    case _:</span><br><span class="line">        return . Nothing</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This is OK for a simple case like this. But I find <code>if let</code> allows multiple statements, the following statement can access variable from the previous statements, which is nicer</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/" target="_blank" rel="external">Match Me if you can: Swift Pattern Matching in Detail.</a></li>
+<li><a href="http://natashatherobot.com/swift-2-pattern-matching-with-if-case/" target="_blank" rel="external">Swift 2: Pattern Matching with “if case”</a></li>
+<li><a href="http://austinzheng.com/2015/09/23/pmatch-control-flow/" target="_blank" rel="external">Swift 2: Control Flow Pattern Matching Examples</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/09/27/if-case-in-swift-2/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/09/23/type-casting-in-swift/" title="Type casting in Swift 2" itemprop="url">Type casting in Swift 2</a>
   </h1>
   <p class="article-author">By
@@ -821,145 +892,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/04/ios-configuration/" title="iOS configuration" itemprop="url">iOS configuration</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-04T02:19:32.000Z" itemprop="datePublished"> Published 2015-07-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This is about creating multiple targets from a project.</p>
-<h3 id="Source-file"><a href="#Source-file" class="headerlink" title="Source file"></a>Source file</h3><p>Source files (.m, .plist, …) must be checked into appropriate target</p>
-<h3 id="Info-plist"><a href="#Info-plist" class="headerlink" title="Info.plist"></a>Info.plist</h3><p>Each target should have its own Info.plist. Info.plist should not be checked into the target. Otherwise, you will get a warning</p>
-<blockquote><br>  The Copy Bundle Resources build phase contains this target’s Info.plist file<br></blockquote>
-
-
-
-<p>Instead, it must be specified in the target ‘s <code>Build Setting -&gt; Packaging -&gt; Info.plist file</code>. It can be absolute or relative to the project file</p>
-<h3 id="Entitlement"><a href="#Entitlement" class="headerlink" title="Entitlement"></a>Entitlement</h3><p>Entitlement should not be checked into the target</p>
-<p>Instead, it must be specified in the target ‘s <code>Build Setting -&gt; Code Signing -&gt; Code Signing Entitlement</code>. Ut can be absolute or relative to the project file</p>
-<h3 id="Asset-Catalog"><a href="#Asset-Catalog" class="headerlink" title="Asset Catalog"></a>Asset Catalog</h3><p>Asset Catalog must be checked into the appropriate target. The fix for multiple target with multiple Asset Catalog together with Cocoapods is <a href="https://github.com/2359media/ios-dev-discussions/issues/7" target="_blank" rel="external">Multiple targets and Asset Catalog with Cocoapods</a></p>
-<h3 id="Read-Build-Setting-Reference"><a href="#Read-Build-Setting-Reference" class="headerlink" title="Read Build Setting Reference"></a>Read Build Setting Reference</h3><p><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/XcodeBuildSettingRef/1-Build_Setting_Reference/build_setting_ref.html" target="_blank" rel="external">Build Setting Reference</a> has some predefined macros that can be useful.</p>
-<h3 id="Preprocessor-Macro"><a href="#Preprocessor-Macro" class="headerlink" title="Preprocessor Macro"></a>Preprocessor Macro</h3><p>Under target <code>Build Setting -&gt; Apple LLVM Preprocessing -&gt; Preprocessor Macros</code>, we can define our own macro, which can be useful in code.</p>
-<p>For example, in Distro A target, I can set macro DISTRO_A to both Debug and Release Configuration.</p>
-<h3 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h3><p>Multiple targets can have different configuration (server path, Facebook ID, …). This can be achieved by several ways</p>
-<h4 id="ifdef"><a href="#ifdef" class="headerlink" title="ifdef"></a>ifdef</h4><p>[code lang=text]</p>
-<p>#ifdef DISTRO_A<br>NSString *serverPath = @”<a href="http://distro-a.com" target="_blank" rel="external">http://distro-a.com</a>“;</p>
-<p>#else<br>NSString *serverPath = @”<a href="http://distro-b.com" target="_blank" rel="external">http://distro-b.com</a>“;</p>
-<p>#endif<br>[/code]</p>
-<h4 id="1-config-h-file-and-multiple-config-m-file-for-each-target"><a href="#1-config-h-file-and-multiple-config-m-file-for-each-target" class="headerlink" title="1 config.h file and multiple config.m file for each target"></a>1 config.h file and multiple config.m file for each target</h4><p><code>Config.h</code></p>
-<p>[code lang=text]<br>extern NSString *serverPath;<br>[/code]</p>
-<p><code>Config.m</code> (Distro A target)</p>
-<p>[code lang=text]<br>NSString *serverPath = @”<a href="http://distro-a.com" target="_blank" rel="external">http://distro-a.com</a>“;<br>[/code]</p>
-<p><code>Config.m</code> (Distro B target)</p>
-<p>[code lang=text]<br>NSString *serverPath = @”<a href="http://distro-b.com" target="_blank" rel="external">http://distro-b.com</a>“;<br>[/code]</p>
-<h4 id="Protocol-and-Abstract-Factory"><a href="#Protocol-and-Abstract-Factory" class="headerlink" title="Protocol and Abstract Factory"></a>Protocol and Abstract Factory</h4><p>We can define a protocol<br><code>Config.h</code><br>[code language=”objc”]<br>@protocol Config <nsobject></nsobject></p>
-<ul>
-<li>(NSString *)serverPath;</li>
-</ul>
-<p>@end<br>[/code]</p>
-<p><code>DistroAConfig.h</code><br>[code language=”objc”]<br>@interface DistroAConfig : NSObject <config></config></p>
-<p>@end<br>[/code]</p>
-<p><code>DistroAConfig.m</code><br>[code language=”objc”]<br>@implementation DistroAConfig</p>
-<ul>
-<li>(NSString *)serverPath {<br>  return @”<a href="http://distro-a.com" target="_blank" rel="external">http://distro-a.com</a>“;<br>}</li>
-</ul>
-<p>@end<br>[/code]</p>
-<h3 id="Theme"><a href="#Theme" class="headerlink" title="Theme"></a>Theme</h3><p>Each target can have different themes (different color, font, text size, spacing, …). We can use protocol together with Abstract Factory pattern. Each target has a ThemeFactory that can produces HomeTheme, SettingTheme, AboutTheme, FavoriteTheme, … This way you only need to use <code>ifdef</code> once</p>
-<p><code>Theme.h</code><br>[code language=”objc”]<br>id<themefactory> themeFactory();<br>[/code]</themefactory></p>
-<p><code>Theme.m</code><br>[code language=”objc”]<br>id<themefactory> themeFactory() {</themefactory></p>
-<p>#ifdef DISTRO_A<br>    return [DistroAHomeThemeFactory new];</p>
-<p>#else<br>    return [DistroBThemeFactory new];</p>
-<p>#endif<br>}<br>[/code]</p>
-<p><code>ThemeFactory.h</code><br>[code language=”objc”]<br>@protocol ThemeFactory <nsobject></nsobject></p>
-<ul>
-<li>(id<hometheme>)home;</hometheme></li>
-</ul>
-<p>@end<br>[/code]</p>
-<p><code>HomeTheme.h</code><br>[code language=”objc”]<br>@protocol HomeTheme <nsobject></nsobject></p>
-<ul>
-<li>(UIColor *)titleColor;</li>
-<li>(UIFont *)titleFont;</li>
-</ul>
-<p>@end<br>[/code]</p>
-<p><code>DistroAThemeFactory.h</code><br>[code language=”objc”]<br>@interface DistroAThemeFactory : NSObject <themefactory><br>@end<br>[/code]</themefactory></p>
-<p><code>DistroAThemeFactory.m</code><br>[code language=”objc”]<br>@implementation DistroAThemeFactory</p>
-<ul>
-<li>(id<hometheme>)home {<br>  return [DistroAHomeTheme new];<br>}</hometheme></li>
-</ul>
-<p>@end<br>[/code]</p>
-<p><code>DistroAHomeTheme.h</code><br>[code language=”objc”]<br>@interface DistroAHomeTheme : NSObject <hometheme></hometheme></p>
-<p>@end<br>[/code]</p>
-<p><code>DistroAHomeTheme.m</code><br>[code language=”objc”]<br>@implementation DistroAHomeTheme</p>
-<ul>
-<li><p>(UIColor *)titleColor {<br>  return [UIColor redColor];<br>}</p>
-</li>
-<li><p>(UIFont *)titleFont {<br>  return [UIFont boldSystemFontOfSize:15];<br>}</p>
-</li>
-</ul>
-<p>@end<br>[/code]</p>
-<p><code>HomeViewController.m</code><br>[code language=”objc”]</p>
-<p>#import “Theme.h”</p>
-<p>self.label.textColor = themeFactory().home.titleColor;<br>[/code]</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://samwize.com/2014/05/22/create-multiple-targets-slash-apps-for-1-xcode-project/" target="_blank" rel="external">Create Multiple Targets/Apps for 1 Xcode Project</a></li>
-</ul>
-<ul>
-<li><a href="http://lowlevelbits.org/yaml-based-configuration-for-objc-projects/" target="_blank" rel="external">YAML-based Configuration for ObjC Projects</a></li>
-</ul>
-<ul>
-<li><a href="http://ilya.puchka.me/info-plist-preprocessing/" target="_blank" rel="external">Info.plist preprocessing</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/04/ios-configuration/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/4/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/6/">Next<span></span></a>
@@ -1057,15 +989,19 @@
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -1077,19 +1013,19 @@
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1101,15 +1037,11 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -1117,11 +1049,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			

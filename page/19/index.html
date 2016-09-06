@@ -82,6 +82,70 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/01/23/how-to-run-a-successful-free-software-project/" title="How to run a successful free software project" itemprop="url">How to run a successful free software project</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-01-23T16:19:05.000Z" itemprop="datePublished"> Published 2013-01-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>When running a free software project, you won’t need to talk about such weighty philosophical matters on a daily basis. Programmers will not insist that everyone else in the project agree with their views on all things (those who do insist on this quickly find themselves unable to work in any project). </p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2013/01/23/how-to-run-a-successful-free-software-project/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/open-source/">open source</a><a href="/tags/project/">project</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/01/23/how-to-run-a-successful-free-software-project/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/01/22/voip-how-to-calculate-packet-size/" title="VoIP how to calculate packet size" itemprop="url">VoIP how to calculate packet size</a>
   </h1>
   <p class="article-author">By
@@ -129,7 +193,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/packet-size/">packet size</a><a href="/tags/voip/">voip</a>
+  <span></span> <a href="/tags/voip/">voip</a><a href="/tags/packet-size/">packet size</a>
   </div>
 
 </div>
@@ -277,7 +341,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/voip/">voip</a><a href="/tags/buffer/">buffer</a><a href="/tags/jitter/">jitter</a>
+  <span></span> <a href="/tags/buffer/">buffer</a><a href="/tags/jitter/">jitter</a><a href="/tags/voip/">voip</a>
   </div>
 
 </div>
@@ -724,95 +788,6 @@ n[2] = you?
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/22/wp7-how-to-deal-with-slider-s-strange-behavior/" title="WP7 how to deal with slider &#39;s strange behavior" itemprop="url">WP7 how to deal with slider &#39;s strange behavior</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-22T16:36:56.000Z" itemprop="datePublished"> Published 2012-12-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Sometimes the slider in your   app can be dragged for very short range. Don’t panic, as this strange behavior is caused by using toolkit GestureListener incorrectly.</p>
-<p>The solution is disable Gesture listener when starting dragging slider, then enable Gesture when not dragging slider anymore.</p>
-<p>The XAML part</p>
-<p>[sourcecode language=”csharp”]  </p>
-<slider height="84" name="fixedSlider" manipulationstarted="disableGestures" manipulationcompleted="restoreGestures">  
-
-<p>[/sourcecode]</p>
-<p>The code behind</p>
-<p>[sourcecode language=”csharp”]  </p>
-<p>GestureType prevGestureType;  </p>
-<p>private void disableGestures(object sender, ManipulationStartedEventArgs e)  </p>
-<p>{  </p>
-<pre><code>prevGestureType = TouchPanel.EnabledGestures;  
-
-TouchPanel.EnabledGestures = GestureType.None;  
-
-fixedSlider.IsHitTestVisible = false;  
-</code></pre><p>}</p>
-<p>private void restoreGestures(object sender, ManipulationCompletedEventArgs e)  </p>
-<p>{  </p>
-<pre><code>TouchPanel.EnabledGestures = prevGestureType;  
-</code></pre><p>}  </p>
-<p>[/sourcecode]</p>
-<p><strong>Reference</strong>  </p>
-<ol>
-<li><a href="http://stackoverflow.com/questions/13342825/wp7-slider-strange-behavior" target="_blank" rel="external">http://stackoverflow.com/questions/13342825/wp7-slider-strange-behavior</a></li>
-</ol>
-</slider>
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Windows-Phone/">Windows Phone</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/behavior/">behavior</a><a href="/tags/gesture/">gesture</a><a href="/tags/slider/">slider</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/22/wp7-how-to-deal-with-slider-s-strange-behavior/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/18/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/20/">Next<span></span></a>
@@ -910,15 +885,19 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -930,19 +909,19 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -954,15 +933,11 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -970,11 +945,11 @@ fixedSlider.IsHitTestVisible = false;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			

@@ -82,6 +82,68 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/01/25/nsapplicationdelegate-and-notification/" title="NSApplicationDelegate and notification" itemprop="url">NSApplicationDelegate and notification</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-25T16:24:57.000Z" itemprop="datePublished"> Published 2016-01-25</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>In an iOS project, we often see this in <code>AppDelegate</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@UIApplicationMain</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppDelegate</span>: <span class="title">UIResponder</span>, <span class="title">UIApplicationDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> window: <span class="type">UIWindow</span>?</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>But in a Cocoa project, we see this instead</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NSApplicationMain</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppDelegate</span>: <span class="title">NSObject</span>, <span class="title">NSApplicationDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationDidFinishLaunching</span><span class="params">(aNotification: NSNotification)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Insert code here to initialize your application</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationWillTerminate</span><span class="params">(aNotification: NSNotification)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Insert code here to tear down your application</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In this case the param is of type <code>NSNotification</code></p>
+<h2 id="Delegate-and-notification"><a href="#Delegate-and-notification" class="headerlink" title="Delegate and notification"></a>Delegate and notification</h2><p>Reading <a href="https://developer.apple.com/library/mac/documentation/General/Conceptual/DevPedia-CocoaCore/Delegation.html" target="_blank" rel="external">Cocoa Core Competencies - Delegation</a></p>
+<blockquote>
+<p>The delegate of most Cocoa framework classes is automatically registered as an observer of notifications posted by the delegating object. The delegate need only implement a notification method declared by the framework class to receive a particular notification message. Following the example above, a window object posts an NSWindowWillCloseNotification to observers but sends a windowShouldClose: message to its delegate.</p>
+</blockquote>
+<p>So the pattern is that the delegate should strip the <code>NS</code> and <code>Notification</code>, like <code>NSWindowWillCloseNotification</code> to <code>windowShouldClose:</code></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/01/25/nsapplicationdelegate-and-notification/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2016/01/20/digit-grouping-in-swift/" title="Digit grouping in Swift" itemprop="url">Digit grouping in Swift</a>
   </h1>
   <p class="article-author">By
@@ -950,83 +1012,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2016/01/02/curry-in-swift/" title="Curry in Swift" itemprop="url">Curry in Swift</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2016-01-02T03:58:39.000Z" itemprop="datePublished"> Published 2016-01-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Haskell is notorious for <code>currying</code>, and Swift has currying, too</p>
-<p>I love ReactiveCocoa, RxSwift and I always take time to dig into it. The other day, I was practise making Signal based on this talk <a href="https://www.youtube.com/watch?v=AcDaWe3S75c" target="_blank" rel="external">UIKonf 2015 - Jens Ravens: Functional Reactive Programming without Black Magic</a></p>
-<p>Take a look at my repo <a href="https://github.com/onmyway133/Signal" target="_blank" rel="external">Signal</a></p>
-<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>I was making a filter for a <code>Signal</code>. The idea of filter is that we should update signal if the Event is Next with right filtered value</p>
-<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt;&#123;</span><br><span class="line">    let signal = Signal&lt;T&gt;()</span><br><span class="line">    subscribe &#123; result in</span><br><span class="line">        switch(result) &#123;</span><br><span class="line">        case let .Success(value):</span><br><span class="line">            if f(value) &#123;</span><br><span class="line">                signal.update(result)</span><br><span class="line">            &#125;</span><br><span class="line">        case let .Error(error): signal.update(.Error(error))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return signal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-params"><a href="#2-params" class="headerlink" title="2 params"></a>2 params</h2><p>But having <code>Event</code> as another monad, I think it should be more encapsulated if that switching logic gets moved into the <code>Event</code>. Here the filter takes 2 params</p>
-<p><code>Event.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func filter(f: T -&gt; Bool, callback: (Event&lt;T&gt; -&gt; Void)) &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case let .Next(value) where f(value):</span><br><span class="line">            callback(self)</span><br><span class="line">        case .Failed:</span><br><span class="line">            callback(self)</span><br><span class="line">        default:</span><br><span class="line">            break</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt; &#123;</span><br><span class="line">    let signal = Signal&lt;T&gt;()</span><br><span class="line"></span><br><span class="line">    subscribe &#123; event in</span><br><span class="line">        event.filter(f, callback: signal.update)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return signal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Currying"><a href="#Currying" class="headerlink" title="Currying"></a>Currying</h2><p>With currying, we can make <code>filter</code> a more abstract function, and defer the decision to pass the <code>callback</code> param. It is a little carried away but I find it helpful this way</p>
-<p>Now <code>filter</code> accepts 1 param, and it returns a function that takes <code>callback</code> as its param</p>
-<p><code>Event.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func filter(f: T -&gt; Bool) -&gt; ((Event&lt;T&gt; -&gt; Void) -&gt; Void) &#123;</span><br><span class="line">        return &#123; g in</span><br><span class="line">            switch self &#123;</span><br><span class="line">            case let .Next(value) where f(value):</span><br><span class="line">                g(self)</span><br><span class="line">            case .Failed:</span><br><span class="line">                g(self)</span><br><span class="line">            default:</span><br><span class="line">                break</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt; &#123;</span><br><span class="line">        let signal = Signal&lt;T&gt;()</span><br><span class="line"></span><br><span class="line">        subscribe &#123; event in</span><br><span class="line">            event.filter(f)(signal.update)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return signal</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Curry-syntax-in-Swift-2"><a href="#Curry-syntax-in-Swift-2" class="headerlink" title="Curry syntax in Swift 2"></a>Curry syntax in Swift 2</h2><p>Swift 2 supports curry syntax function</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(a: Int)</span></span>(b: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sumWith5 = sum(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">let</span> result = sumWith5(b: <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="No-more-curry-syntax-in-Swift-3"><a href="#No-more-curry-syntax-in-Swift-3" class="headerlink" title="No more curry syntax in Swift 3"></a>No more curry syntax in Swift 3</h2><p>You may want to find out</p>
-<ul>
-<li><a href="http://ericasadun.com/2015/12/18/bidding-farewell-to-currying/" target="_blank" rel="external">Bidding farewell to currying</a></li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://learnyouahaskell.com/higher-order-functions" target="_blank" rel="external">Higher order functions</a></li>
-<li><a href="http://programmers.stackexchange.com/questions/185585/what-is-the-advantage-of-currying" target="_blank" rel="external">What is the advantage of currying?</a></li>
-<li><a href="http://stackoverflow.com/questions/4888480/practical-use-of-curried-functions?lq=1" target="_blank" rel="external">Practical use of curried functions?</a></li>
-<li><a href="https://robots.thoughtbot.com/introduction-to-function-currying-in-swift" target="_blank" rel="external">Introduction to Function Currying in Swift</a></li>
-<li><a href="http://www.russbishop.net/swift-function-currying" target="_blank" rel="external">Swift Function Currying</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2016/01/02/curry-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
@@ -1124,15 +1109,19 @@
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -1144,19 +1133,19 @@
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1168,15 +1157,11 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -1184,11 +1169,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			

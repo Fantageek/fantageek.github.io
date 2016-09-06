@@ -82,6 +82,83 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/01/02/curry-in-swift/" title="Curry in Swift" itemprop="url">Curry in Swift</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-02T03:58:39.000Z" itemprop="datePublished"> Published 2016-01-02</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Haskell is notorious for <code>currying</code>, and Swift has currying, too</p>
+<p>I love ReactiveCocoa, RxSwift and I always take time to dig into it. The other day, I was practise making Signal based on this talk <a href="https://www.youtube.com/watch?v=AcDaWe3S75c" target="_blank" rel="external">UIKonf 2015 - Jens Ravens: Functional Reactive Programming without Black Magic</a></p>
+<p>Take a look at my repo <a href="https://github.com/onmyway133/Signal" target="_blank" rel="external">Signal</a></p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>I was making a filter for a <code>Signal</code>. The idea of filter is that we should update signal if the Event is Next with right filtered value</p>
+<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt;&#123;</span><br><span class="line">    let signal = Signal&lt;T&gt;()</span><br><span class="line">    subscribe &#123; result in</span><br><span class="line">        switch(result) &#123;</span><br><span class="line">        case let .Success(value):</span><br><span class="line">            if f(value) &#123;</span><br><span class="line">                signal.update(result)</span><br><span class="line">            &#125;</span><br><span class="line">        case let .Error(error): signal.update(.Error(error))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return signal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-params"><a href="#2-params" class="headerlink" title="2 params"></a>2 params</h2><p>But having <code>Event</code> as another monad, I think it should be more encapsulated if that switching logic gets moved into the <code>Event</code>. Here the filter takes 2 params</p>
+<p><code>Event.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func filter(f: T -&gt; Bool, callback: (Event&lt;T&gt; -&gt; Void)) &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case let .Next(value) where f(value):</span><br><span class="line">            callback(self)</span><br><span class="line">        case .Failed:</span><br><span class="line">            callback(self)</span><br><span class="line">        default:</span><br><span class="line">            break</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt; &#123;</span><br><span class="line">    let signal = Signal&lt;T&gt;()</span><br><span class="line"></span><br><span class="line">    subscribe &#123; event in</span><br><span class="line">        event.filter(f, callback: signal.update)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return signal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Currying"><a href="#Currying" class="headerlink" title="Currying"></a>Currying</h2><p>With currying, we can make <code>filter</code> a more abstract function, and defer the decision to pass the <code>callback</code> param. It is a little carried away but I find it helpful this way</p>
+<p>Now <code>filter</code> accepts 1 param, and it returns a function that takes <code>callback</code> as its param</p>
+<p><code>Event.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func filter(f: T -&gt; Bool) -&gt; ((Event&lt;T&gt; -&gt; Void) -&gt; Void) &#123;</span><br><span class="line">        return &#123; g in</span><br><span class="line">            switch self &#123;</span><br><span class="line">            case let .Next(value) where f(value):</span><br><span class="line">                g(self)</span><br><span class="line">            case .Failed:</span><br><span class="line">                g(self)</span><br><span class="line">            default:</span><br><span class="line">                break</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>Signal.swift</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public func filter(f: T -&gt; Bool) -&gt; Signal&lt;T&gt; &#123;</span><br><span class="line">        let signal = Signal&lt;T&gt;()</span><br><span class="line"></span><br><span class="line">        subscribe &#123; event in</span><br><span class="line">            event.filter(f)(signal.update)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return signal</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Curry-syntax-in-Swift-2"><a href="#Curry-syntax-in-Swift-2" class="headerlink" title="Curry syntax in Swift 2"></a>Curry syntax in Swift 2</h2><p>Swift 2 supports curry syntax function</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sum</span><span class="params">(a: Int)</span></span>(b: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sumWith5 = sum(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">let</span> result = sumWith5(b: <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="No-more-curry-syntax-in-Swift-3"><a href="#No-more-curry-syntax-in-Swift-3" class="headerlink" title="No more curry syntax in Swift 3"></a>No more curry syntax in Swift 3</h2><p>You may want to find out</p>
+<ul>
+<li><a href="http://ericasadun.com/2015/12/18/bidding-farewell-to-currying/" target="_blank" rel="external">Bidding farewell to currying</a></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://learnyouahaskell.com/higher-order-functions" target="_blank" rel="external">Higher order functions</a></li>
+<li><a href="http://programmers.stackexchange.com/questions/185585/what-is-the-advantage-of-currying" target="_blank" rel="external">What is the advantage of currying?</a></li>
+<li><a href="http://stackoverflow.com/questions/4888480/practical-use-of-curried-functions?lq=1" target="_blank" rel="external">Practical use of curried functions?</a></li>
+<li><a href="https://robots.thoughtbot.com/introduction-to-function-currying-in-swift" target="_blank" rel="external">Introduction to Function Currying in Swift</a></li>
+<li><a href="http://www.russbishop.net/swift-function-currying" target="_blank" rel="external">Swift Function Currying</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/01/02/curry-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/12/27/nsnotificationcenter-in-ios/" title="NSNotificationCenter in iOS" itemprop="url">NSNotificationCenter in iOS</a>
   </h1>
   <p class="article-author">By
@@ -916,115 +993,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/12/03/learning-how-to-learn/" title="Learning How To Learn" itemprop="url">Learning How To Learn</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-12-03T14:37:47.000Z" itemprop="datePublished"> Published 2015-12-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>Most of us spend some good time trying to learn new things, but actually how many of us have ever stopped to think about the key principles behind the learning process? ~ <a href="https://www.quora.com/profile/Gianni-Cara" target="_blank" rel="external">Gianni</a></p>
-</blockquote>
-<p>I recently take a course about <code>Learning How To Learn</code>, in which I learn about how the brain works, how to apply learning techniques and tricks to get along well with your brain, and to learn more effectively.</p>
-<p>Here are my short notes</p>
-<h2 id="Metaphor"><a href="#Metaphor" class="headerlink" title="Metaphor"></a>Metaphor</h2><p>Metaphor and analogy help simplifying matters</p>
-<h2 id="Focused-vs-diffuse-mode"><a href="#Focused-vs-diffuse-mode" class="headerlink" title="Focused vs diffuse mode"></a>Focused vs diffuse mode</h2><blockquote>
-<p>You’re either in the focused mode or the diffuse mode<br>of thinking. It seems you can’t be in both thinking<br>modes at the same time.</p>
-</blockquote>
-<ul>
-<li>Focused: intense thinking, uninterruptedly</li>
-<li>Diffuse: leave what you’re doing and relax. Here you can look at things broadly from a very different,<br>big picture perspective</li>
-</ul>
-<blockquote>
-<p>Have you ever had a problem that you couldn’t find a solution and then suddenly after a good night of sleep you woke up with a brilliant idea? That’s because sleeping is another moment when your brain naturally falls into the diffuse mode.</p>
-<p>Thomas Edison knew the importance of the diffuse mode. When faced with a problem, Edison would sit and relax in his chair, holding ball bearings in his hand. He would then relax away letting his mind run free until fall as sleep. Once he felt as sleep, the ball bearings would drop and make him wake up with the noise. He would then get back to his work and take advantage from the ideas he got while in diffuse mode</p>
-</blockquote>
-<h2 id="Deal-with-procrastination"><a href="#Deal-with-procrastination" class="headerlink" title="Deal with procrastination"></a>Deal with procrastination</h2><p>People tend to procrastinate, because our brains tend to turn away unease new things to something more pleasant and familiar</p>
-<p>Use Pomodoro technique, set a timer of more than 25 minutes, uninterruptedly. Then promise to give yourself a reward</p>
-<h2 id="Practice-Makes-Permanent"><a href="#Practice-Makes-Permanent" class="headerlink" title="Practice Makes Permanent"></a>Practice Makes Permanent</h2><p>When facing new and abstract concepts, like Monad :P it’s important to practice with ideas and concepts to help enhance and strengthen the neural connection your making during the learning process.</p>
-<p>Checking if you have any holes in your understanding of the material is a good first step. Create a test checklist where you can go from each point and recall everything you learned. If there’s something that is not 100% clear yet, then you probably still need to spend time on it.</p>
-<h2 id="Prefer-spaced-repetition"><a href="#Prefer-spaced-repetition" class="headerlink" title="Prefer spaced repetition"></a>Prefer spaced repetition</h2><p>If you want to move that information into your long term memory, it often takes time and practice.</p>
-<p>Spaced repetition involves repeating what you’re trying to retain, but what you want to do is space this<br>repetition out, daily, over a number of days</p>
-<h2 id="Sleeping"><a href="#Sleeping" class="headerlink" title="Sleeping"></a>Sleeping</h2><p>Plain being awake creates toxic products in your brain, and sleeping remove these toxic. Sleeping is also when you go into your diffuse mode.</p>
-<p>Sleep has also been shown to make a remarkable difference in your ability to figure out difficult problems and to understand what you’re trying to learn.</p>
-<h2 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h2><p>Chunking is when you grasp and master various bits and<br>pieces of the skills you need. You’re creating little neural mini chunks, that you can then gradually knit together into larger neural chunks</p>
-<p>Forming initial chunk by going through examples, creating a road map of what you need to go through</p>
-<ul>
-<li>Focus your undivided attention on the information you want to chunk</li>
-<li>Understand the basic idea</li>
-<li>See the connection between the basic elements</li>
-<li>Practice and repetition</li>
-</ul>
-<h2 id="Recall"><a href="#Recall" class="headerlink" title="Recall"></a>Recall</h2><p>Recall instead of reread. After you’ve read the material, simply look away, and see what you can recall from the material you’ve just read</p>
-<p>Concept mapping, drawing diagrams that show the relationship between the concepts would be the best.</p>
-<h2 id="Avoid-illusion-of-competence"><a href="#Avoid-illusion-of-competence" class="headerlink" title="Avoid illusion of competence"></a>Avoid illusion of competence</h2><p>Merely glancing at a solution and thinking<br>you truly know it yourself is one of the most common<br>illusions of competence in learning.</p>
-<p>Test it, recall it to see whether you actually grasp the idea.</p>
-<p>By recalling and thinking about the<br>material when you are in various physical environment, you become independent of the cues from any one given location</p>
-<h2 id="Avoid-overlearning"><a href="#Avoid-overlearning" class="headerlink" title="Avoid overlearning"></a>Avoid overlearning</h2><p>Continuing to study or practice after you’ve mastered what you can in the session is called overlearning.</p>
-<p>Deliberate practice by focusing on the more difficult<br>material.</p>
-<blockquote>
-<p>Each practice session should be focused on one individual skill. Usually, each skill built upon the one before it</p>
-</blockquote>
-<p>Remember Einstellung, a phenomenon,<br>in which an idea you already have in mind or a neural<br>pattern you’ve already developed and strengthened, may prevent a better idea or solution from being found</p>
-<blockquote>
-<p>Can you recall a situation where you kept trying the same thing over and over again, even though it wasn’t working at all !!</p>
-</blockquote>
-<h2 id="Meaningful-groups"><a href="#Meaningful-groups" class="headerlink" title="Meaningful groups"></a>Meaningful groups</h2><p>It’s much easier to remember numbers by<br>associating them with memorable events</p>
-<p>Create meaningful groups that simplify the material. It takes a bit of time to conjure up a solid mental image. But the more you do it, the quicker it becomes</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>It is hard to learn when<br>you’re not into it. But if it’s something you’re really<br>interested in, learning is easy</p>
-<p>Taking responsibility for your own<br>learning is one of the most important things you can do</p>
-<h2 id="The-big-picture"><a href="#The-big-picture" class="headerlink" title="The big picture"></a>The big picture</h2><p>Structure your learning before you get started</p>
-<p>Spend some time planning and identifying the key parts of your learning</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://www.quora.com/What-is-the-most-effective-way-to-learn/answer/Gianni-Cara?srid=KzvW&amp;share=eb2f94fa" target="_blank" rel="external">What is the most effective way to learn?</a></li>
-<li><a href="https://www.coursera.org/learn/learning-how-to-learn" target="_blank" rel="external">Learning How to Learn: Powerful mental tools to help you master tough subjects</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/12/03/learning-how-to-learn/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
@@ -1122,15 +1090,19 @@
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -1142,19 +1114,19 @@
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1166,15 +1138,11 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -1182,11 +1150,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			

@@ -82,6 +82,101 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/09/10/build-opus-for-ios/" title="Build Opus for iOS" itemprop="url">Build Opus for iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-09-10T06:00:32.000Z" itemprop="datePublished"> Published 2013-09-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I’ve followed <a href="https://github.com/zimuliu/opus-ios-build" target="_blank" rel="external">https://github.com/zimuliu/opus-ios-build</a> but I can’t seem to make it working. I need Opus built for armv7 urgently and I don’t have time to look through the scripts. This is the quick (but not so dirty) solution :D<br>I will make a full tutorial if I have time</p>
+<p>Follow these steps</p>
+<ol>
+<li><p>Download Opus at <a href="http://www.opus-codec.org/downloads/" target="_blank" rel="external">http://www.opus-codec.org/downloads/</a><br>At this time, the newest version is 1.0.3, so look for <strong>Source code: opus-1.0.3.tar.gz</strong> and download it</p>
+</li>
+<li><p>Download scripts at <a href="https://github.com/zimuliu/opus-ios-build" target="_blank" rel="external">https://github.com/zimuliu/opus-ios-build</a>. The scripts will be in <strong>opus-ios-build-master</strong></p>
+</li>
+<li><p>Rename <strong>opus-1.0.3</strong> to <strong>opus-armv7</strong> and place it in <strong>opus-ios-build-master</strong></p>
+</li>
+<li><p>Cd to <strong>opus-armv7</strong> and enter the following commands in Terminal<br><code>./configure -host=arm-apple-darwin</code></p>
+</li>
+<li><p>Edit config.sh<br><code>OPUS_DIR=&quot;1.0.3&quot;
+ARCHS=&quot;armv7&quot;</code></p>
+</li>
+<li><p>Edit build.sh<br>Comment out CXXCPP and CPP<br>`# export CXXCPP=”$PLATFORM/Developer/usr/bin/llvm-cpp”</p>
+<h1 id="export-CPP-”-CXXCPP”"><a href="#export-CPP-”-CXXCPP”" class="headerlink" title="export CPP=”$CXXCPP”`"></a>export CPP=”$CXXCPP”`</h1></li>
+</ol>
+<p>Replace autogen with<br><code>autoreconf --force --install --verbose</code></p>
+<ol>
+<li>Enter Terminal and run<br><code>sh build.sh</code></li>
+</ol>
+<p>There you go, libopus.a will be in the armv7 dist folder</p>
+<p>Solution 2</p>
+<ol>
+<li>Prepare 3 directory opus, opus-armv7, opus-armv7s</li>
+<li>replace autogen, comment CPP</li>
+<li>run config.sh, build.sh, combine.sh</li>
+</ol>
+<p>Solution 3</p>
+<ol>
+<li>Follow build.sh</li>
+<li>lipo</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/build/">build</a><a href="/tags/ios/">ios</a><a href="/tags/armv7/">armv7</a><a href="/tags/autoreconf/">autoreconf</a><a href="/tags/opus/">opus</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/09/10/build-opus-for-ios/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/09/06/how-to-enable-and-disable-hyper-v-in-windows-8/" title="How to enable and disable Hyper-V in Windows 8" itemprop="url">How to enable and disable Hyper-V in Windows 8</a>
   </h1>
   <p class="article-author">By
@@ -437,7 +532,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/C/">C</a><a href="/tags/char/">char</a><a href="/tags/convert/">convert</a><a href="/tags/cstring/">cstring</a><a href="/tags/mfc/">mfc</a>
+  <span></span> <a href="/tags/C/">C</a><a href="/tags/convert/">convert</a><a href="/tags/char/">char</a><a href="/tags/cstring/">cstring</a><a href="/tags/mfc/">mfc</a>
   </div>
 
 </div>
@@ -519,7 +614,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/wp8/">wp8</a><a href="/tags/windows-phone-8/">windows phone 8</a><a href="/tags/convert/">convert</a><a href="/tags/net/">.net</a><a href="/tags/csharp/">csharp</a><a href="/tags/geonames/">geonames</a><a href="/tags/json/">json</a><a href="/tags/json-net/">json.net</a><a href="/tags/parse/">parse</a><a href="/tags/pcl/">pcl</a><a href="/tags/portable/">portable</a>
+  <span></span> <a href="/tags/wp8/">wp8</a><a href="/tags/windows-phone-8/">windows phone 8</a><a href="/tags/net/">.net</a><a href="/tags/convert/">convert</a><a href="/tags/csharp/">csharp</a><a href="/tags/geonames/">geonames</a><a href="/tags/json/">json</a><a href="/tags/json-net/">json.net</a><a href="/tags/parse/">parse</a><a href="/tags/pcl/">pcl</a><a href="/tags/portable/">portable</a>
   </div>
 
 </div>
@@ -672,7 +767,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/char/">char</a><a href="/tags/convert/">convert</a><a href="/tags/MultiByteToWideChar/">MultiByteToWideChar</a><a href="/tags/wchar/">wchar</a><a href="/tags/WideCharToMultiByte/">WideCharToMultiByte</a>
+  <span></span> <a href="/tags/convert/">convert</a><a href="/tags/char/">char</a><a href="/tags/MultiByteToWideChar/">MultiByteToWideChar</a><a href="/tags/wchar/">wchar</a><a href="/tags/WideCharToMultiByte/">WideCharToMultiByte</a>
   </div>
 
 </div>
@@ -753,85 +848,6 @@
 	
 	  	<span></span>
 		<a href="/blog/2013/07/04/windows-8-keyboard-double-quote-problem/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/07/04/alan-turing-six-primitives/" title="Alan Turing six primitives" itemprop="url">Alan Turing six primitives</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-07-04T14:30:01.000Z" itemprop="datePublished"> Published 2013-07-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Before computers existed, Alan Turing invented a type of theoretical machine now called a Turing Machine, which formalized what it means to compute a number</p>
-<p>Eric Grimson once said “With six primitives, I can rule the world. With six primitives, I can program anything”. They are the basic of Turing Machine and are composed of</p>
-<p><strong>Right</strong>: Move the Machine’s head to the right of the current square  </p>
-<p><strong>Left</strong>: Move the Machine’s head to the left of the current square  </p>
-<p><strong>Print</strong>: Print a symbol on the current square  </p>
-<p><strong>Scan</strong>: Identify any symbols on the current square  </p>
-<p><strong>Erase</strong>: Erase any symbols presented o the current square  </p>
-<p><strong>Nothing</strong>: Do nothing</p>
-<p><strong>Reference</strong>  </p>
-<ol>
-<li><p><a href="http://85380100.nhd.weebly.com/turing-primitives.html" target="_blank" rel="external">Turing Primitives</a>  </p>
-</li>
-<li><p><a href="http://en.wikipedia.org/wiki/Turing_completeness" target="_blank" rel="external">Turing completeness</a>  </p>
-</li>
-<li><p><a href="http://www.google.com/doodles/alan-turings-100th-birthday" target="_blank" rel="external">Google Doodle Alan Turing’s 100th Birthday</a></p>
-</li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/6/">6</a><a href="/tags/alan/">alan</a><a href="/tags/machine/">machine</a><a href="/tags/primitives/">primitives</a><a href="/tags/six/">six</a><a href="/tags/turing/">turing</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/07/04/alan-turing-six-primitives/#disqus_thread" class="comments-count-link">Comments</a>
 	
 </div>
 
@@ -942,15 +958,19 @@
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -962,19 +982,19 @@
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -986,15 +1006,11 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -1002,11 +1018,11 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			

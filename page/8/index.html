@@ -82,6 +82,84 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/01/18/understand-new-code-base/" title="Understanding new code base" itemprop="url">Understanding new code base</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-18T09:11:45.000Z" itemprop="datePublished"> Published 2015-01-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This post contains some tips I found useful when navigating to a new code base. Some may overlap with each other, but you know the point.</p>
+<h2 id="Aspects"><a href="#Aspects" class="headerlink" title="Aspects"></a><a href="https://github.com/steipete/Aspects" target="_blank" rel="external">Aspects</a></h2><p>This is the best library for Aspect Oriented Programming on iOS. Furthermore, its hooking system is useful</p>
+<p>For example, this allows you to know which ViewController you are in<br>[code language=”objc”]<br>[UIViewController aspect_hookSelector:@selector(viewWillAppear:) withOptions:AspectPositionAfter usingBlock:^(id<aspectinfo> aspectInfo, BOOL animated) {<br>    NSLog(@”View Controller %@ will appear animated: %tu”, aspectInfo.instance, animated);<br>} error:NULL];<br>[/code]</aspectinfo></p>
+<h2 id="FLEX"><a href="#FLEX" class="headerlink" title="FLEX"></a><a href="https://github.com/Flipboard/FLEX" target="_blank" rel="external">FLEX</a></h2><p>This allows us to easily detect which views we are seeing. I see that it’s much better than Xcode 6 View Debugging. I don’t like the idea of a massive storyboard with lots of ViewController in it, so I don’t look at storyboard first.</p>
+<p>[code language=”objc”]<br>[[FLEXManager sharedManager] showExplorer];<br>[/code]</p>
+<h2 id="chisel"><a href="#chisel" class="headerlink" title="chisel"></a><a href="https://github.com/facebook/chisel" target="_blank" rel="external">chisel</a></h2><p>LLDB is good, and it’s much better with chisel. It provides lots of useful commands for you to interact with views and properties.</p>
+<h2 id="Control-1"><a href="#Control-1" class="headerlink" title="Control-1"></a>Control-1</h2><p>Xcode jumpbar menu 1 gives you some more info about class: Counterparts, Superclasses, Siblings, Includes, Included By, …</p>
+<h2 id="Symbolic-Breakpoint"><a href="#Symbolic-Breakpoint" class="headerlink" title="Symbolic Breakpoint"></a>Symbolic Breakpoint</h2><p>You can create symbolic breakpoint through Xcode or LLDB.</p>
+<blockquote><br>  Symbolic breakpoints stop program execution when a specific function or method starts executing.<br>  You can specify the symbol as:<br>  A method name. For example, pathsMatchingExtensions:.<br>  A method of a particular class. For example, [SKTLine drawHandlesInView], people::Person::name().<br>  A function name. For example, _objc_msgForward.<br></blockquote>
+
+
+
+
+
+<h2 id="Object-graph"><a href="#Object-graph" class="headerlink" title="Object graph"></a>Object graph</h2><p><a href="https://github.com/PaulTaykalo/objc-dependency-visualizer" target="_blank" rel="external">objc-dependency-visualizer</a> Objective-C class dependency visualizer. It’s tool that helps to visualize current state of your project. It’s really easy to see how tight your classes are coupled.<br><a href="https://github.com/vampirewalk/ObjectGraph-Xcode" target="_blank" rel="external">ObjectGraph-Xcode</a> ObjectGraph can show oriented graph of dependencies between classes in your project.<br><a href="https://github.com/nst/objc_dep" target="_blank" rel="external">objc_dep</a> Graph the import dependancies in an Objective-C project<br><a href="https://github.com/kimsungwhee/KSHObjcUML" target="_blank" rel="external">KSHObjcUML</a> KSHObjcUML can show oriented graph of dependencies between Objective-C classes in your project</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://www.raywenderlich.com/79600/navigating-a-new-codebase" target="_blank" rel="external">Navigating a New Codebase: Tips and tricks for getting up to speed quickly</a></li>
+</ol>
+<ol>
+<li><a href="https://medium.com/ios-os-x-development/navigating-and-discovering-a-code-base-using-lldb-bca7c10115cf" target="_blank" rel="external">Navigating and discovering an iOS codebase using lldb</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/01/18/understand-new-code-base/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/01/17/handle-uitextfield-change-with-symbol/" title="Handling UITextField change with symbol" itemprop="url">Handling UITextField change with symbol</a>
   </h1>
   <p class="article-author">By
@@ -935,103 +1013,6 @@ return pfObject;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/12/19/conditional-objects/" title="Conditional Objects" itemprop="url">Conditional Objects</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-12-19T04:09:24.000Z" itemprop="datePublished"> Published 2014-12-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Excerpted from <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Archiving/Articles/archives.html#//apple_ref/doc/uid/20000946-142208" target="_blank" rel="external">Archives and Serializations Programming Guide</a></p>
-<blockquote><br>  Another problem presented by object graphs is that it is not always appropriate to archive the entire graph. For example, when you encode an NSView object, the view can have many links to other objects: subviews, superviews, formatters, targets, windows, menus, and so on. If a view encoded all of its references to these objects, the entire application would get pulled in. Some objects are more important than others, though. A view’s subviews always should be archived, but not necessarily its superview. In this case, the superview is considered an extraneous part of the graph; a view can exist without its superview, but not its subviews. A view, however, needs to keep a reference to its superview, if the superview is also being encoded in the archive.<br><br>  To solve this dilemma, NSCoder introduces the concept of a conditional object. A conditional object is an object that should be encoded only if it is being encoded unconditionally elsewhere in the object graph. A conditional object is encoded by invoking encodeConditionalObject:forKey:. If all requests to encode an object are made with these conditional methods, the object is not encoded and references to it decode to nil. If the object is encoded elsewhere, all the conditional references decode to the single encoded object.<br><br>  Typically, conditional objects are used to encode weak references to objects.<br><br>  NSCoder does not implement support for conditional objects; NSCoder’s implementation of encodeConditionalObject:forKey: simply encodes the object by invoking encodeObject:forKey:. It is the responsibility of its concrete subclasses to keep track of conditional objects and to not encode objects unless they are needed.<br></blockquote>
-
-
-
-
-
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>Code sample is from <a href="https://github.com/Mantle/Mantle/blob/master/Mantle/MTLModel%2BNSCoding.m" target="_blank" rel="external">Mantle</a></p>
-<p>[code language=”objc”]</p>
-<ul>
-<li><p>(void)encodeWithCoder:(NSCoder *)coder {<br>  if (coderRequiresSecureCoding(coder)) verifyAllowedClassesByPropertyKey(self.class);</p>
-<p>  [coder encodeObject:@(self.class.modelVersion) forKey:MTLModelVersionKey];</p>
-<p>  NSDictionary <em>encodingBehaviors = self.class.encodingBehaviorsByPropertyKey;<br>  [self.dictionaryValue enumerateKeysAndObjectsUsingBlock:^(NSString </em>key, id value, BOOL *stop) {</p>
-<pre><code>@try {
-    // Skip nil values.
-    if ([value isEqual:NSNull.null]) return;
-
-    switch ([encodingBehaviors[key] unsignedIntegerValue]) {
-            // This will also match a nil behavior.
-        case MTLModelEncodingBehaviorExcluded:
-            break;
-
-        case MTLModelEncodingBehaviorUnconditional:
-            [coder encodeObject:value forKey:key];
-            break;
-
-        case MTLModelEncodingBehaviorConditional:
-            [coder encodeConditionalObject:value forKey:key];
-            break;
-
-        default:
-            NSAssert(NO, @&quot;Unrecognized encoding behavior %@ on class %@ for key \&quot;%@\&quot;&quot;, self.class, encodingBehaviors[key], key);
-    }
-} @catch (NSException *ex) {
-    NSLog(@&quot;*** Caught exception encoding value for key \&quot;%@\&quot; on class %@: %@&quot;, key, self.class, ex);
-    @throw ex;
-}
-</code></pre><p>  }];<br>}<br>[/code]</p>
-</li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/12/19/conditional-objects/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/7/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/9/">Next<span></span></a>
@@ -1129,15 +1110,19 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
 			
 		
 			
@@ -1149,19 +1134,19 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/wp8/" title="wp8">wp8<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
 			
 		
 			
@@ -1173,15 +1158,11 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>3</sup></a></li>
 			
 		
 			
@@ -1189,11 +1170,11 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
 			
 		
 			
