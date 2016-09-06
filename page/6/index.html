@@ -82,6 +82,82 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/06/28/understanding-pstalertcontroller-weaksheetstorage/" title="Understanding PSTAlertController - weakSheetStorage" itemprop="url">Understanding PSTAlertController - weakSheetStorage</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-28T13:43:50.000Z" itemprop="datePublished"> Published 2015-06-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>For those who don’t use <a href="https://github.com/steipete/PSTAlertController" target="_blank" rel="external">PSTAlertController</a></p>
+<blockquote><br>  API similar to UIAlertController, backwards compatible to iOS 7. Will use the new shiny API when you run iOS 8.<br></blockquote>
+
+
+
+<p>The thing I find interesting about it is its dance for <code>weakSheetStorage</code> and <code>strongSheetStorage</code><br>Read <a href="https://github.com/steipete/PSTAlertController/issues/3" target="_blank" rel="external">Understand strongSheetStorage vs weakSheetStorage</a></p>
+<blockquote><br>  It’s for exact object lifecycle management. The controller isn’t retained but needs to stick around, and once show is called we bind the lifetime to the views presented, so everything is cleaned up at the correct time without worrying about manually retaining things.<br></blockquote>
+
+
+
+
+
+<h2 id="Init"><a href="#Init" class="headerlink" title="Init"></a>Init</h2><p>When PSTAlertController is initialized, it hold a strong reference to UIAlertView and UIActionSheet<br>[code language=”objc”]<br>if (preferredStyle == PSTAlertControllerStyleActionSheet) {<br>                _strongSheetStorage = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];<br>            } else {<br>                _strongSheetStorage = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];<br>            }<br>[/code]</p>
+<h2 id="Show"><a href="#Show" class="headerlink" title="Show"></a>Show</h2><p>PSTAlertController may not be kept by any object, but the system keeps UIAlertView and UIActionSheet, so when UIAlertView and UIActionSheet is shown, we attach PSTAlertController to these<br>[code language=”objc”]</p>
+<ul>
+<li><p>(void)moveSheetToWeakStorage {<br>  NSParameterAssert(self.strongSheetStorage);</p>
+<p>  objc_setAssociatedObject(self.strongSheetStorage, _cmd, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC); // bind lifetime<br>  self.weakSheetStorage = self.strongSheetStorage;<br>  self.strongSheetStorage = nil;<br>}<br>[/code]</p>
+</li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/06/28/understanding-pstalertcontroller-weaksheetstorage/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/06/28/understanding-flex-orientation/" title="Understanding FLEX - Orientation" itemprop="url">Understanding FLEX - Orientation</a>
   </h1>
   <p class="article-author">By
@@ -794,137 +870,6 @@ reverseBlock:^ id (id model) {
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/06/18/understanding-afnetworking-cache/" title="Understanding AFNetworking - Cache" itemprop="url">Understanding AFNetworking - Cache</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-18T14:29:19.000Z" itemprop="datePublished"> Published 2015-06-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="Caching"><a href="#Caching" class="headerlink" title="Caching"></a>Caching</h2><p>I’m talking about <code>AFHTTPSessionManager</code>, but the same applies to <code>AFHTTPRequestOperationManager</code>. AFNetworking is just a wrapper around <code>AFURLSession</code> and <code>AFURLConnection</code>, and uses <code>NSURLCache</code> to make caching happen</p>
-<h3 id="Does-AFNetworking-cache"><a href="#Does-AFNetworking-cache" class="headerlink" title="Does AFNetworking cache"></a>Does AFNetworking cache</h3><p>AFNetworking only uses NSCache for caching images, as implemented in AFImageCache. Read more <a href="http://blog.originate.com/blog/2014/02/20/afimagecache-vs-nsurlcache/" target="_blank" rel="external">How Does Caching Work in AFNetworking? : AFImageCache &amp; NSUrlCache Explained</a></p>
-<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>We often usage <code>AFHTTPSessionManager</code> like this<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[AFHTTPSessionManager manager]</span><br></pre></td></tr></table></figure></p>
-<p>Which is using default session configuration<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithSessionConfiguration:(<span class="built_in">NSURLSessionConfiguration</span> *)configuration &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!configuration) &#123;</span><br><span class="line">        configuration = [<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">self</span>.sessionConfiguration = configuration;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="NSURLSessionConfiguration"><a href="#NSURLSessionConfiguration" class="headerlink" title="NSURLSessionConfiguration"></a>NSURLSessionConfiguration</h3><p>The <code>defaultSessionConfiguration</code> has 2 cache properties</p>
-<h4 id="URLCache"><a href="#URLCache" class="headerlink" title="URLCache"></a>URLCache</h4><blockquote><br>  The URL cache for providing cached responses to requests within the session.<br><br>  This property determines the URL cache object used by tasks within sessions based on this configuration.<br>  To disable caching, set this property to nil.<br>  For default sessions, the default value is the shared URL cache object.<br>  For background sessions, the default value is nil.<br>  For ephemeral sessions, the default value is a private cache object that stores data in memory only, and is destroyed when you invalidate the session.<br></blockquote>
-
-
-
-
-
-<h4 id="requestCachePolicy"><a href="#requestCachePolicy" class="headerlink" title="requestCachePolicy"></a>requestCachePolicy</h4><blockquote><br>  A predefined constant that determines when to return a response from the cache.<br><br>  This property determines the request caching policy used by tasks within sessions based on this configuration.<br>  Set this property to one of the constants defined in NSURLRequestCachePolicy to specify whether the cache policy should depend on expiration dates and age, whether the cache should be disabled entirely, and whether the server should be contacted to determine if the content has changed since it was last requested.<br>  The default value is NSURLRequestUseProtocolCachePolicy.<br></blockquote>
-
-
-
-
-
-<h3 id="dataTaskWillCacheResponse"><a href="#dataTaskWillCacheResponse" class="headerlink" title="dataTaskWillCacheResponse"></a>dataTaskWillCacheResponse</h3><blockquote><br>  Sets a block to be executed to determine the caching behavior of a data task<br></blockquote>
-
-
-
-<p>AFNetworking uses this block as a chance to us to intercept to the response</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)URLSession:(<span class="built_in">NSURLSession</span> *)session</span><br><span class="line">          dataTask:(<span class="built_in">NSURLSessionDataTask</span> *)dataTask</span><br><span class="line"> willCacheResponse:(<span class="built_in">NSCachedURLResponse</span> *)proposedResponse</span><br><span class="line"> completionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">NSCachedURLResponse</span> *cachedResponse))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSCachedURLResponse</span> *cachedResponse = proposedResponse;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.dataTaskWillCacheResponse) &#123;</span><br><span class="line">        cachedResponse = <span class="keyword">self</span>.dataTaskWillCacheResponse(session, dataTask, proposedResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (completionHandler) &#123;</span><br><span class="line">        completionHandler(cachedResponse);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Reading <code>URLSession:dataTask:willCacheResponse:completionHandler</code> tells us that</p>
-<blockquote><br>  The session calls this delegate method after the task finishes receiving all of the expected data. If you do not implement this method, the default behavior is to use the caching policy specified in the session’s configuration object. The primary purpose of this method is to prevent caching of specific URLs or to modify the userInfo dictionary associated with the URL response.<br><br>  The session calls this delegate method after the task finishes receiving all of the expected data. If you do not implement this method, the default behavior is to use the caching policy specified in the session’s configuration object. The primary purpose of this method is to prevent caching of specific URLs or to modify the userInfo dictionary associated with the URL response.<br>  - This method is called only if the NSURLProtocol handling the request decides to cache the response. As a rule, responses are cached only when all of the following are true:<br>  - The request is for an HTTP or HTTPS URL (or your own custom networking protocol that supports caching).<br>  - The request was successful (with a status code in the 200–299 range).<br>  - The provided response came from the server, rather than out of the cache.<br>  - The session configuration’s cache policy allows caching.<br>  - The provided NSURLRequest object’s cache policy (if applicable) allows caching.<br>  - The cache-related headers in the server’s response (if present) allow caching.<br>  - The response size is small enough to reasonably fit within the cache. (For example, if you provide a disk cache, the response must be no larger than about 5% of the disk cache size.)<br></blockquote>
-
-
-
-
-
-<h3 id="How-to-prevent-caching"><a href="#How-to-prevent-caching" class="headerlink" title="How to prevent caching"></a>How to prevent caching</h3><p>We can prevent caching by either</p>
-<ol>
-<li>Implement <code>dataTaskWillCacheResponse</code> and return nil</li>
-<li>Set <code>requestCachePolicy</code> to <code>NSURLRequestReloadIgnoringLocalCacheData</code><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];</span><br><span class="line">sessionManager.session.configuration.requestCachePolicy = <span class="built_in">NSURLRequestReloadIgnoringLocalCacheData</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>Note that <code>NSURLRequestReloadIgnoringLocalAndRemoteCacheData</code> is not implemented by the OS, and <code>NSURLRequestReloadIgnoringCacheData</code> is just synonym for <code>NSURLRequestReloadIgnoringLocalCacheData</code></p>
-<ol>
-<li><p>Set <code>URLCache</code> to nil</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];</span><br><span class="line">sessionManager.session.configuration.URLCache = <span class="literal">nil</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>NSURLRequest cachePolicy<br>NSURLRequest has <code>cachePolicy</code> that can be used to control caching for specific request</p>
-</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/URLLoadingSystem.html#//apple_ref/doc/uid/10000165-BCICJDHA" target="_blank" rel="external">URL Loading System Programming Guide</a></li>
-</ol>
-<ol>
-<li><a href="http://www.raywenderlich.com/59982/nsurlprotocol-tutorial" target="_blank" rel="external">NSURLProtocol Tutorial</a></li>
-</ol>
-<ol>
-<li><a href="http://catthoughts.ghost.io/in-depth-nsurlcache/" target="_blank" rel="external">NSURLCACHE &amp; NSCACHED URLRESPONSE</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/12180727/afnetworking-how-to-know-if-response-is-using-cache-or-not-304-or-200" target="_blank" rel="external">AFNetworking : How to know if response is using cache or not ? 304 or 200</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/25586244/afnetworking-2-0-forced-caching" target="_blank" rel="external">AFNetworking 2.0 - Forced caching</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/24328461/how-to-disable-caching-from-nsurlsessiontask" target="_blank" rel="external">How to disable caching from NSURLSessionTask</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/24281331/afnetworking-different-cache-settings-for-different-content" target="_blank" rel="external">AFNetworking different cache settings for different content</a></li>
-</ol>
-<ol>
-<li><a href="http://stackoverflow.com/questions/20768968/why-is-nsurlsession-dont-use-my-configured-nsurlcache" target="_blank" rel="external">Why is NSURLSession don’t use my configured NSURLCache?</a></li>
-</ol>
-<ol>
-<li><a href="http://nshipster.com/nsurlcache/" target="_blank" rel="external">NSURLCache</a></li>
-</ol>
-<ol>
-<li><a href="https://blackpixel.com/writing/2012/05/caching-and-nsurlconnection.html" target="_blank" rel="external">Caching and NSURLConnection</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/06/18/understanding-afnetworking-cache/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
@@ -1030,11 +975,11 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1046,7 +991,7 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1054,23 +999,7 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1078,19 +1007,35 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>

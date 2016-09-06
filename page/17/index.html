@@ -82,6 +82,85 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/06/17/build-libyuv-for-ios/" title="Build libyuv for iOS" itemprop="url">Build libyuv for iOS</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-06-16T23:27:32.000Z" itemprop="datePublished"> Published 2013-06-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Hi, in this tutorial, I’ll show you how to build libyuv for iOS 6.1 targeting armv7</p>
+<p>As some of you may know, libyuv is an open source library used for</p>
+<p> performing scaling and conversion related to YUV</p>
+<p><strong>Depot tools</strong>  </p>
+<p>libyuv seems to be part of Chromium project. In order to interact with Chromium source, we must use depot tools. Depot tools contain many useful utilities, one of those is gclient, which we’ll use to get libyuv</p>
+<p>Create a new folder (mine is depot_tools). Cd to it. Then type this command to fetch depot tools  </p>
+<p>[code language=”objc”]<br><br><br>git clone <a href="https://chromium.googlesource.com/chromium/tools/depot_tools.git" target="_blank" rel="external">https://chromium.googlesource.com/chromium/tools/depot_tools.git</a><br><br><br>[/code]</p>
+<p>You need to add depot tools to your PATH variable as well</p>
+<p><strong>Get libyuv</strong>  </p>
+<p>Create a new folder (mine is libyuv). Cd to it. Then type these to get libyuv  </p>
+<p>[code language=”objc”]<br><br><br>gclient config <a href="http://libyuv.googlecode.com/svn/trunk" target="_blank" rel="external">http://libyuv.googlecode.com/svn/trunk</a><br><br><br>gclient sync<br><br><br>[/code]</p>
+<p><strong>Build libyuv for armv7</strong>  </p>
+<p>Cd to libyuv/trunk. Type these  </p>
+<p>[code language=”objc”]<br><br><br>export GYP_DEFINES=&quot;target_arch=arm armv7=1&quot;<br><br><br>export DEVPATH=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer<br><br><br>export CC=${DEVPATH}/usr/bin/gcc<br><br><br>export CXX=${DEVPATH}/usr/bin/g++<br><br><br>export RANLIB=${DEVPATH}/usr/bin/ranlib<br><br><br>export AR=${DEVPATH}/usr/bin/ar<br><br><br>export AS=${DEVPATH}/usr/bin/as<br><br><br>export LIBTOOL=${DEVPATH}/usr/bin/libtool<br><br><br>gclient runhooks<br><br><br>xcodebuild -project libyuv.xcodeproj -configuration Release -arch armv7 -sdk iphoneos6.1<br><br><br>[/code]  </p>
+<p>Now you can find your lib in libyuv/trunk/xcodebuild/Release-iphoneos</p>
+<p><strong>Reference</strong>  </p>
+<p><a href="https://code.google.com/p/libyuv/wiki/GettingStarted" target="_blank" rel="external">https://code.google.com/p/libyuv/wiki/GettingStarted</a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/armv7/">armv7</a><a href="/tags/chromium/">chromium</a><a href="/tags/depot-tools/">depot tools</a><a href="/tags/libyuv/">libyuv</a><a href="/tags/yuv/">yuv</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/06/17/build-libyuv-for-ios/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/06/12/xcode-code-sign-error-solved/" title="Xcode code sign error solved" itemprop="url">Xcode code sign error solved</a>
   </h1>
   <p class="article-author">By
@@ -807,7 +886,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/best/">best</a><a href="/tags/free/">free</a><a href="/tags/editor/">editor</a><a href="/tags/mac/">mac</a><a href="/tags/mac-osx/">mac osx</a><a href="/tags/text/">text</a>
+  <span></span> <a href="/tags/best/">best</a><a href="/tags/free/">free</a><a href="/tags/mac-osx/">mac osx</a><a href="/tags/editor/">editor</a><a href="/tags/mac/">mac</a><a href="/tags/text/">text</a>
   </div>
 
 </div>
@@ -886,78 +965,6 @@
 	
 	  	<span></span>
 		<a href="/blog/2013/04/18/how-to-determine-if-your-intel-based-mac-is-32bit-or-64bit/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/04/18/how-to-use-svnx/" title="How to use svnX" itemprop="url">How to use svnX</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-04-18T01:39:37.000Z" itemprop="datePublished"> Published 2013-04-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>svnX maybe the small suitable svn client for Mac OSX. It comes in open source GUI and support most svn client features. I intended to write tutorial about svnX, but since there’s many good tutorials out there, I just recommend you to read them.<br>These are tutorials I found useful when learning how to use svnX</p>
-<p><strong>Reference</strong></p>
-<ol>
-<li><a href="https://code.google.com/p/svnx/" target="_blank" rel="external">https://code.google.com/p/svnx/</a></li>
-<li><a href="http://www.collab.net/downloads/subversion#tab-3" target="_blank" rel="external">http://www.collab.net/downloads/subversion#tab-3</a></li>
-<li><a href="http://support.apple.com/kb/ht3696" target="_blank" rel="external">http://support.apple.com/kb/ht3696</a></li>
-<li><a href="http://www.switchingtomac.com/tutorials/get-started-with-subversion-using-svnx/" target="_blank" rel="external">http://www.switchingtomac.com/tutorials/get-started-with-subversion-using-svnx/</a></li>
-<li><a href="http://divvun.no/doc/tools/docu-svn-user-svnx.html" target="_blank" rel="external">http://divvun.no/doc/tools/docu-svn-user-svnx.html</a></li>
-<li><a href="http://apple.stackexchange.com/questions/62901/how-to-install-svn-binary-on-mountain-lion" target="_blank" rel="external">http://apple.stackexchange.com/questions/62901/how-to-install-svn-binary-on-mountain-lion</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Others/">Others</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/svn/">svn</a><a href="/tags/mac-osx/">mac osx</a><a href="/tags/32bit/">32bit</a><a href="/tags/64bit/">64bit</a><a href="/tags/svnx/">svnx</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/04/18/how-to-use-svnx/#disqus_thread" class="comments-count-link">Comments</a>
 	
 </div>
 
@@ -1076,11 +1083,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1092,7 +1099,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1100,23 +1107,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1124,19 +1115,35 @@
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>

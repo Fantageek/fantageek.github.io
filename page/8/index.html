@@ -82,6 +82,124 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/01/17/handle-uitextfield-change-with-symbol/" title="Handling UITextField change with symbol" itemprop="url">Handling UITextField change with symbol</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-17T13:59:15.000Z" itemprop="datePublished"> Published 2015-01-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>In my app, there is a requirement to allow user to input value with symbol, like $45, 28 lbs, 22”, …, plus some more requirement like limiting the number of digits, validating against max and min value, showing default text when the field is empty, only showing symbol when there is at least 1 digit, …</p>
+<p>I only want the easy way :]</p>
+<p>There are 2 solutions that came into mind</p>
+<ol>
+<li>Show $45. When user begins editing, remove that dollar symbol. When user ends editing, add that dollar symbol again</li>
+<li>Show $45. When user edits, check and handle appropriately to keep that dollar symbol along</li>
+</ol>
+<p>People prefer option #2 because it make user aware of the unit they are inputting. But it requires a lot of handling as you must separate the symbol from the digits. Some libraries prove this <a href="https://github.com/TomSwift/TSCurrencyTextField" target="_blank" rel="external">TSCurrencyTextField</a>, …</p>
+<p>There is option #3, that is to use <code>UITextField</code> <code>leftView</code> and <code>rightView</code> for the symbol. The idea is to determine the <code>text</code> property of UITextField and show/hide leftView, rightView accordingly</p>
+<h2 id="leftView-and-rightView"><a href="#leftView-and-rightView" class="headerlink" title="leftView and rightView"></a>leftView and rightView</h2><p>Let’s create a label called <code>decoratorLabel</code> to use as the leftView and rightView</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(void)setupDecoratorLabel {<br>  self.decoratorLabel = [[UILabel alloc] init];<br>  self.decoratorLabel.text = self.decorator;<br>  self.decoratorLabel.textColor = [UIColor blackColor];<br>  self.decoratorLabel.font = [UIFont lightFontWithSize:kProfileTextSize];</p>
+<p>  CGSize size = [self.decoratorLabel sizeThatFits:CGSizeMake(20, CGRectGetHeight(self.textField.bounds))];<br>  self.decoratorLabel.frame = CGRectMake(0, 0, size.width, size.height);<br>}<br>[/code]</p>
+</li>
+</ul>
+<h2 id="Show-and-hide-decoratorLabel-accordingly"><a href="#Show-and-hide-decoratorLabel-accordingly" class="headerlink" title="Show and hide decoratorLabel accordingly"></a>Show and hide decoratorLabel accordingly</h2><p>Subscribed to UITextFieldDelegate and UIControlEventEditingChanged event. Here I demonstrate for <code>leftView</code>, the same for <code>rightView</code></p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(void)textFieldDidBeginEditing:(UITextField *)textField {<br>  [self determineToShowOrHideDecoratorLabel];<br>}</p>
+</li>
+<li><p>(void)textFieldDidEndEditing:(UITextField *)textField {<br>  [self hideDecoratorLabel];<br>}</p>
+</li>
+</ul>
+<p>// This is from UIControlEventEditingChanged</p>
+<ul>
+<li><p>(void)textFieldEditingChanged:(UITextField *)textField {<br>  // Tell textField to invalidate intrinsicContentSize, so that its width is dynamic<br>  [textField invalidateIntrinsicContentSize];<br>  [self determineToShowOrHideDecoratorLabel];<br>}</p>
+</li>
+<li><p>(void)hideDecoratorLabel {<br>  self.textField.leftView = nil;<br>}</p>
+</li>
+<li><p>(void)showDecoratorLabel {<br>  self.textField.leftView = self.decoratorLabel;<br>  self.textField.leftViewMode = UITextFieldViewModeAlways;<br>}</p>
+</li>
+<li><p>(void)determineToShowOrHideDecoratorLabel {<br>  // self here is UITextField<br>  if (self.text.length &gt; 0) {</p>
+<pre><code>[self showDecoratorLabel];
+</code></pre><p>  } else {</p>
+<pre><code>[self hideDecoratorLabel];
+</code></pre><p>  }<br>}<br>[/code]</p>
+</li>
+</ul>
+<h3 id="intrinsicContentSize"><a href="#intrinsicContentSize" class="headerlink" title="intrinsicContentSize"></a>intrinsicContentSize</h3><p>I don’t know why but UITextField only update its <code>intrinsicContentSize</code> when it resigns its first responder status, and its size is affected by its <code>placeHolder</code> text also. See <a href="http://stackoverflow.com/questions/18236661/resize-a-uitextfield-while-typing-by-using-autolayout" target="_blank" rel="external">Resize a UITextField while typing (by using Autolayout)</a></p>
+<p>So the solution is to override <code>intrinsicContentSize</code> and return width based on the text</p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(CGSize)intrinsicContentSize {<br>  if (self.isEditing) {</p>
+<pre><code>CGSize size = [self.text sizeWithAttributes:self.typingAttributes];
+return CGSizeMake(size.width + self.rightView.bounds.size.width + self.leftView.bounds.size.width + 2, size.height);
+</code></pre><p>  }</p>
+<p>  return [super intrinsicContentSize];<br>}<br>[/code]</p>
+</li>
+</ul>
+<p>Here we +2 to make room for the caret</p>
+<p>PS: If for some reasons, you want UITextField <code>intrinsicContenSize</code> to take effect immediately, call <code>textField layoutIfNeeded</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="http://ux.stackexchange.com/questions/72105/how-to-handle-number-text-field-change-with-symbol" target="_blank" rel="external">How to handle number text field change with symbol?</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/22106426/resize-uitextfield-horizontally-with-text-using-auto-layout" target="_blank" rel="external">Resize UITextField horizontally with text using Auto Layout</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/19371018/uitextfield-leftview-rightview-padding-on-ios7" target="_blank" rel="external">UITextfield leftView/rightView padding on iOS7</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/01/17/handle-uitextfield-change-with-symbol/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/01/16/lldb/" title="LLDB" itemprop="url">LLDB</a>
   </h1>
   <p class="article-author">By
@@ -914,99 +1032,6 @@ return pfObject;
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/11/24/understand-presentingviewcontroller/" title="Understanding presentingViewController" itemprop="url">Understanding presentingViewController</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-11-24T13:39:21.000Z" itemprop="datePublished"> Published 2014-11-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="presentViewController-animated-completion"><a href="#presentViewController-animated-completion" class="headerlink" title="presentViewController:animated:completion:"></a>presentViewController:animated:completion:</h2><p>You maybe familiar with</p>
-<p>[code language=”objc”]<br>[vc1:presentViewController:vc2 animated:YES completion:nil]<br>[/code]</p>
-<p>After this vc1.presentedViewController == vc2. You may also think that vc2.presentingViewController == vc1 but this is not always the case.<br>When a presenting view controller happens, there maybe 3 objects</p>
-<h3 id="Presented-view-controller"><a href="#Presented-view-controller" class="headerlink" title="Presented view controller"></a>Presented view controller</h3><p>This is vc2</p>
-<h3 id="Original-presenter"><a href="#Original-presenter" class="headerlink" title="Original presenter"></a>Original presenter</h3><p>This is vc1, and sometime called source view controller. At this stage, vc1.presentedViewController == vc2</p>
-<h3 id="Presenting-view-controller"><a href="#Presenting-view-controller" class="headerlink" title="Presenting view controller"></a>Presenting view controller</h3><p>This is vc2.presentingViewController, but it is not always vc1. This is the view controller whose view is replaced or covered by vc2.view. It is by default the view controller whose view occupies the entire screen, it can be either root view controller or an already presented view controller. It might not be the same with vc1.</p>
-<p>For example, the presenting view controller is the root view controller, we have rootViewController.presentedViewController == vc2. So in this example, vc2 can be a <code>presentedViewController</code> of both original presenter (vc1) and presenting view controller (root view controller)</p>
-<p>If vc1 occupies the whole screen, original presenter and presenting view controller are the same (vc1)</p>
-<p>In another world, vc2.presentingViewController will only point to the real presenting view controller.</p>
-<h2 id="dismissViewControllerAnimated-completion"><a href="#dismissViewControllerAnimated-completion" class="headerlink" title="dismissViewControllerAnimated:completion:"></a>dismissViewControllerAnimated:completion:</h2><p>We can send <code>dismissViewControllerAnimated:completion</code> to any of those 3 objects, the system will forward that message to the presenting view controller.</p>
-<p>Continue with the example of the rootViewController as the real presenting view controller, if you say<br>[code language=”objc”]<br>[vc2:dismissViewControllerAnimated:YES completion:nil]<br>[/code]</p>
-<p>then root view controller with be the one that receives this message.</p>
-<h2 id="Chain-of-presented-view-controller"><a href="#Chain-of-presented-view-controller" class="headerlink" title="Chain of presented view controller"></a>Chain of presented view controller</h2><p>A view controller can have at most 1 presentedViewController at a time. However, a presented view controller (vc2) can itself presents another view controller (vc3)</p>
-<p>[code language=”objc”]<br>[vc2:presentViewController:vc3 animated:YES completion:nil]<br>[/code]</p>
-<h2 id="Presentation-context"><a href="#Presentation-context" class="headerlink" title="Presentation context"></a>Presentation context</h2><p>So what does it mean by “occupy the whole screen”. Read <a href="https://developer.apple.com/library/ios/featuredarticles/ViewControllerPGforiPhoneOS/ModalViewControllers/ModalViewControllers.html" target="_blank" rel="external">Presentation Contexts Provide the Area Covered by the Presented View Controller</a></p>
-<blockquote><br>  The area of the screen used to define the presentation area is determined by the presentation context. By default, the presentation context is provided by the root view controller, whose frame is used to define the frame of the presentation context. However, the presenting view controller, or any other ancestor in the view controller hierarchy, can choose to provide the presentation context instead. In that case, when another view controller provides the presentation context, its frame is used instead to determine the frame of the presented view. This flexibility allows you to limit the modal presentation to a smaller portion of the screen, leaving other content visible.<br><br>  When a view controller is presented, iOS searches for a presentation context. It starts at the presenting view controller by reading its definesPresentationContext property. If the value of this property is YES, then the presenting view controller defines the presentation context. Otherwise, it continues up through the view controller hierarchy until a view controller returns YES or until it reaches the window’s root view controller.<br><br>  When a view controller defines a presentation context, it can also choose to define the presentation style. Normally, the presented view controller determines how it presented using its modalTransitionStyle property. A view controller that sets definesPresentationContext to YES can also set providesPresentationContextTransitionStyle to YES. If providesPresentationContextTransitionStyle is set to YES, iOS uses the presentation context’s modalPresentationStyle to determine how the new view controller is presented.<br></blockquote>
-
-
-
-
-
-<h3 id="definesPresentationContext"><a href="#definesPresentationContext" class="headerlink" title="definesPresentationContext"></a>definesPresentationContext</h3><blockquote><br>  When a view controller is presented, iOS starts with the presenting view controller and asks it if it wants to provide the presentation context. If the presenting view controller does not provide a context, then iOS asks the presenting view controller’s parent view controller. iOS searches up through the view controller hierarchy until a view controller provides a presentation context. If no view controller offers to provide a context, the window’s root view controller provides the presentation context.<br><br>  If a view controller returns YES, then it provides a presentation context. The portion of the window covered by the view controller’s view determines the size of the presented view controller’s view. The default value for this property is NO.<br></blockquote>
-
-
-
-
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="http://shop.oreilly.com/product/0636920034261.do" target="_blank" rel="external">Programming iOS 8 by Matt Neuburg</a></li>
-</ol>
-<ol>
-<li><a href="http://useyourloaf.com/blog/2012/10/08/presenting-view-controllers.html" target="_blank" rel="external">Presenting View Controllers</a></li>
-</ol>
-<ol>
-<li><a href="http://www.apeth.com/iOSBook/ch19.html#_presented_view_controller" target="_blank" rel="external">Chapter 19. View Controllers - Presented View Controller</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/11/24/understand-presentingviewcontroller/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/7/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/9/">Next<span></span></a>
@@ -1112,11 +1137,11 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1128,7 +1153,7 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1136,23 +1161,7 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1160,19 +1169,35 @@ return pfObject;
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>

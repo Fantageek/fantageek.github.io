@@ -82,6 +82,64 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2016/09/06/Once-in-Swift/" title="Once in Swift" itemprop="url">Once in Swift</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-06T19:40:44.000Z" itemprop="datePublished"> Published 2016-09-06</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>There are times we want to run an action just once. It would be nice if we can encapsulate this</p>
+<h2 id="dispatch-once"><a href="#dispatch-once" class="headerlink" title="dispatch_once"></a>dispatch_once</h2><p><code>dispatch_once</code> is meant to be used for action that runs once and only once</p>
+<h2 id="Once"><a href="#Once" class="headerlink" title="Once"></a>Once</h2><p>We can have</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Once</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> already: <span class="type">Bool</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">run</span><span class="params">(@noescape block: <span class="params">()</span></span></span> -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">guard</span> !already <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    block()</span><br><span class="line">    already = <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then we can use it like</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> once = <span class="type">Once</span>()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidAppear(animated)</span><br><span class="line"></span><br><span class="line">    once.run &#123;</span><br><span class="line">      cameraMan.setup()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2016/09/06/Once-in-Swift/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2016/06/22/Overloading-function-in-Swift/" title="Overloading function in Swift" itemprop="url">Overloading function in Swift</a>
   </h1>
   <p class="article-author">By
@@ -872,67 +930,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2016/01/20/digit-grouping-in-swift/" title="Digit grouping in Swift" itemprop="url">Digit grouping in Swift</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2016-01-20T17:10:09.000Z" itemprop="datePublished"> Published 2016-01-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>When working on <a href="https://github.com/onmyway133/Scale" target="_blank" rel="external">Scale</a> I think it’s good to have a way to group the digit so that it is easier to reason</p>
-<p>Luckily, Swift already supports this. See <a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="external">The Swift Programming Language - Numeric Literals</a></p>
-<blockquote>
-<p>Numeric literals can contain extra formatting to make them easier to read. Both integers and floats can be padded with extra zeros and can contain underscores to help with readability. Neither type of formatting affects the underlying value of the literal</p>
-</blockquote>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> paddedDouble = <span class="number">000123.456</span></span><br><span class="line"><span class="keyword">let</span> oneMillion = <span class="number">1_000_000</span></span><br><span class="line"><span class="keyword">let</span> justOverOneMillion = <span class="number">1_000_000.000_000_1</span></span><br></pre></td></tr></table></figure>
-<p>Talking about grouping digits after the decimal point, it is interesting too <a href="http://math.stackexchange.com/questions/182775/convention-of-digit-grouping-after-decimal-point" target="_blank" rel="external">Convention of digit grouping after decimal point</a></p>
-<p>So now we have</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">MetricUnit</span>: <span class="title">Double</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> nano = <span class="number">0.000_000_001</span></span><br><span class="line">    <span class="keyword">case</span> micro = <span class="number">0.000_001</span></span><br><span class="line">    <span class="keyword">case</span> milli = <span class="number">0.001</span></span><br><span class="line">    <span class="keyword">case</span> centi = <span class="number">0.01</span></span><br><span class="line">    <span class="keyword">case</span> deci = <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">case</span> base = <span class="number">1</span></span><br><span class="line">    <span class="keyword">case</span> deka = <span class="number">10</span></span><br><span class="line">    <span class="keyword">case</span> hecto = <span class="number">100</span></span><br><span class="line">    <span class="keyword">case</span> kilo = <span class="number">1_000</span></span><br><span class="line">    <span class="keyword">case</span> mega = <span class="number">1_000_000</span></span><br><span class="line">    <span class="keyword">case</span> giga = <span class="number">1_000_000_000</span></span><br><span class="line">    <span class="keyword">case</span> tera = <span class="number">1_000_000_000_000</span></span><br><span class="line">    <span class="keyword">case</span> peta = <span class="number">1_000_000_000_000_000</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> defaultScale: <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">MetricUnit</span>.base.rawValue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2016/01/20/digit-grouping-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1038,11 +1035,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1054,7 +1051,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1062,23 +1059,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -1086,19 +1067,35 @@
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>

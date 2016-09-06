@@ -82,6 +82,71 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/12/03/clean-cocoa/" title="Clean Cocoa" itemprop="url">Clean Cocoa</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-03T14:10:50.000Z" itemprop="datePublished"> Published 2015-12-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I like <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882" target="_blank" rel="external">Clean Code</a>, and when it comes to Cocoa, I tend to apply that clean practices. Let ‘s call it Clean Cocoa</p>
+<p>There are some blogs that constantly talks about Clean Cocoa, they are true sources of inspiration. I ‘d like to mention my favorites</p>
+<h2 id="khanlou"><a href="#khanlou" class="headerlink" title="khanlou"></a><a href="http://khanlou.com/" target="_blank" rel="external">khanlou</a></h2><p>Written by <a href="https://twitter.com/khanlou" target="_blank" rel="external">Soroush Khanlou</a>. He talks about small, well defined responsibility classes. From <a href="http://khanlou.com/2014/09/8-patterns-to-help-you-destroy-massive-view-controller/" target="_blank" rel="external">8 Patterns to Help You Destroy Massive View Controller</a>, he expands those ideas into many series of blog posts</p>
+<ul>
+<li><a href="https://github.com/khanlou/InstantCocoa" target="_blank" rel="external">InstantCocoa</a>: This is like a collection of reusable components to help you shape your next iOS apps. I like reading about its Routing, Inflector and DataSourcr</li>
+<li><a href="https://github.com/backchannel/BackchannelSDK-iOS" target="_blank" rel="external">BackchannelSDK-iOS</a>: This is for providing feedback right from your app. It is what illustrated many ideas of his blog posts in a single SDKs. Here we ‘ll find Coordinaror, Request Template, Nested structure, Smart View, Null Object Patterns, …</li>
+</ul>
+<h2 id="christian-tietze"><a href="#christian-tietze" class="headerlink" title="christian tietze"></a><a href="http://christiantietze.de/" target="_blank" rel="external">christian tietze</a></h2><p><a href="https://twitter.com/ctietze" target="_blank" rel="external">Christian</a> talks mostly about Mac, but I find we can learn and apply them to our iOS projects. Here we ‘ll find good posts on reducing object responsibility, reusable modules, …</p>
+<ul>
+<li><a href="https://leanpub.com/develop-mac-apps-clean-architecture-swift" target="_blank" rel="external">Exploring Mac App Development Strategies</a>: Learn best practices and patterns for developing Mac apps</li>
+</ul>
+<h2 id="Clean-Swift"><a href="#Clean-Swift" class="headerlink" title="Clean Swift"></a><a href="http://clean-swift.com/" target="_blank" rel="external">Clean Swift</a></h2><p><a href="http://twitter.com/rayvinly" target="_blank" rel="external">Raymond</a> is very helpful. You can find in his blog many ideas about applying Clean Architecture and TDD. I very much like <a href="https://www.objc.io/issues/13-architecture/viper/" target="_blank" rel="external">VIPER</a> and this blog help me much about that</p>
+<p><a href="http://clean-swift.com/clean-swift-ios-architecture/" target="_blank" rel="external">Clean Swift iOS Architecture for Fixing Massive View Controller</a> is on my reading list</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/12/03/clean-cocoa/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/11/27/tuple-shuffle-in-swift/" title="Tuple shuffle in Swift" itemprop="url">Tuple shuffle in Swift</a>
   </h1>
   <p class="article-author">By
@@ -705,74 +770,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/09/23/type-casting-in-swift/" title="Type casting in Swift 2" itemprop="url">Type casting in Swift 2</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-09-23T16:28:21.000Z" itemprop="datePublished"> Published 2015-09-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="as-vs-as-vs-as"><a href="#as-vs-as-vs-as" class="headerlink" title="as vs as! vs as?"></a>as vs as! vs as?</h2><ul>
-<li><code>as</code> used for upcasting and type casting to bridged type</li>
-<li><code>as?</code> used for safe casting, return nil if failed</li>
-<li><code>as!</code> used to force casting, crash if failed</li>
-</ul>
-<ul>
-<li><code>as!</code> can’t cast raw type to optional</li>
-<li><code>as!</code> and <code>as?</code> works by inspect the source type against the destination type (if the source type or destination type is optional, inspect the type inside)</li>
-<li>If succeeded, <code>as?</code> returns optional that contains source type casted as destination type, while <code>as!</code> return source type casted as destination type</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">let rawString: AnyObject = &quot;Fantageek&quot;</span><br><span class="line">    let optionalString: AnyObject? = &quot;Fantageek&quot;</span><br><span class="line">    let nilString: AnyObject? = (nil as String?)</span><br><span class="line"></span><br><span class="line">    let rawInt: AnyObject = Int(3)</span><br><span class="line">    let optionalInt: AnyObject? = Int(3)</span><br><span class="line">    let nilInt: AnyObject? = (nil as Int?)</span><br><span class="line"></span><br><span class="line">	   // as</span><br><span class="line">//    let result1 = rawString as String // AnyObject is not convertible to String</span><br><span class="line">//    let result2 = optionalString as String // AnyObject? is not convertible to String</span><br><span class="line">//    let result3 = nilString as String // AnyObject? is not convertible to String</span><br><span class="line">//    let result4 = rawInt as String // AnyObject is not convertible to String</span><br><span class="line">//    let result5 = optionalInt as String // AnyObject? is not convertible to String</span><br><span class="line">//    let result6 = nilInt as String // AnyObject? is not convertible to String</span><br><span class="line"></span><br><span class="line">	// as!</span><br><span class="line">    let result7 = rawString as! String // String &quot;Fantageek&quot;</span><br><span class="line">    let result8 = optionalString as! String // String &quot;Fantageek&quot;</span><br><span class="line">//    let result9 = nilString as! String // unexpectedly found nil while unwrapping an Optional value</span><br><span class="line">//    let result10 = rawInt as! String // Could not cast value of type &apos;__NSCFNumber&apos; (0x107c98130) to &apos;NSString&apos; (0x1082afb00).</span><br><span class="line">//    let result11 = optionalInt as! String // Could not cast value of type &apos;__NSCFNumber&apos; (0x101e95130) to &apos;NSString&apos; (0x1024acb00).</span><br><span class="line">//    let result12 = nilInt as! String // unexpectedly found nil while unwrapping an Optional value</span><br><span class="line"></span><br><span class="line">//    let result13 = rawString as! String! // Cannot downcast from AnyObject to a more optional type String!</span><br><span class="line">//    let result14 = rawString as! String? // Cannot downcast from AnyObject to a more optional type String?</span><br><span class="line">    let result15 = optionalString as! String! // String! &quot;Fantageek&quot;</span><br><span class="line">    let result16 = optionalString as! String? // String? &quot;Fantageek&quot;</span><br><span class="line"></span><br><span class="line">    // as?</span><br><span class="line">    let result17 = rawString as? String // String? &quot;Fantageek&quot;</span><br><span class="line">    let result18 = optionalString as? String // String? &quot;Fantageek&quot;</span><br><span class="line">    let result19 = nilString as? String // String? nil</span><br><span class="line">    let result20 = rawInt as? String // String? nil</span><br><span class="line">    let result21 = optionalInt as? String // String? nil</span><br><span class="line">    let result22 = nilInt as? String // String? nil</span><br><span class="line">    // case 22 is interesting, because nilInt is Optiona&lt;Int&gt;.None while result22 is Optional&lt;String&gt;.None</span><br><span class="line"></span><br><span class="line">//    let result23 = rawString as? String! // Cannot downcast from AnyObject to a more optional type String!</span><br><span class="line">//    let result24 = rawString as? String? // Cannot downcast from AnyObject to a more optional type String?</span><br><span class="line">    let result25 = optionalString as? String! // String!? &quot;Fantageek&quot;</span><br><span class="line">    let result26 = optionalString as? String? // String?? &quot;Fantageek</span><br><span class="line">    let result27 = optionalInt as? String? // String?? nil</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // Up casting</span><br><span class="line">    let button = UIButton()</span><br><span class="line">    let view = button as UIView</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	 // Brigded type casting</span><br><span class="line">    let string = &quot;3&quot;</span><br><span class="line">    let nsString = string as NSString</span><br><span class="line">    let value = nsString.floatValue // 3</span><br></pre></td></tr></table></figure>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TypeCasting.html" target="_blank" rel="external">Type Casting</a></li>
-<li><a href="https://developer.apple.com/swift/blog/?id=23" target="_blank" rel="external">The as! Operator</a></li>
-<li><a href="http://www.codingexplorer.com/type-casting-swift/" target="_blank" rel="external">Type Casting in Swift</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/09/23/type-casting-in-swift/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/3/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/5/">Next<span></span></a>
@@ -878,11 +875,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/windows-8/" title="windows 8">windows 8<sup>4</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -894,7 +891,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -902,23 +899,7 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
 			
 		
 			
@@ -926,19 +907,35 @@
 			
 		
 			
-				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file/" title="file">file<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/disable/" title="disable">disable<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 		</ul>
