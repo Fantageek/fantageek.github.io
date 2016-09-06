@@ -82,6 +82,150 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/07/05/convert-between-wchar-t-and-char/" title="Convert between wchar_t* and char*" itemprop="url">Convert between wchar_t* and char*</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-07-05T01:14:44.000Z" itemprop="datePublished"> Published 2013-07-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This tutorial will show you some code snippets that perform conversion between wchar_t<em> and char</em> using WideCharToMultiByte and MultiByteToWideChar</p>
+<p>#include <windows.h></windows.h></p>
+<p><strong>Convert from wchar_t<em> to char</em></strong></p>
+<p>[code language=”cpp”]<br><br><br>char<em> wchar2char(wchar_t</em> wname)<br><br><br>{<br><br><br> char* cname = NULL;<br><br><br> int len_wname, len_cname;<br><br><br> len_wname = wcslen(myFileName-&gt;Data());<br><br><br> len_cname = WideCharToMultiByte(CP_ACP, 0, wname, len_wname, NULL, 0, NULL, FALSE);</p><br><p></p>
+<p></p><p> if(len_cname &gt; 0)<br><br><br> {<br><br><br>        cname = (char<em>)malloc(sizeof(char) </em> (len_cname+1));<br><br><br>  WideCharToMultiByte(CP_ACP, 0, wname, len_wname, cname, len_cname, NULL,   FALSE);<br><br><br> }</p><br><p></p>
+<p></p><p> cname[len_cname] = 0;</p><br><p></p>
+<p></p><p> return cname;<br><br><br>}<br><br><br>[/code]</p>
+<p><strong>Convert from char<em> to wchar_t</em></strong></p>
+<p>[code language=”cpp”]<br><br><br>wchar_t<em> char2wchar(char</em> cname)<br><br><br>{<br><br><br> wchar_t* wname = NULL;<br><br><br> int len_wname, len_cname;</p><br><p></p>
+<p></p><p> len_cname = strlen(cname);<br><br><br> len_wname = MultiByteToWideChar(CP_ACP,  0, cname, len_cname, NULL, 0);</p><br><p></p>
+<p></p><p> if(len_wname &gt; 0)<br><br><br> {<br><br><br>  wname = (wchar_t<em>)malloc(sizeof(wchar_t) </em> (len_wname+1));<br><br><br>  MultiByteToWideChar(CP_ACP, 0, cname, len_cname, wname, len_wname);<br><br><br> }</p><br><p></p>
+<p></p><p> wname[len_wname] = 0;</p><br><p></p>
+<p></p><p> return wname;<br><br><br>}<br><br><br>[/code]</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/char/">char</a><a href="/tags/convert/">convert</a><a href="/tags/MultiByteToWideChar/">MultiByteToWideChar</a><a href="/tags/wchar/">wchar</a><a href="/tags/WideCharToMultiByte/">WideCharToMultiByte</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/07/05/convert-between-wchar-t-and-char/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/07/04/windows-8-keyboard-double-quote-problem/" title="Windows 8 keyboard double quote problem" itemprop="url">Windows 8 keyboard double quote problem</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-07-04T14:50:11.000Z" itemprop="datePublished"> Published 2013-07-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>My Windows 8 today has very weird behavior with the keyboard. When I type “ (double quote) it does not show up. It does show up until I type another key.</p>
+<p>The solution is to choose the US keyboard. Look for Language preference in the bottom right taskbar of your screen, or press Windows + Backspace.</p>
+<p><a href="http://www.fantageek.com/wp-content/uploads/2013/07/Untitled.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/07/Untitled.png" alt="win8-keyboard-double-quote"></a></p>
+<p><strong>The permanent solution</strong>  </p>
+<p>If the problem still exists, go to <em>Control Panel -&gt; Clock, Language and Region -&gt; Language -&gt; Add languages</em>  </p>
+<p>Install English (United States) and remove English (United Kingdom)  </p>
+<p><a href="http://www.fantageek.com/wp-content/uploads/2013/07/Untitled1.png"><img src="http://www.fantageek.com/wp-content/uploads/2013/07/Untitled1.png" alt="win 8 add language"></a></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Windows-8/">Windows 8</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/windows-8/">windows 8</a><a href="/tags/double/">double</a><a href="/tags/keyboard/">keyboard</a><a href="/tags/problem/">problem</a><a href="/tags/quote/">quote</a><a href="/tags/win8/">win8</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/07/04/windows-8-keyboard-double-quote-problem/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/07/04/alan-turing-six-primitives/" title="Alan Turing six primitives" itemprop="url">Alan Turing six primitives</a>
   </h1>
   <p class="article-author">By
@@ -862,154 +1006,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/06/19/best-way-to-take-notes/" title="Best way to take notes" itemprop="url">Best way to take notes</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-06-19T13:53:38.000Z" itemprop="datePublished"> Published 2013-06-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Nowadays, people use many devices (computer, tablet, mobile) to work and study. It is vital to take notes and sync among these devices. I’ve used many solutions but none defeats Google Keep.</p>
-<p>Google Keep is fast, efficient and reliable. All you need is your Gmail account.<br><a href="http://www.fantageek.com/wp-content/uploads/2013/06/Google-keep-logo.jpg"><img src="http://www.fantageek.com/wp-content/uploads/2013/06/Google-keep-logo.jpg" alt="Google-keep-logo"></a></p>
-<p>Google Keep is available on Android and Chrome</p>
-<p><strong>Reference</strong></p>
-<ol>
-<li><a href="https://drive.google.com/keep/" target="_blank" rel="external">Google Keep on Drive</a></li>
-<li><a href="https://play.google.com/store/apps/details?id=com.google.android.keep&amp;hl=en" target="_blank" rel="external">Google Keep on Google Play Store</a></li>
-<li><a href="https://chrome.google.com/webstore/detail/google-keep/hmjkmjkepdijhoojdojkdfohbdgmmhki?hl=en" target="_blank" rel="external">Google Keep on Chrome Web Store</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Life/">Life</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android/">android</a><a href="/tags/google/">google</a><a href="/tags/chrome/">chrome</a><a href="/tags/efficient/">efficient</a><a href="/tags/fast/">fast</a><a href="/tags/keep/">keep</a><a href="/tags/notes/">notes</a><a href="/tags/play/">play</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/06/19/best-way-to-take-notes/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2013/06/19/dont-work-for-someone-who-wont-pay-you-fairly/" title="Don&#39;t work for someone who won&#39;t pay you fairly" itemprop="url">Don&#39;t work for someone who won&#39;t pay you fairly</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2013-06-18T23:01:19.000Z" itemprop="datePublished"> Published 2013-06-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Quoted from Warren Buffet in his live stream video during an “Office Hours” session with Levo League</p>
-<p>Forgot about the pay</p>
-<blockquote>Never give up searching for the job that you’re passionate about,” he says. “Try to find the job you’d have if you were independently rich. … Forget about the pay. When you’re associating with the people that you love, doing what you love, it doesn’t get any better than that<br>&gt;<br>&gt; </blockquote>
-
-
-
-
-<p>Don’t work for someone who won’t pay you fairly</p>
-<blockquote>I do very little negotiation with people. And they do little with me, in terms of it … if I was a woman and I thought I was getting paid considerably less than somebody else that was equal coming in, that would bother me a lot. I probably wouldn’t even want to work there.  I mean, if somebody’s gonna be unfair with you, in   salary, they’re probably being unfair with you in a hundred other ways<br>&gt;<br>&gt; </blockquote>
-
-
-
-
-<p><strong>Reference</strong>  </p>
-<p><a href="http://www.businessinsider.com/warren-buffett-becomes-a-mentor-to-young-women-2013-5" target="_blank" rel="external">http://www.businessinsider.com/warren-buffett-becomes-a-mentor-to-young-women-2013-5</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Life/">Life</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/advice/">advice</a><a href="/tags/buffet/">buffet</a><a href="/tags/pay/">pay</a><a href="/tags/quotes/">quotes</a><a href="/tags/warren/">warren</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2013/06/19/dont-work-for-someone-who-wont-pay-you-fairly/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/15/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/17/">Next<span></span></a>
@@ -1107,11 +1103,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1119,11 +1115,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1131,15 +1123,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1147,19 +1135,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1171,11 +1155,23 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

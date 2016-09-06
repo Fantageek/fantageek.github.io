@@ -82,6 +82,183 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2013/02/21/difference-between-debug-build-and-release-build/" title="Difference between Debug build and Release build" itemprop="url">Difference between Debug build and Release build</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-21T03:01:21.000Z" itemprop="datePublished"> Published 2013-02-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h3 id="1-Optimization"><a href="#1-Optimization" class="headerlink" title="1. Optimization"></a>1. Optimization</h3><p>This is the main reason you package your final software with “Release” build. While debugging there are debugging symbols, extra lines of code, and the IDE’s book keeping attached with your software. So naturally your debug build is slower and heavier by several orders. For instance my debug executable was 6.15 MB while release executable is only 2.74 MB. See how it has doubled.  </p>
+<p>In fact there is an option in IDE to turn off optimization, as optimization by compiler, modifies code in unpredictable manner, something which can make debugging hard or even impossible.</p>
+<p><a href="http://vinayakgarg.files.wordpress.com/2012/03/debug_opt1.png" target="_blank" rel="external"><img src="http://vinayakgarg.files.wordpress.com/2012/03/debug_opt1.png?w=640&amp;h=445" alt="Debug configuration has Optimization turned off"></a></p>
+<p>### </p>
+<h3 id="2-The-protective-cover-is-gone"><a href="#2-The-protective-cover-is-gone" class="headerlink" title="2. The protective cover is gone"></a>2. The protective cover is gone</h3><p>If you are facing the trouble, “software crashes in release, while in debug it was running fine”, your trouble spot is most probably this one.  </p>
+<p>In debug mode, the compiler is gentle on you and provides a protection against your um.. erroneous code, by</p>
+<ul>
+<li>allocating extra memory before and after, each block of storage. And this extra space is initialized with values like 0 for integers. Thus your attempts to access beyond array size won’t let you corrupt some other data structure.</li>
+</ul>
+<ul>
+<li>it also initializes variables to some safe value. Like the pointers are initialized with NULL value, or some ridiculous value that will cause segfault, if you try to access it. Thus the problem of wild pointers would not appear in debug, but cause troubles in release build.</li>
+</ul>
+<p>So if your release build is crashing, you should first check for out of bound access and uninitialized variables.</p>
+<h3 id="3-Use-Release-Library-for-Release-build-and-Debug-Library"><a href="#3-Use-Release-Library-for-Release-build-and-Debug-Library" class="headerlink" title="3. Use Release Library for Release build and Debug Library"></a>3. Use Release Library for Release build and Debug Library</h3><p> for Debug build</p>
+<p>Well, this is where I faulted. I was using debug library, of framework my program was dependent upon for Linking. While configuring project settings, I made these settings default, and thus they were used for both Debug and Release build. As long as I was debugging, everything went fine, but my release build, well crashed…</p>
+<p>Most third party libraries support different builds, like Release or Debug, Static or Dynamic and so on. So while, you are developing code, and will be debugging actively, it is appropriate to have debug libraries linked to your project. This will aid debugging as, the library will provide much more detailed messages for warnings and errors.  </p>
+<p>But in case of release, only use Release version of library for linking. Release build of libraries are optimized, and fail silently in case of error (you don’t want to show your users a scary message, right?!).</p>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><a href="http://vinayakgarg.wordpress.com/2012/03/31/difference-between-debug-build-and-release-build/" target="_blank" rel="external">http://vinayakgarg.wordpress.com</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/build/">build</a><a href="/tags/configuration/">configuration</a><a href="/tags/debug/">debug</a><a href="/tags/release/">release</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/02/21/difference-between-debug-build-and-release-build/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2013/02/05/tortoisesvn-repository-has-not-been-enabled-to-accept-revision-propchanges/" title="TortoiseSVN Repository has not been enabled to accept revision propchanges" itemprop="url">TortoiseSVN Repository has not been enabled to accept revision propchanges</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2013-02-05T08:09:24.000Z" itemprop="datePublished"> Published 2013-02-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Sometimes you want to change your log message when using SVN. And it does not allow you to do that. Mostly the error you will see is “Repository has not been enabled to accept revision propchanges”</p>
+<p><a href="http://www.fantageek.com/230/tortoisesvn-repository-has-not-been-enabled-to-accept-revision-propchanges/problemaddingcomments/#main"><img src="http://www.fantageek.com/wp-content/uploads/2013/02/problemaddingcomments.jpg" alt="problemaddingcomments"></a></p>
+<p>In this case, there are 2 solutions</p>
+<p><strong>Solutions 1</strong>  </p>
+<p>To correct this, we needed to create a file in the “hooks” folder of my Subversion repository. On my system, it was located at C:\svn\repository\hooks. I created a file called “pre-revprop-change.bat”, and I set the contents to this:</p>
+<p>[sourcecode language=”csharp”]  </p>
+<p>rem Only allow log messages to be changed.  </p>
+<p>if “%4″ == “svn:log” exit 0  </p>
+<p>echo Property ‘%4′ cannot be changed &gt;&amp;2  </p>
+<p>exit 1  </p>
+<p>[/sourcecode]</p>
+<p><strong>Solution 2</strong>  </p>
+<p>Place this in a pre-revprop-change.cmd</p>
+<p>[sourcecode language=”csharp”]  </p>
+<p>IF %5 EQU M GOTO CONT1  </p>
+<p>GOTO FAIL  </p>
+<p>:CONT1  </p>
+<p>IF %4 EQU svn:log GOTO OK  </p>
+<p>:FAIL  </p>
+<p>echo “Changing revision properties other than svn:log is prohibited” &gt;&amp;2  </p>
+<p>exit 1  </p>
+<p>:OK  </p>
+<p>exit 0  </p>
+<p>[/sourcecode]</p>
+<p>After saving the file with those contents, I was able to edit the revision comments without encountering the error message.</p>
+<p><strong>Reference</strong>  </p>
+<ol>
+<li><p><a href="http://blog.tfanshteyn.com/2007/12/subversion-pre-revprop-change-hook.html" target="_blank" rel="external">http://blog.tfanshteyn.com</a>  </p>
+</li>
+<li><p><a href="http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-repository-hooks.html" target="_blank" rel="external">http://tortoisesvn.net</a></p>
+</li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Others/">Others</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/hooks/">hooks</a><a href="/tags/revision/">revision</a><a href="/tags/tortoisesvn/">tortoisesvn</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2013/02/05/tortoisesvn-repository-has-not-been-enabled-to-accept-revision-propchanges/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2013/01/23/how-to-run-a-successful-free-software-project/" title="How to run a successful free software project" itemprop="url">How to run a successful free software project</a>
   </h1>
   <p class="article-author">By
@@ -660,134 +837,6 @@ n[2] = you?
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/25/wp7-development-tips/" title="WP7 development tips" itemprop="url">WP7 development tips</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-25T00:50:03.000Z" itemprop="datePublished"> Published 2012-12-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Welcome back, today I will start writing all stuff, all the secret I ‘ve revealed when developing for Windows Phone 7.  </p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2012/12/25/wp7-development-tips/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Windows-Phone/">Windows Phone</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/development/">development</a><a href="/tags/secret/">secret</a><a href="/tags/tips/">tips</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/25/wp7-development-tips/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2012/12/23/wp7-general-resource-collection/" title="WP7 general resource collection" itemprop="url">WP7 general resource collection</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2012-12-23T15:07:57.000Z" itemprop="datePublished"> Published 2012-12-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>When developing my Windows Phone 7 application, I found many useful articles and websites. And this is the time to share. Note that books will be covered in another article :)</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2012/12/23/wp7-general-resource-collection/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Windows-Phone/">Windows Phone</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/wp7/">wp7</a><a href="/tags/collection/">collection</a><a href="/tags/general/">general</a><a href="/tags/resource/">resource</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2012/12/23/wp7-general-resource-collection/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/18/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/20/">Next<span></span></a>
@@ -885,11 +934,11 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -897,11 +946,7 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -909,15 +954,11 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -925,19 +966,15 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -949,11 +986,23 @@ n[2] = you?
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

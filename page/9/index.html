@@ -82,6 +82,265 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/01/12/the-importance-of-types/" title="The importance of types" itemprop="url">The importance of types</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-12T02:29:38.000Z" itemprop="datePublished"> Published 2015-01-12</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I found those posts about types very useful. Just to use types correctly and let the compiler and static analyzer catch the bugs for you.</p>
+<ol>
+<li><a href="http://spin.atomicobject.com/2014/12/09/typed-language-tdd-part1/" target="_blank" rel="external">More Typing, Less Testing: TDD with Static Types, Part 1</a></li>
+</ol>
+<ol>
+<li><a href="http://khanlou.com/2014/05/replace-enumerations-with-types/" target="_blank" rel="external">Replace Enumerations with Types</a></li>
+</ol>
+<ol>
+<li><a href="https://swiftcast.tv/articles/the-design-of-types" target="_blank" rel="external">The Design of Types</a></li>
+</ol>
+<ol>
+<li><a href="http://www.objc.io/snippets/13.html" target="_blank" rel="external">Phantom Types</a></li>
+</ol>
+<ol>
+<li><a href="http://darrenhobbs.com/2007/04/11/tiny-types/" target="_blank" rel="external">Tiny Types</a></li>
+</ol>
+<ol>
+<li><a href="http://www.objc.io/snippets/8.html" target="_blank" rel="external">Wrapper Types</a></li>
+</ol>
+<ol>
+<li><a href="http://www.objc.io/snippets/12.html" target="_blank" rel="external">Enums instead of Booleans</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/01/12/the-importance-of-types/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/12/19/using-parse-sdk-with-mantle/" title="Using Parse SDK with Mantle" itemprop="url">Using Parse SDK with Mantle</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-19T04:15:26.000Z" itemprop="datePublished"> Published 2014-12-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I’m using Parse SDK and it works great. We can also subclass Parse for more convenience, but I just don’t want to depend much on Parse, so I use Mantle as my model, instead of PFObject.</p>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>Here is my base model object</p>
+<p><code>FTGBaseObject.h</code><br>[code language=”objc”]<br>@interface FTGBaseObject : MTLModel <mtljsonserializing></mtljsonserializing></p>
+<p>@property (nonatomic, copy) NSString <em>pfObjectID;<br>@property (nonatomic, strong) NSDate </em>createdAt;<br>@property (nonatomic, strong) NSDate *updatedAt;</p>
+<p>@end<br>[/code]</p>
+<p><code>FTGBaseObject.m</code><br>[code language=”objc”]<br>@implementation FTGBaseObject</p>
+<ul>
+<li>(NSDictionary *)JSONKeyPathsByPropertyKey {<br>  return @{<pre><code>@&quot;pfObjectID&quot;: NSNull.null,
+@&quot;createdAt&quot;: NSNull.null,
+@&quot;updatedAt&quot;: NSNull.null,
+};
+</code></pre>}</li>
+</ul>
+<p>#pragma mark - Creation</p>
+<ul>
+<li><p>(instancetype)objectWithPFObject:(PFObject <em>)pfObject<br>{<br>  FTGBaseObject </em>object = [[self alloc] init];<br>  [object updateWithPFObject:pfObject];<br>  return object;<br>}</p>
+</li>
+<li><p>(NSArray <em>)objectsWithPFObjects:(NSArray </em>)pfObjects<br>{<br>  NSMutableArray <em>results = [NSMutableArray array];<br>  for (PFObject </em>pfObject in pfObjects) {</p>
+<pre><code>FTGBaseObject *object = [[self class] objectWithPFObject:pfObject];
+[results addObject:object];
+</code></pre><p>  }</p>
+<p>  return results;<br>}</p>
+</li>
+</ul>
+<ul>
+<li><p>(void)updateWithPFObject:(PFObject *)pfObject<br>{<br>  if (pfObject) {</p>
+<pre><code>// TODO: Need to check for pfObject isDataAvailable?
+[self updateWithDictionary:pfObject.ftg_toDictionary];
+[self updateWithCorePFObject:pfObject];
+</code></pre><p>  }<br>}</p>
+</li>
+<li><p>(void)updateWithDictionary:(NSDictionary *)dictionary<br>{<br>  if (dictionary.count &gt; 0) {</p>
+<pre><code>FTGBaseObject *updatedObject = [MTLJSONAdapter modelOfClass:[self class]
+                                        fromJSONDictionary:dictionary
+                                                     error:nil];
+// This is a method to make mergeValuesForKeysFromModel to not update nil values
+[self ftg_mergeValuesForKeysFromModel:updatedObject];
+</code></pre><p>  }<br>}</p>
+</li>
+<li><p>(void)updateWithCorePFObject:(PFObject *)pfObject<br>{<br>  self.pfObjectID = pfObject.objectId;<br>  self.updatedAt = pfObject.updatedAt;<br>  self.createdAt = pfObject.createdAt;<br>}</p>
+</li>
+</ul>
+<ul>
+<li><p>(NSDictionary *)toJSONDictionary<br>{<br>  return [MTLJSONAdapter JSONDictionaryFromModel:self].ftg_dictionaryByRemovingNull;<br>}</p>
+</li>
+<li><p>(PFObject *)pfObject<br>{<br>  if (self.pfObjectID) {</p>
+<pre><code>PFObject *pfObject = [PFObject objectWithoutDataWithClassName:self.pfObjectClassName objectId:self.pfObjectID];
+return pfObject;
+</code></pre><p>  }</p>
+<p>  return nil;<br>}</p>
+</li>
+<li><p>(PFObject <em>)toPFObject<br>{<br>  PFObject </em>pfObject = self.pfObject;</p>
+<p>  if (!pfObject) {</p>
+<pre><code>pfObject = [PFObject objectWithClassName:self.pfObjectClassName dictionary:nil];
+</code></pre><p>  }</p>
+<p>  [pfObject ftg_updateWithDictionary:self.toJSONDictionary];<br>  return pfObject;<br>}</p>
+</li>
+</ul>
+<ul>
+<li>(NSString *)pfObjectClassName<br>{<br>  return nil;<br>}</li>
+</ul>
+<ul>
+<li>(NSString *)pfObjectClassName<br>{<br>  return [[self class] pfObjectClassName];<br>}</li>
+</ul>
+<p>@end<br>[/code]</p>
+<p><code>PFObject+FTGAdditions</code><br>[code language=”objc”]</p>
+<ul>
+<li><p>(NSDictionary <em>)ftg_toDictionary<br>{<br>  NSMutableDictionary </em>result = [NSMutableDictionary dictionary];<br>  for (NSString *key in self.allKeys) {</p>
+<pre><code>[result setObject:self[key] forKey:key];
+</code></pre><p>  }</p>
+<p>  return result;<br>}</p>
+</li>
+<li><p>(void)ftg_updateWithDictionary:(NSDictionary <em>)dictionary<br>{<br>  for (NSString </em>key in dictionary.allKeys) {</p>
+<pre><code>id value = dictionary[key];
+[self setObject:value forKey:key];
+</code></pre><p>  }<br>}<br>[/code]</p>
+</li>
+</ul>
+<h2 id="Treat-PFObject-as-JSON-dictionary"><a href="#Treat-PFObject-as-JSON-dictionary" class="headerlink" title="Treat PFObject as JSON dictionary"></a>Treat PFObject as JSON dictionary</h2><p>In the FTGBaseObject above, we can see that PFObject is treated as JSON dictionary, just as a JSON dictionary you normally get from RESTful APIs</p>
+<p>For example to map from PFUser to our FTGUser object,<br>[code language=”objc”]</p>
+<p>@implementation FTGUser</p>
+<ul>
+<li><p>(NSDictionary *)JSONKeyPathsByPropertyKey {<br>  return @{@”username”: @”username”,</p>
+<pre><code>@&quot;firstName&quot;: @&quot;first_name&quot;,
+@&quot;location&quot;: @&quot;location&quot;,
+};
+</code></pre><p>}</p>
+</li>
+<li><p>(NSString *)pfObjectClassName<br>{<br>  // PFUser is stored in Parse as _User<br>  return @”_User”;<br>}</p>
+</li>
+<li><p>(NSValueTransformer <em>)locationJSONTransformer {<br>  return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(PFObject </em>pfObject) {</p>
+<pre><code>return [FTGLocation objectWithPFObject:pfObject];
+</code></pre><p>  } reverseBlock:^id(FTGLocation *object) {</p>
+<pre><code>return [object toPFObject];
+</code></pre><p>  }];<br>}<br>@end<br>[/code]</p>
+</li>
+</ul>
+<p>Notice how our FTGUser object properties use camelCase while PFUser columns is stored as dash_case.</p>
+<p>[code language=”objc”]</p>
+<p>PFQuery <em>query = [PFQuery queryWithClassName:@”_User”];<br>[query whereKey:@”first_name” equalTo:@”Steven”];<br>PFObject</em> pfObject = [query findObjects].firstObject;<br>FTGUser *user = [FTGUser objectWithPFObject:pfObject];</p>
+<p>[/code]</p>
+<h2 id="Treat-Parse-network-API-as-network-layer"><a href="#Treat-Parse-network-API-as-network-layer" class="headerlink" title="Treat Parse network API as network layer"></a>Treat Parse network API as network layer</h2><p>You can wrap Parse APIs like <code>PFQuery</code>, <code>saveInBackgroundWithBlock</code>, … in the network layer, just like how you use AFNetworking in your network layer.</p>
+<p>Notice the FTGBaseObject, it does not hold any reference to the PFObject as we treat PFObject as JSON dictionary, its mainly usage is the dictionary to update our FTGBaseObject.</p>
+<p>FTGBaseObject keeps pfObjectID, and uses this pfObjectID to populate an empty PFObject through the <code>pfObject</code> method. For example when user updates his first name, we just need</p>
+<p>[code language=”objc”]</p>
+<p>FTGUser <em>user; // Suppose got this before<br>PFObject </em>pfObject = [user pfObject]; // I prefer using dot notation :] like user.pfObject<br>pfObject[@”first_name”] = @”Steven”;<br>[pfObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {<br>   [user updateWithPFObject:pfObject];<br>}</p>
+<p>[/code]</p>
+<p>For best practice, we should not call <code>saveInBackgroundWithBlock</code> directly like this, move it into its own network layer</p>
+<h2 id="We-store-FTGBaseObject-ourselves"><a href="#We-store-FTGBaseObject-ourselves" class="headerlink" title="We store FTGBaseObject ourselves"></a>We store FTGBaseObject ourselves</h2><p>Since we don’t keep PFObject around, we don’t have to store it, no need for such things as <a href="https://github.com/eladb/Parse-NSCoding" target="_blank" rel="external">PFObject+NSCoding</a></p>
+<p>We can archive or save FTGBaseObject to Core Data, Mantle supports this as well.</p>
+<h2 id="Parse-Local-Datastore"><a href="#Parse-Local-Datastore" class="headerlink" title="Parse Local Datastore"></a>Parse Local Datastore</h2><p>Parse just announces Local Datastore, it is great with just simple <code>pin</code> and <code>unpin</code> methods. This works well with our solution. Since we have clear separation with PFObject, we don’t care if it is from network or the local store, we just get PFObjects out and update our FTGBaseObject. FTGBaseObject is the first class citizen here</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://github.com/Mantle/Mantle" target="_blank" rel="external">Mantle</a></li>
+</ol>
+<ol>
+<li><a href="http://stackoverflow.com/questions/14310099/abstracting-parse-objects" target="_blank" rel="external">Abstracting Parse objects?</a></li>
+</ol>
+<ol>
+<li><a href="https://www.parse.com/questions/subclass-pfobject" target="_blank" rel="external">Subclass PFObject</a></li>
+</ol>
+<ol>
+<li><a href="http://blog.parse.com/2014/12/09/parse-local-datastore-for-ios/" target="_blank" rel="external">Parse Local Datastore</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/12/19/using-parse-sdk-with-mantle/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/12/19/conditional-objects/" title="Conditional Objects" itemprop="url">Conditional Objects</a>
   </h1>
   <p class="article-author">By
@@ -723,172 +982,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/09/23/ios-static-table-view-cells-with-varying-row-height-and-autolayout/" title="iOS static table view cells with varying row height and Autolayout" itemprop="url">iOS static table view cells with varying row height and Autolayout</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-22T23:59:14.000Z" itemprop="datePublished"> Published 2014-09-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>In this post, I ‘ll show how to achieve varying row height with static tableview and autolayout</p>
-<h3 id="Make-sure-your-static-cell-Autolayout-is-setup-correctly"><a href="#Make-sure-your-static-cell-Autolayout-is-setup-correctly" class="headerlink" title="Make sure your static cell Autolayout is setup correctly"></a>Make sure your static cell Autolayout is setup correctly</h3><p>This step is the same as dynamic table view, just make sure you add constraints to the <code>contentView</code>, not the cell</p>
-<h3 id="Dynamic-height"><a href="#Dynamic-height" class="headerlink" title="Dynamic height"></a>Dynamic height</h3><p>Since this is a static tableview, you don’t need that <code>prototypeCell</code> trick, you can just use the IBOutlet directly. This is what happens in my <code>UITableViewDelegate</code>, note how I reference <code>descriptionLabel</code></p>
-<p>[code language=”objc”]</p>
-<ul>
-<li><p>(CGFloat)tableView:(UITableView <em>)tableView heightForRowAtIndexPath:(NSIndexPath </em>)indexPath<br>{<br>  if (indexPath.section == 1 &amp;&amp; indexPath.row &gt; 0) {</p>
-<pre><code>return 0;
-</code></pre><p>  }</p>
-<p>  if (indexPath.section == 0 &amp;&amp; indexPath.row == 2) {</p>
-<pre><code>CGSize size = [self.descriptionLabel systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-return size.height;
-</code></pre><p>  }</p>
-<p>  return [super tableView:tableView heightForRowAtIndexPath:indexPath];<br>}<br>[/code]</p>
-</li>
-</ul>
-<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>Make you you have set <code>preferredMaxLayoutWidth</code> for the <code>descriptionLabel</code></p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
-<li><a href="http://stackoverflow.com/a/18746930/1418457" target="_blank" rel="external">Using Auto Layout in UITableView for dynamic cell layouts &amp; variable row heights</a></li>
-</ol>
-<ol>
-<li><a href="http://www.raywenderlich.com/73602/dynamic-table-view-cell-height-auto-layout" target="_blank" rel="external">Dynamic Table View Cell Height and Auto Layout</a></li>
-</ol>
-<ol>
-<li><a href="http://useyourloaf.com/blog/2014/02/14/table-view-cells-with-varying-row-heights.html" target="_blank" rel="external">Table View Cells With Varying Row Heights</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/09/23/ios-static-table-view-cells-with-varying-row-height-and-autolayout/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/09/18/xcode-build-gotcha/" title="Understanding Xcode build" itemprop="url">Understanding Xcode build</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-09-18T16:14:18.000Z" itemprop="datePublished"> Published 2014-09-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
-<li>xcodebuild <code>man xcodebuild</code></li>
-</ol>
-<ol>
-<li><a href="https://github.com/facebook/xctool/" target="_blank" rel="external">xctool</a></li>
-</ol>
-<ol>
-<li><a href="https://github.com/supermarin/xcpretty" target="_blank" rel="external">xcpretty</a></li>
-</ol>
-<ol>
-<li><a href="http://matthewmorey.com/xcode-build-phases/" target="_blank" rel="external">Useful Xcode Build Phases</a></li>
-</ol>
-<ol>
-<li><a href="http://tetontech.wordpress.com/2011/05/26/command-line-building-using-xcode/" target="_blank" rel="external">Command Line Building using Xcode</a></li>
-</ol>
-<ol>
-<li><a href="https://developer.apple.com/library/ios/technotes/tn2339/_index.html" target="_blank" rel="external">Building from the Command Line with Xcode FAQ</a></li>
-</ol>
-<ol>
-<li><a href="https://developer.apple.com/library/mac/qa/qa1490/_index.html" target="_blank" rel="external">Building Objective-C static libraries with categories</a></li>
-</ol>
-<ol>
-<li><a href="http://www.informit.com/articles/article.aspx?p=1994802&amp;seqNum=7" target="_blank" rel="external">Command Line Compiling and Debugging</a></li>
-</ol>
-<ol>
-<li><a href="http://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art024" target="_blank" rel="external">Build an iPhone app from the command line</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/09/18/xcode-build-gotcha/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/8/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/10/">Next<span></span></a>
@@ -986,11 +1079,11 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -998,11 +1091,7 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1010,15 +1099,11 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1026,19 +1111,15 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1050,11 +1131,23 @@ return size.height;
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

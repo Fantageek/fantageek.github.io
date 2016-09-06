@@ -82,6 +82,154 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/07/10/understanding-monad/" title="Understanding Monad" itemprop="url">Understanding Monad</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-10T05:39:10.000Z" itemprop="datePublished"> Published 2015-07-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>I love functional programming. As always, a search will lead you into <a href="http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming" target="_blank" rel="external">What is (functional) reactive programming?</a>, which will strike you back. If you dont fully understand that, no problem. People can answer that because they have played with functional paradigm for years, and they can <code>feel</code> it.</p>
+<p>So why not just pick a functional language and play with it, then after that come back to that question later, you will be amazed by how much you can understand the answers there.</p>
+<p>To me, a function language must ensure</p>
+<ul>
+<li>First class function: which treat function as normal value that can be passed to another function and as a return value</li>
+<li>No side effect. Remember <code>y = f(x)</code> which just receives input <code>x</code> and return output <code>y</code>. No contact with the outside world. Search for <code>proceduce vs function</code> and you will know why</li>
+</ul>
+<h2 id="It-is-not-hard"><a href="#It-is-not-hard" class="headerlink" title="It is not hard"></a>It is not hard</h2><p>To me, it is <code>not hard</code>, it is just <code>challenging</code> and <code>fun</code></p>
+<p>Yeah, functor, applicative functor and monad are fun</p>
+<h2 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h2><p>My favorite language for learning functional paradigm is Javascript, Swift, Haskell and Elixir. Why they may not fully support functional attributes or encourage true functional behaviour, it is OK with me to learn the concepts.</p>
+<p>I must admit that knowing several programming languages benefits you a long way. While there are many resources to learn functional programming and particularly, monad. I find these very useful. Learn in this order</p>
+<ul>
+<li><a href="https://github.com/MostlyAdequate/mostly-adequate-guide" target="_blank" rel="external">mostly-adequate-guide</a> This is by far the great book ever. It teaches me how to understand map, apply, join, chain easily. Javascript is very easy to read, so read this book first</li>
+<li><a href="http://learnyouahaskell.com/chapters" target="_blank" rel="external">Learn You a Haskell for Great Good!
+</a> Yeah, people can’t just ignore Haskell when they talk about functional programming. This book has very nice examples</li>
+<li><a href="https://www.objc.io/books/fpinswift/" target="_blank" rel="external">Functional Programming in Swift</a> I like Swift and I really like how functional programming work in Swift</li>
+<li><a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="external">Functors, Applicatives, And Monads In Pictures</a> Through these illustrated pictures, we ‘ll understand better</li>
+</ul>
+<p>Visit <a href="https://github.com/onmyway133/SwiftyMonad" target="_blank" rel="external">SwiftyMonad</a> for my experiment in Swift</p>
+<h3 id="Computational-Context"><a href="#Computational-Context" class="headerlink" title="Computational Context"></a>Computational Context</h3><h3 id="Map-with-Functor"><a href="#Map-with-Functor" class="headerlink" title="Map with Functor"></a>Map with Functor</h3><h3 id="Apply-with-Applicative-Functor"><a href="#Apply-with-Applicative-Functor" class="headerlink" title="Apply with Applicative Functor"></a>Apply with Applicative Functor</h3><h3 id="Bind-with-Monad"><a href="#Bind-with-Monad" class="headerlink" title="Bind with Monad"></a>Bind with Monad</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://www.javiersoto.me/post/106875422394" target="_blank" rel="external">Functor and Monad in Swift</a></li>
+<li><a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="external">Functors, Applicatives, And Monads In Pictures</a></li>
+<li><a href="https://realm.io/news/swift-summit-javier-soto-futures/" target="_blank" rel="external">Back to the Futures</a></li>
+<li><a href="https://realm.io/news/swift-summit-al-skipp-monads/" target="_blank" rel="external">The Monad Among Us</a></li>
+<li><a href="https://realm.io/news/compelling-code/" target="_blank" rel="external">Compelling Code</a></li>
+<li><a href="https://www.youtube.com/watch?v=AcDaWe3S75c&amp;list=PLdr22uU_wISpW6XI1J0S7Lp-X8Km-HaQW&amp;index=15" target="_blank" rel="external">Functional Reactive Programming without Black Magic</a></li>
+<li><a href="https://www.youtube.com/watch?v=vg7cOF30Svo&amp;index=4&amp;list=PLdr22uU_wISpW6XI1J0S7Lp-X8Km-HaQW" target="_blank" rel="external">Monads are not Monsters</a></li>
+<li><a href="http://fsharpforfunandprofit.com/posts/recipe-part2/" target="_blank" rel="external">Railway oriented programming</a></li>
+<li><a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html" target="_blank" rel="external">You Could Have Invented Monads! (And Maybe You Already Have.)</a></li>
+<li><a href="http://drboolean.gitbooks.io/mostly-adequate-guide/content/ch9.html" target="_blank" rel="external">mostly-adequate-guide</a></li>
+<li><a href="https://www.youtube.com/watch?v=rJosPrqBqrA" target="_blank" rel="external">Functioning as a Functionalist</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/07/10/understanding-monad/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/07/08/understanding-libextobjc/" title="Understanding libextobjc" itemprop="url">Understanding libextobjc</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-08T15:22:35.000Z" itemprop="datePublished"> Published 2015-07-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><a href="https://github.com/jspahrsummers/libextobjc" target="_blank" rel="external">libextobjc</a></p>
+<blockquote><br>  A Cocoa library to extend the Objective-C programming language.<br></blockquote>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/07/08/understanding-libextobjc/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/07/04/ios-configuration/" title="iOS configuration" itemprop="url">iOS configuration</a>
   </h1>
   <p class="article-author">By
@@ -814,141 +962,6 @@ reverseBlock:^ id (id model) {
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/06/18/understanding-afnetworking-error/" title="Understanding AFNetworking - Error" itemprop="url">Understanding AFNetworking - Error</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-18T14:33:39.000Z" itemprop="datePublished"> Published 2015-06-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>When using AFNetworking, I want to get the status code in case of failure</p>
-<h2 id="NSError-in-failure-block"><a href="#NSError-in-failure-block" class="headerlink" title="NSError in failure block"></a>NSError in failure block</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];</span><br><span class="line">    [sessionManager GET:<span class="string">@""</span> parameters:<span class="literal">nil</span> success:^(<span class="built_in">NSURLSessionDataTask</span> *task, <span class="keyword">id</span> responseObject) &#123;</span><br><span class="line"></span><br><span class="line">    &#125; failure:^(<span class="built_in">NSURLSessionDataTask</span> *task, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, error);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
-<p>The <code>error.code</code> is not the HTTP status code, it is <code>NSError</code> that AFNetworking creates due to serializer error</p>
-<h2 id="How-AFNetworking-creates-NSError"><a href="#How-AFNetworking-creates-NSError" class="headerlink" title="How AFNetworking creates NSError"></a>How AFNetworking creates NSError</h2><h3 id="AFURLSessionManager-m"><a href="#AFURLSessionManager-m" class="headerlink" title="AFURLSessionManager.m"></a>AFURLSessionManager.m</h3><p>In <code>URLSession:task:didCompleteWithError:</code></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSError</span> *serializationError = <span class="literal">nil</span>;</span><br><span class="line">            responseObject = [manager.responseSerializer responseObjectForResponse:task.response data:[<span class="built_in">NSData</span> dataWithData:<span class="keyword">self</span>.mutableData] error:&amp;serializationError];</span><br></pre></td></tr></table></figure>
-<h3 id="AFErrorWithUnderlyingError"><a href="#AFErrorWithUnderlyingError" class="headerlink" title="AFErrorWithUnderlyingError"></a>AFErrorWithUnderlyingError</h3><p>This is called in <code>validateResponse:data:error:</code> and <code>responseObjectForResponse:data:error</code> of  <code>AFURLResponseSerialization</code> classes</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSError</span> * AFErrorWithUnderlyingError(<span class="built_in">NSError</span> *error, <span class="built_in">NSError</span> *underlyingError) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!error) &#123;</span><br><span class="line">        <span class="keyword">return</span> underlyingError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!underlyingError || error.userInfo[<span class="built_in">NSUnderlyingErrorKey</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *mutableUserInfo = [error.userInfo mutableCopy];</span><br><span class="line">    mutableUserInfo[<span class="built_in">NSUnderlyingErrorKey</span>] = underlyingError;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [[<span class="built_in">NSError</span> alloc] initWithDomain:error.domain code:error.code userInfo:mutableUserInfo];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Error-Domain"><a href="#Error-Domain" class="headerlink" title="Error Domain"></a>Error Domain</h3><p>In <code>AFURLResponseSerialization.h</code></p>
-<blockquote><br>  Error codes for <code>AFURLResponseSerializationErrorDomain</code> correspond to codes in <code>NSURLErrorDomain</code>.<br></blockquote>
-
-
-
-<p>For example<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">validationError = AFErrorWithUnderlyingError([<span class="built_in">NSError</span> errorWithDomain:AFURLResponseSerializationErrorDomain code:<span class="built_in">NSURLErrorCannotDecodeContentData</span> userInfo:mutableUserInfo], validationError);</span><br></pre></td></tr></table></figure></p>
-<h2 id="HTTP-Status-code"><a href="#HTTP-Status-code" class="headerlink" title="HTTP Status code"></a>HTTP Status code</h2><h3 id="Inspect-userInfo-of-NSError"><a href="#Inspect-userInfo-of-NSError" class="headerlink" title="Inspect userInfo of NSError"></a>Inspect userInfo of NSError</h3><p>The NSError userInfo contains <code>AFNetworkingOperationFailingURLResponseErrorKey</code> and <code>AFNetworkingOperationFailingURLResponseDataErrorKey</code> that we can inspect to get NSURLResponse and NSData</p>
-<h3 id="Replace-NSError"><a href="#Replace-NSError" class="headerlink" title="Replace NSError"></a>Replace NSError</h3><p>Sometimes we don’t care about <code>NSURLErrorDomain</code>, we can get HTTP Status Code from NSURResponse and replace the code in the NSError</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURLSessionDataTask</span> *task = [<span class="keyword">self</span>.manager dataTaskWithRequest:request</span><br><span class="line">                                                     completionHandler:^(<span class="built_in">NSURLResponse</span> *response, <span class="keyword">id</span> responseObject, <span class="built_in">NSError</span> *error)</span><br><span class="line">                                      &#123;</span><br><span class="line">                                         <span class="keyword">if</span> (error) &#123;</span><br><span class="line">                                             error = [<span class="keyword">self</span> errorFromError:error</span><br><span class="line">                                                           responseObject:responseObject</span><br><span class="line">                                                                 response:response];</span><br><span class="line">                                              [subscriber sendError:error];</span><br><span class="line">                                          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                              [subscriber sendNext:responseObject];</span><br><span class="line">                                              [subscriber sendCompleted];</span><br><span class="line">                                          &#125;</span><br><span class="line">                                      &#125;];</span><br><span class="line">- (<span class="built_in">NSError</span> *)errorFromError:(<span class="built_in">NSError</span> *)error</span><br><span class="line">             responseObject:(<span class="keyword">id</span>)responseObject</span><br><span class="line">                   response:(<span class="built_in">NSURLResponse</span> *)response &#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *userInfo = [<span class="built_in">NSMutableDictionary</span> dictionaryWithDictionary:error.userInfo];</span><br><span class="line">    <span class="keyword">if</span> (responseObject) &#123;</span><br><span class="line">        userInfo[kNetworkProviderResponseObjectKey] = responseObject;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSInteger</span> HTTPStatusCode = error.code;</span><br><span class="line">    <span class="keyword">if</span> (response) &#123;</span><br><span class="line">        <span class="keyword">if</span> ([response isKindOfClass:[<span class="built_in">NSHTTPURLResponse</span> class]]) &#123;</span><br><span class="line">            <span class="built_in">NSHTTPURLResponse</span> *HTTPResponse = (<span class="keyword">id</span>)response;</span><br><span class="line">            HTTPStatusCode = HTTPResponse.statusCode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        HTTPStatusCode = <span class="number">408</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSError</span> errorWithDomain:error.domain code:HTTPStatusCode userInfo:userInfo];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li><a href="http://www.osstatus.com/" target="_blank" rel="external">OSStatus</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/06/18/understanding-afnetworking-error/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/06/18/understanding-afnetworking-block/" title="Understanding AFNetworking - Block" itemprop="url">Understanding AFNetworking - Block</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-18T14:31:04.000Z" itemprop="datePublished"> Published 2015-06-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Hi, in this AFNetworking gotcha series, I’ll share something I learn about AFNetworking and remind you of some properties you may overlook</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2015/06/18/understanding-afnetworking-block/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/06/18/understanding-afnetworking-block/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
@@ -1046,11 +1059,11 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1058,11 +1071,7 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1070,15 +1079,11 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1086,19 +1091,15 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1110,11 +1111,23 @@ reverseBlock:^ id (id model) {
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

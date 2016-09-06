@@ -82,6 +82,169 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/10/31/lighter-appdelegate/" title="Lighter AppDelegate" itemprop="url">Lighter AppDelegate</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-31T15:55:04.000Z" itemprop="datePublished"> Published 2015-10-31</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>There is <a href="https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/" target="_blank" rel="external">Lighter View Controllers</a>, and there is Lighter AppDelegate, too</p>
+<p>Since working with iOS, I really like the delegate pattern, in which it helps us defer the decision to another party.</p>
+<p>The iOS application delegates its event to AppDelegate, which over time will be a big mess. Usually, the AppDelegate is where you put your root view controller setup, crash tracking, push notification, debugging, … and we just somehow violent the Single Responsibility principle. Moreover, it makes us hard to reason about code in AppDelegate</p>
+<h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>I like to think of each task in AppDelegate as a service. And the AppDelegate distributes the events into each service via ServiceDispatcher. Simple plain old composition and looping</p>
+<p>I tend to have RootService as a place to setup root view controllers</p>
+<p>It looks like this</p>
+<p><code>ServiceDispatcher.swift</code><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServiceDispatcher</span> : <span class="title">NSObject</span>, <span class="title">UIApplicationDelegate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> services: [<span class="type">UIApplicationDelegate</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(services: [<span class="type">UIApplicationDelegate</span>]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.services = services</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication,</span><br><span class="line">        didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line"></span><br><span class="line">        services.forEach &#123; service <span class="keyword">in</span></span><br><span class="line">            service.application?(application, didFinishLaunchingWithOptions: launchOptions)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationDidBecomeActive</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        services.forEach &#123; service <span class="keyword">in</span></span><br><span class="line">            service.applicationDidBecomeActive?(application)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationWillResignActive</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        services.forEach &#123; service <span class="keyword">in</span></span><br><span class="line">            service.applicationWillResignActive?(application)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationWillEnterForeground</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        services.forEach &#123; service <span class="keyword">in</span></span><br><span class="line">            service.applicationWillEnterForeground?(application)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationDidEnterBackground</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        services.forEach &#123; service <span class="keyword">in</span></span><br><span class="line">            service.applicationDidEnterBackground?(application)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>RootService.swift</code><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RootService</span> : <span class="title">NSObject</span>, <span class="title">UIApplicationDelegate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication,</span><br><span class="line">        didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line"></span><br><span class="line">        appDelegate().window = <span class="type">UIWindow</span>(frame: <span class="type">UIScreen</span>.mainScreen().bounds)</span><br><span class="line">        showHome()</span><br><span class="line">        appDelegate().window?.makeKeyAndVisible()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">RootService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">showHome</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> home = <span class="type">HomeWireframe</span>().makeHome()</span><br><span class="line">        <span class="keyword">let</span> navC = <span class="type">UINavigationController</span>(rootViewController: home!)</span><br><span class="line">        appDelegate().window?.rootViewController = navC</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">RootService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">appDelegate</span><span class="params">()</span></span> -&gt; <span class="type">AppDelegate</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span>! <span class="type">AppDelegate</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>AppDelegate.swift</code><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@UIApplicationMain</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppDelegate</span>: <span class="title">UIResponder</span>, <span class="title">UIApplicationDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> window: <span class="type">UIWindow</span>?</span><br><span class="line">    <span class="keyword">let</span> serviceDispatcher = <span class="type">ServiceDispatcher</span>(services: [<span class="type">RootService</span>()])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line"></span><br><span class="line">        serviceDispatcher.application(application, didFinishLaunchingWithOptions: launchOptions)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationWillResignActive</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        serviceDispatcher.applicationWillResignActive(application)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationDidEnterBackground</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        serviceDispatcher.applicationDidEnterBackground(application)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationWillEnterForeground</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        serviceDispatcher.applicationWillEnterForeground(application)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">applicationDidBecomeActive</span><span class="params">(application: UIApplication)</span></span> &#123;</span><br><span class="line">        serviceDispatcher.applicationDidBecomeActive(application)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>I have more services like DebugService, PushNotificationService, CrashTrackingService, …</p>
+<p>The downside to this approach is that in real life, there will be dependencies between those services, like that UserService must be called before RootService? In this case, I have to use comment to explain why I have that decision, which is hard for newcomers to understand at first. Take a look at <a href="http://christiantietze.de/posts/2015/10/bootstrapping-appdelegate/" target="_blank" rel="external">How to Move Bootstrapping Code Out of AppDelegate</a> for how dependencies are managed</p>
+<p><a href="https://github.com/JaviSoto/JSDecoupledAppDelegate" target="_blank" rel="external">JSDecoupledAppDelegate</a> comes with another approach, in which service events are named according to the functions, like <code>appStateDelegate</code>, <code>appDefaultOrientationDelegate</code>, <code>watchInteractionDelegate</code>, …</p>
+<p>But for me, Service and ServiceDispatcher suit my need</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://sizeof.io/service-oriented-appdelegate/" target="_blank" rel="external">SERVICE-ORIENTED APPDELEGATE</a></li>
+<li><a href="https://github.com/JaviSoto/JSDecoupledAppDelegate" target="_blank" rel="external">JSDecoupledAppDelegate</a></li>
+<li><a href="http://christiantietze.de/posts/2015/10/bootstrapping-appdelegate/" target="_blank" rel="external">How to Move Bootstrapping Code Out of AppDelegate</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/10/31/lighter-appdelegate/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/10/31/on-open-source/" title="On open source" itemprop="url">On open source</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-31T03:54:56.000Z" itemprop="datePublished"> Published 2015-10-31</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>It was back in 2013 when I first dived into open source world. I started working with <a href="http://www.pjsip.org/" target="_blank" rel="external">pjsip</a> to develop a VOIP application, then I stumbled <a href="https://code.google.com/p/csipsimple/" target="_blank" rel="external">CSipSimple</a> which is the Android binding of the lib. The maintainer <a href="https://twitter.com/r3gis3R" target="_blank" rel="external">Regis</a> actually taught me a lot</p>
+<p>I asked him <a href="https://groups.google.com/forum/#!topic/csipsimple-dev/ihZN8s_-g_4" target="_blank" rel="external">What is a branded version?</a></p>
+<blockquote>
+<p>Hi Regis,<br>This question is not related to coding, but to business :)<br>I’ve read some of your answers about branding CSipSimple. What is it?<br>You grant other permission to make the same app as yours (use same source, make little modification, then publish to Google Play, …). Since this is open source, how do you and them benefit from this branding ?</p>
+</blockquote>
+<p>And he surprised me with his answer</p>
+<blockquote>
+<p>I don’t make any money from csipsimple at all. It’s a pure opensource and free as in speech project.</p>
+<p>I develop it on my free time and just so that it benefit users.</p>
+</blockquote>
+<p>It was my first impression about how people dedicated themselves to open source community.</p>
+<p>Afterward as I started working with Android and iOS, I used more open source libraries</p>
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p>The reason was simple that it speeded up my development time by not reinventing the wheel. Those libraries are necessary, like AFNetworking, Mantle, Masonry, … and are highly rated and under actively development</p>
+<p><a href="https://medium.com/ios-os-x-development/libraries-used-in-the-top-100-ios-apps-5b845ad927b7#.8cu7xn1ve" target="_blank" rel="external">Libraries Used in the Top 100 iOS Apps</a></p>
+<p>Actually, using a libraries is like relying on someone else to do the job for us. We are likely to give away some control of our app. So we ‘d better understand that someone else before trusting him, and only ask for help if needed.</p>
+<p>Here are some good checklists</p>
+<ul>
+<li><a href="http://roadfiresoftware.com/2015/08/save-your-future-self-from-broken-apps/" target="_blank" rel="external">Save your future self from broken apps by asking these questions BEFORE adding a third-party framework to your app</a></li>
+<li><a href="https://www.andrewcbancroft.com/2015/10/27/considerations-for-choosing-3rd-party-swift-libraries/" target="_blank" rel="external">Considerations for Choosing 3rd Party Swift Libraries</a></li>
+</ul>
+<h2 id="Trending"><a href="#Trending" class="headerlink" title="Trending"></a>Trending</h2><p>I think open source is the way to move our community forward. Luckily, people have the same feeling, too</p>
+<ul>
+<li><a href="http://code.dblock.org/2015/02/09/becoming-open-source-by-default.html" target="_blank" rel="external">Becoming Open Source by Default</a></li>
+<li><a href="https://www.objc.io/issues/22-scale/artsy/" target="_blank" rel="external">Open source at Artsy</a></li>
+<li><a href="http://blog.parse.com/announcements/open-sourcing-our-sdks/" target="_blank" rel="external">Parse Open Sourcing Our SDKs</a></li>
+</ul>
+<h2 id="Put-on-your-yellow-hat"><a href="#Put-on-your-yellow-hat" class="headerlink" title="Put on your yellow hat"></a>Put on your yellow hat</h2><p>I find using and open sourcing libraries benefit me a lot</p>
+<ul>
+<li>Learn the project structure: I like to read <a href="https://github.com/dkhamsing/open-source-ios-apps" target="_blank" rel="external">open source projects </a> to see how they structure their projects, as well as some techniques I don’t know</li>
+<li>Learn how the <a href="https://github.com/onmyway133/ios-resources/blob/master/Tool/ios-libraries.md" target="_blank" rel="external">libraries</a> are made, like <a href="http://www.fantageek.com/blog/2015/06/28/understanding-pstalertcontroller-weaksheetstorage/">Understanding PSTAlertController - weakSheetStorage</a>, <a href="http://www.fantageek.com/blog/2015/06/28/understanding-flex-hit-testing/">Understanding FLEX - Hit Testing</a>, <a href="http://www.fantageek.com/blog/2015/06/18/understanding-afnetworking-cache">Understanding AFNetworking - Cache</a>, …</li>
+<li>Joining Github issues and pull requests are ways to learn how people have come up to such design decisions, how to discuss properly, how the projects evolves over time, … Examples are <a href="https://github.com/ReactiveCocoa/ReactiveCocoa/issues/2187" target="_blank" rel="external">Should Swift 2 support be folded into RAC 3.0?</a>, <a href="https://github.com/SnapKit/Masonry/issues/207" target="_blank" rel="external">Layout guides on iOS 9</a></li>
+<li>By open sourcing libraries, not only you contribute back to the community, but you actually learn yourself responsibility. You learn how to structure your code, well defined public APIs, robust testing. You also learn how to write smaller, reusable components</li>
+<li>By having your libraries public, you got more people to review your code, resulting in more reliable and security software. I love this saying “Pull requests are welcome”</li>
+<li>You are more socialized, and who knows, you can get more friends and an environment that suits you. This is the case for me :]</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.youtube.com/watch?v=lqNUTW0F4bw" target="_blank" rel="external">Library-Oriented Programming</a></li>
+</ul>
+<ul>
+<li><a href="http://alisoftware.github.io/oss/2015/12/05/the-opensource-experience/" target="_blank" rel="external">The OpenSource Experience</a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2015/10/31/on-open-source/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/09/27/if-case-in-swift-2/" title="if case in Swift 2" itemprop="url">if case in Swift 2</a>
   </h1>
   <p class="article-author">By
@@ -744,154 +907,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/10/understanding-monad/" title="Understanding Monad" itemprop="url">Understanding Monad</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-10T05:39:10.000Z" itemprop="datePublished"> Published 2015-07-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>I love functional programming. As always, a search will lead you into <a href="http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming" target="_blank" rel="external">What is (functional) reactive programming?</a>, which will strike you back. If you dont fully understand that, no problem. People can answer that because they have played with functional paradigm for years, and they can <code>feel</code> it.</p>
-<p>So why not just pick a functional language and play with it, then after that come back to that question later, you will be amazed by how much you can understand the answers there.</p>
-<p>To me, a function language must ensure</p>
-<ul>
-<li>First class function: which treat function as normal value that can be passed to another function and as a return value</li>
-<li>No side effect. Remember <code>y = f(x)</code> which just receives input <code>x</code> and return output <code>y</code>. No contact with the outside world. Search for <code>proceduce vs function</code> and you will know why</li>
-</ul>
-<h2 id="It-is-not-hard"><a href="#It-is-not-hard" class="headerlink" title="It is not hard"></a>It is not hard</h2><p>To me, it is <code>not hard</code>, it is just <code>challenging</code> and <code>fun</code></p>
-<p>Yeah, functor, applicative functor and monad are fun</p>
-<h2 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h2><p>My favorite language for learning functional paradigm is Javascript, Swift, Haskell and Elixir. Why they may not fully support functional attributes or encourage true functional behaviour, it is OK with me to learn the concepts.</p>
-<p>I must admit that knowing several programming languages benefits you a long way. While there are many resources to learn functional programming and particularly, monad. I find these very useful. Learn in this order</p>
-<ul>
-<li><a href="https://github.com/MostlyAdequate/mostly-adequate-guide" target="_blank" rel="external">mostly-adequate-guide</a> This is by far the great book ever. It teaches me how to understand map, apply, join, chain easily. Javascript is very easy to read, so read this book first</li>
-<li><a href="http://learnyouahaskell.com/chapters" target="_blank" rel="external">Learn You a Haskell for Great Good!
-</a> Yeah, people can’t just ignore Haskell when they talk about functional programming. This book has very nice examples</li>
-<li><a href="https://www.objc.io/books/fpinswift/" target="_blank" rel="external">Functional Programming in Swift</a> I like Swift and I really like how functional programming work in Swift</li>
-<li><a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="external">Functors, Applicatives, And Monads In Pictures</a> Through these illustrated pictures, we ‘ll understand better</li>
-</ul>
-<p>Visit <a href="https://github.com/onmyway133/SwiftyMonad" target="_blank" rel="external">SwiftyMonad</a> for my experiment in Swift</p>
-<h3 id="Computational-Context"><a href="#Computational-Context" class="headerlink" title="Computational Context"></a>Computational Context</h3><h3 id="Map-with-Functor"><a href="#Map-with-Functor" class="headerlink" title="Map with Functor"></a>Map with Functor</h3><h3 id="Apply-with-Applicative-Functor"><a href="#Apply-with-Applicative-Functor" class="headerlink" title="Apply with Applicative Functor"></a>Apply with Applicative Functor</h3><h3 id="Bind-with-Monad"><a href="#Bind-with-Monad" class="headerlink" title="Bind with Monad"></a>Bind with Monad</h3><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://www.javiersoto.me/post/106875422394" target="_blank" rel="external">Functor and Monad in Swift</a></li>
-<li><a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="external">Functors, Applicatives, And Monads In Pictures</a></li>
-<li><a href="https://realm.io/news/swift-summit-javier-soto-futures/" target="_blank" rel="external">Back to the Futures</a></li>
-<li><a href="https://realm.io/news/swift-summit-al-skipp-monads/" target="_blank" rel="external">The Monad Among Us</a></li>
-<li><a href="https://realm.io/news/compelling-code/" target="_blank" rel="external">Compelling Code</a></li>
-<li><a href="https://www.youtube.com/watch?v=AcDaWe3S75c&amp;list=PLdr22uU_wISpW6XI1J0S7Lp-X8Km-HaQW&amp;index=15" target="_blank" rel="external">Functional Reactive Programming without Black Magic</a></li>
-<li><a href="https://www.youtube.com/watch?v=vg7cOF30Svo&amp;index=4&amp;list=PLdr22uU_wISpW6XI1J0S7Lp-X8Km-HaQW" target="_blank" rel="external">Monads are not Monsters</a></li>
-<li><a href="http://fsharpforfunandprofit.com/posts/recipe-part2/" target="_blank" rel="external">Railway oriented programming</a></li>
-<li><a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html" target="_blank" rel="external">You Could Have Invented Monads! (And Maybe You Already Have.)</a></li>
-<li><a href="http://drboolean.gitbooks.io/mostly-adequate-guide/content/ch9.html" target="_blank" rel="external">mostly-adequate-guide</a></li>
-<li><a href="https://www.youtube.com/watch?v=rJosPrqBqrA" target="_blank" rel="external">Functioning as a Functionalist</a></li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/10/understanding-monad/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/07/08/understanding-libextobjc/" title="Understanding libextobjc" itemprop="url">Understanding libextobjc</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2015-07-08T15:22:35.000Z" itemprop="datePublished"> Published 2015-07-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><a href="https://github.com/jspahrsummers/libextobjc" target="_blank" rel="external">libextobjc</a></p>
-<blockquote><br>  A Cocoa library to extend the Objective-C programming language.<br></blockquote>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2015/07/08/understanding-libextobjc/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/4/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/6/">Next<span></span></a>
@@ -989,11 +1004,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -1001,11 +1016,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -1013,15 +1024,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1029,19 +1036,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1053,11 +1056,23 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

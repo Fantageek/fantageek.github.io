@@ -82,6 +82,138 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2014/06/27/uitableviewcell-and-model/" title="UITableViewCell and model" itemprop="url">UITableViewCell and model</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-06-27T13:59:44.000Z" itemprop="datePublished"> Published 2014-06-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>The most common UI element in iOS is UITableView, and the most common task is to display the UITableViewCell using the model.</p>
+<p><a href="http://www.fantageek.com/wp-content/uploads/2014/06/Prototype-cell-custom-design.png"><img src="http://www.fantageek.com/wp-content/uploads/2014/06/Prototype-cell-custom-design-300x186.png" alt="Prototype-cell-custom-design"></a></p>
+<p>Although the title specifies UITableViewCell, but the problem involves other views (UICollectionView, custom view, …) as well<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2014/06/27/uitableviewcell-and-model/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/view-controller/">view controller</a><a href="/tags/controller/">controller</a><a href="/tags/datasource/">datasource</a><a href="/tags/mapper/">mapper</a><a href="/tags/mapping/">mapping</a><a href="/tags/model/">model</a><a href="/tags/uitableviewcell/">uitableviewcell</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/06/27/uitableviewcell-and-model/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/06/27/understanding-weak-self-and-strong-self/" title="Understanding weak self and strong self" itemprop="url">Understanding weak self and strong self</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-06-27T13:18:00.000Z" itemprop="datePublished"> Published 2014-06-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Blocks are wonderful. To avoid retain cycle you often see the weakSelf - strongSelf dance like this</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">__<span class="keyword">weak</span> __typeof__(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.block = ^&#123;</span><br><span class="line">        __typeof__(<span class="keyword">self</span>) strongSelf = weakSelf;</span><br><span class="line">        [strongSelf doSomething];</span><br><span class="line">        [strongSelf doSomethingElse];</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>I bet you have read many articles out there about this and have some understanding. But here I want give some more note<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/blog/2014/06/27/understanding-weak-self-and-strong-self/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/block/">block</a><a href="/tags/capture/">capture</a><a href="/tags/retain-cycle/">retain cycle</a><a href="/tags/self/">self</a><a href="/tags/strong/">strong</a><a href="/tags/weak/">weak</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/06/27/understanding-weak-self-and-strong-self/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/06/27/force-only-one-view-controller-to-be-landscape/" title="Force only one View Controller to be landscape" itemprop="url">Force only one View Controller to be landscape</a>
   </h1>
   <p class="article-author">By
@@ -715,154 +847,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/06/14/recommended-websites-for-ios/" title="Recommended websites for iOS" itemprop="url">Recommended websites for iOS</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-06-14T00:52:10.000Z" itemprop="datePublished"> Published 2014-06-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Here is the list of useful websites and blogs I found during iOS development</p>
-<p><strong>Websites</strong></p>
-<ol>
-<li><a href="http://www.raywenderlich.com/" target="_blank" rel="external">Raywenderlich</a></li>
-<li><a href="http://www.appcoda.com" target="_blank" rel="external">App Coda</a></li>
-<li><a href="http://www.objc.io" target="_blank" rel="external">objc.io</a> Check it every month</li>
-<li><a href="http://code.tutsplus.com/categories/ios-sdk" target="_blank" rel="external">iOS SDK Tutorials on Tutplus</a></li>
-<li><a href="https://mikeash.com/pyblog" target="_blank" rel="external">Mikeash blog</a> Popular for its Let’s build series</li>
-<li><a href="http://weblog.invasivecode.com" target="_blank" rel="external">Invasive Code blog</a></li>
-<li><a href="http://floriankugler.com/" target="_blank" rel="external">Florian Kugler blog</a></li>
-<li><a href="http://ios.devtools.me" target="_blank" rel="external">iOS Devs tools</a></li>
-<li><a href="http://subjc.com" target="_blank" rel="external">Subj C</a></li>
-<li><a href="http://iosdevweekly.com" target="_blank" rel="external">iOS Dev Weekly</a> Check it every week</li>
-<li><a href="http://nsscreencast.com" target="_blank" rel="external">NSScreencast</a> Check it every week</li>
-<li><a href="http://nshipster.com" target="_blank" rel="external">http://nshipster.com</a></li>
-<li><a href="http://nscookbook.com" target="_blank" rel="external">NSCookbook</a></li>
-<li><a href="http://www.codigator.com" target="_blank" rel="external">Codigator</a></li>
-<li><a href="http://www.cocoawithlove.com" target="_blank" rel="external">Cocoa with love</a></li>
-<li><a href="http://ios-goodies.com/" target="_blank" rel="external">iOS Goodies</a> Check it every week</li>
-<li><a href="http://oleb.net/blog/" target="_blank" rel="external">Ole Begemann blog</a> Very clear and good articles</li>
-<li><a href="http://cocoalit.com/" target="_blank" rel="external">Cocoa Literature List</a> A well organized list of articles</li>
-<li><a href="http://petersteinberger.com/" target="_blank" rel="external">Peter Steinberger blog</a> Very clear and good articles</li>
-<li><a href="http://ashfurrow.com/" target="_blank" rel="external">Ash Furrow blog</a></li>
-<li><a href="http://www.merowing.info/" target="_blank" rel="external">Krzysztof Zabłocki blog</a></li>
-<li><a href="http://qualitycoding.org/" target="_blank" rel="external">Quality coding</a></li>
-<li><a href="http://www.bignerdranch.com/blog/" target="_blank" rel="external">Big Nerd Ranch blog</a> Very good tutorials and advices</li>
-<li><a href="http://robots.thoughtbot.com/" target="_blank" rel="external">Thoughtbot Robots</a> Good iOS articles besides other</li>
-<li><a href="http://inessential.com/" target="_blank" rel="external">Inessential</a> Experience and thoughts on iOS development</li>
-<li><a href="http://www.scottlogic.com/blog/" target="_blank" rel="external">Scott Logic blog</a></li>
-<li><a href="http://albertodebortoli.github.io/blog/archives/" target="_blank" rel="external">Alberto De Bortoli blog</a></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/06/14/recommended-websites-for-ios/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/06/01/understanding-registerdefaults/" title="Understanding registerDefaults" itemprop="url">Understanding registerDefaults</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-06-01T04:02:24.000Z" itemprop="datePublished"> Published 2014-06-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Here is the <a href="http://stackoverflow.com/a/19837093/1418457">answer I made on SO about registerDefaults</a></p>
-<p>[code language=”objc”]<br>[[NSUserDefaults standardUserDefaults] setObject:@”Entropy” forKey:@”kName”]<br>[/code]<br>will save “Entropy” to a file named com.example.Demo.plist in Library/Preference folder (where com.example.Demo is your Bundle ID, see IOS Application Security Part 20 – Local Data Storage )</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2014/06/01/understanding-registerdefaults/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/06/01/understanding-registerdefaults/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/11/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/13/">Next<span></span></a>
@@ -960,11 +944,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -972,11 +956,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -984,15 +964,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -1000,19 +976,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -1024,11 +996,23 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>

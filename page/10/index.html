@@ -82,6 +82,172 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2014/09/23/ios-static-table-view-cells-with-varying-row-height-and-autolayout/" title="iOS static table view cells with varying row height and Autolayout" itemprop="url">iOS static table view cells with varying row height and Autolayout</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-09-22T23:59:14.000Z" itemprop="datePublished"> Published 2014-09-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>In this post, I ‘ll show how to achieve varying row height with static tableview and autolayout</p>
+<h3 id="Make-sure-your-static-cell-Autolayout-is-setup-correctly"><a href="#Make-sure-your-static-cell-Autolayout-is-setup-correctly" class="headerlink" title="Make sure your static cell Autolayout is setup correctly"></a>Make sure your static cell Autolayout is setup correctly</h3><p>This step is the same as dynamic table view, just make sure you add constraints to the <code>contentView</code>, not the cell</p>
+<h3 id="Dynamic-height"><a href="#Dynamic-height" class="headerlink" title="Dynamic height"></a>Dynamic height</h3><p>Since this is a static tableview, you don’t need that <code>prototypeCell</code> trick, you can just use the IBOutlet directly. This is what happens in my <code>UITableViewDelegate</code>, note how I reference <code>descriptionLabel</code></p>
+<p>[code language=”objc”]</p>
+<ul>
+<li><p>(CGFloat)tableView:(UITableView <em>)tableView heightForRowAtIndexPath:(NSIndexPath </em>)indexPath<br>{<br>  if (indexPath.section == 1 &amp;&amp; indexPath.row &gt; 0) {</p>
+<pre><code>return 0;
+</code></pre><p>  }</p>
+<p>  if (indexPath.section == 0 &amp;&amp; indexPath.row == 2) {</p>
+<pre><code>CGSize size = [self.descriptionLabel systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+return size.height;
+</code></pre><p>  }</p>
+<p>  return [super tableView:tableView heightForRowAtIndexPath:indexPath];<br>}<br>[/code]</p>
+</li>
+</ul>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p>Make you you have set <code>preferredMaxLayoutWidth</code> for the <code>descriptionLabel</code></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li><a href="http://stackoverflow.com/a/18746930/1418457" target="_blank" rel="external">Using Auto Layout in UITableView for dynamic cell layouts &amp; variable row heights</a></li>
+</ol>
+<ol>
+<li><a href="http://www.raywenderlich.com/73602/dynamic-table-view-cell-height-auto-layout" target="_blank" rel="external">Dynamic Table View Cell Height and Auto Layout</a></li>
+</ol>
+<ol>
+<li><a href="http://useyourloaf.com/blog/2014/02/14/table-view-cells-with-varying-row-heights.html" target="_blank" rel="external">Table View Cells With Varying Row Heights</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/09/23/ios-static-table-view-cells-with-varying-row-height-and-autolayout/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2014/09/18/xcode-build-gotcha/" title="Understanding Xcode build" itemprop="url">Understanding Xcode build</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
+		
+  <p class="article-time">
+    <time datetime="2014-09-18T16:14:18.000Z" itemprop="datePublished"> Published 2014-09-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li>xcodebuild <code>man xcodebuild</code></li>
+</ol>
+<ol>
+<li><a href="https://github.com/facebook/xctool/" target="_blank" rel="external">xctool</a></li>
+</ol>
+<ol>
+<li><a href="https://github.com/supermarin/xcpretty" target="_blank" rel="external">xcpretty</a></li>
+</ol>
+<ol>
+<li><a href="http://matthewmorey.com/xcode-build-phases/" target="_blank" rel="external">Useful Xcode Build Phases</a></li>
+</ol>
+<ol>
+<li><a href="http://tetontech.wordpress.com/2011/05/26/command-line-building-using-xcode/" target="_blank" rel="external">Command Line Building using Xcode</a></li>
+</ol>
+<ol>
+<li><a href="https://developer.apple.com/library/ios/technotes/tn2339/_index.html" target="_blank" rel="external">Building from the Command Line with Xcode FAQ</a></li>
+</ol>
+<ol>
+<li><a href="https://developer.apple.com/library/mac/qa/qa1490/_index.html" target="_blank" rel="external">Building Objective-C static libraries with categories</a></li>
+</ol>
+<ol>
+<li><a href="http://www.informit.com/articles/article.aspx?p=1994802&amp;seqNum=7" target="_blank" rel="external">Command Line Compiling and Debugging</a></li>
+</ol>
+<ol>
+<li><a href="http://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art024" target="_blank" rel="external">Build an iPhone app from the command line</a></li>
+</ol>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/blog/2014/09/18/xcode-build-gotcha/#disqus_thread" class="comments-count-link">Comments</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2014/09/18/how-to-make-all-operations-run-on-a-certain-thread-in-ios/" title="How to make all operations run on a certain thread in iOS" itemprop="url">How to make all operations run on a certain thread in iOS</a>
   </h1>
   <p class="article-author">By
@@ -686,131 +852,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/08/19/android-xml-drawables-tips-and-tricks-part-4-layerdrawable/" title="Android XML drawables Tips - Part 4: LayerDrawable" itemprop="url">Android XML drawables Tips - Part 4: LayerDrawable</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-08-19T14:14:09.000Z" itemprop="datePublished"> Published 2014-08-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>In this post series, I will share some cases I used Android drawable in more efficient ways. They can help your code looks cleaner, separating Java vs. XML, or can even reduce the complexity of your View hierachy.</p>
-<p>Types of Drawable I will be writing about in this series are: LevelList / Bitmap / StateList / Layer / Clip Drawable</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2014/08/19/android-xml-drawables-tips-and-tricks-part-4-layerdrawable/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Android/">Android</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/08/19/android-xml-drawables-tips-and-tricks-part-4-layerdrawable/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2014/08/18/handle-reachability-in-ios/" title="Handling reachability in iOS" itemprop="url">Handling reachability in iOS</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Khoa Pham" target="_blank" itemprop="author">Khoa Pham</a>
-		
-  <p class="article-time">
-    <time datetime="2014-08-18T06:57:48.000Z" itemprop="datePublished"> Published 2014-08-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Here are what I learn about reachability handling in iOS, aka checking for internet connection. Hope you will find it useful, too</p>
-<h4 id="The-naive-way"><a href="#The-naive-way" class="headerlink" title="The naive way"></a>The naive way</h4><p>Some API you already know in UIKit can be used for checking internet connection. Most of them a synchronous code, so you ‘d better call them in a background thread</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/blog/2014/08/18/handle-reachability-in-ios/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/iOS/">iOS</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/ios/">ios</a><a href="/tags/reachability/">reachability</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/blog/2014/08/18/handle-reachability-in-ios/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/9/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/11/">Next<span></span></a>
@@ -908,11 +949,11 @@
 			
 		
 			
-				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
+				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/tutorial/" title="tutorial">tutorial<sup>5</sup></a></li>
+				<li><a href="/tags/mac-osx/" title="mac osx">mac osx<sup>5</sup></a></li>
 			
 		
 			
@@ -920,11 +961,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
+				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
 			
 		
 			
@@ -932,15 +969,11 @@
 			
 		
 			
-				<li><a href="/tags/convert/" title="convert">convert<sup>4</sup></a></li>
+				<li><a href="/tags/C/" title="C">C<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>4</sup></a></li>
 			
 		
 			
@@ -948,19 +981,15 @@
 			
 		
 			
-				<li><a href="/tags/svn/" title="svn">svn<sup>3</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/view-controller/" title="view controller">view controller<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
+				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/programming/" title="programming">programming<sup>3</sup></a></li>
 			
 		
 			
@@ -972,11 +1001,23 @@
 			
 		
 			
-				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
+				<li><a href="/tags/openssl/" title="openssl">openssl<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/voip/" title="voip">voip<sup>3</sup></a></li>
+				<li><a href="/tags/visual-studio/" title="visual studio">visual studio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/build/" title="build">build<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/project/" title="project">project<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/facebook/" title="facebook">facebook<sup>3</sup></a></li>
 			
 		
 		</ul>
