@@ -30,4 +30,4 @@ There are many discussions about this
 
 Putting on your black hat, it sounds negative. Putting on your yellow hat, it sounds positive
 
-But I want learn about it is the team work. No one lives alone, everyone lives among the others. So be humble and learn collaboration
+But what I learn about it is the team work. No one lives alone, everyone lives among the others. It is about to be humble and learn collaboration
